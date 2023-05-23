@@ -1,0 +1,17 @@
+services:
+  frontend:
+    build: ./requirements/frontend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+        - REACT_APP_APP_ID=${APP_ID}
+        - REACT_APP_APP_SECRET=${APP_SECRET}
+        - REACT_APP_APP_URI=${APP_URI}
+    volumes:
+      - ./requirements/frontend/src:/app
+    ports:
+      - "3000:3000"
