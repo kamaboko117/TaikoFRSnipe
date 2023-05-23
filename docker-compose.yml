@@ -1,5 +1,7 @@
 services:
   frontend:
+    depends_on: 
+      - backend
     build: ./requirements/frontend
     deploy:
       restart_policy:
@@ -15,3 +17,15 @@ services:
       - ./requirements/frontend/src:/app
     ports:
       - "3000:3000"
+  backend:
+    build: ./requirements/backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - ./requirements/backend/src:/app
+    ports:
+      - "5000:5000"
