@@ -17,7 +17,10 @@ services:
       - ./requirements/frontend/src:/app
     ports:
       - "3000:3000"
+
   backend:
+    depends_on: 
+      - postgres
     build: ./requirements/backend
     deploy:
       restart_policy:
@@ -25,7 +28,30 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
     volumes:
       - ./requirements/backend/src:/app
     ports:
       - "5000:5000"
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
