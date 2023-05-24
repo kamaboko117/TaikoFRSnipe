@@ -1,4 +1,17 @@
 services:
+  nginx:
+    depends_on:
+      - frontend
+    build: ./requirements/nginx
+    ports:
+      - "3000:3000"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
   frontend:
     depends_on: 
       - backend
@@ -10,13 +23,9 @@ services:
         max_attempts: 3
         window: 120s
     environment:
-        - REACT_APP_APP_ID=${APP_ID}
-        - REACT_APP_APP_SECRET=${APP_SECRET}
-        - REACT_APP_APP_URI=${APP_URI}
+      WDS_SOCKET_PORT: "3000"
     volumes:
       - ./requirements/frontend/src:/app
-    ports:
-      - "3000:3000"
 
   backend:
     depends_on: 
@@ -35,8 +44,6 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
     volumes:
       - ./requirements/backend/src:/app
-    ports:
-      - "5000:5000"
 
   postgres:
     image: postgres
