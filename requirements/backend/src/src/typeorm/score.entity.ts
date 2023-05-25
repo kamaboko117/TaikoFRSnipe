@@ -1,5 +1,5 @@
-import { Score } from "src/types/score";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Score } from 'src/types/score';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class ScoreEntity implements Score {
@@ -18,13 +18,13 @@ export class ScoreEntity implements Score {
   @Column({ type: 'decimal', precision: 18, scale: 17, nullable: false })
   acc: number;
 
-  @Column("text", { array: true, nullable: false })
+  @Column('text', { array: true, nullable: false })
   mods: string[];
 
-  @Column({ type: "timestamptz", nullable: false })
+  @Column({ type: 'timestamptz', nullable: false })
   date: string;
 
-  @Column({ type: "decimal", precision: 6, scale: 3, nullable: false })
+  @Column({ type: 'decimal', precision: 6, scale: 3, nullable: false })
   pp: number;
 
   @Column({ nullable: false })
@@ -32,5 +32,4 @@ export class ScoreEntity implements Score {
 
   @Column({ nullable: false })
   maxCombo: number;
-
 }

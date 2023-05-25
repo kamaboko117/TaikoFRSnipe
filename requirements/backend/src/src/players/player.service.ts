@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Player } from "../typeorm/player.entity";
-import { ScoresService } from "src/scores/scores.service";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Player } from '../typeorm/player.entity';
+import { ScoresService } from 'src/scores/scores.service';
 
 @Injectable()
 export class PlayersService {

@@ -9,11 +9,15 @@ import { ScoresModule } from 'src/scores/scores.module';
 import { PlayersModule } from 'src/players/player.module';
 import { SnipesModule } from 'src/Snipes/snipes.module';
 
-
 @Module({
   controllers: [BeatmapsController],
   providers: [BeatmapsService],
   exports: [BeatmapsService],
-  imports: [TypeOrmModule.forFeature([Beatmap, ScoreEntity, Snipe]), ScoresModule, PlayersModule, SnipesModule],
+  imports: [
+    TypeOrmModule.forFeature([Beatmap, ScoreEntity, Snipe]),
+    ScoresModule,
+    PlayersModule,
+    SnipesModule,
+  ],
 })
 export class BeatmapsModule {}

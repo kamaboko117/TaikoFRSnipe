@@ -1,25 +1,23 @@
 import React from "react";
 
 export default function ManualUpdateForm() {
-
   //handle the form submission
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const id = data.get('beatmapId');
+    const id = data.get("beatmapId");
     console.log(id);
     if (id) {
-      fetch('/api/beatmaps', {
-        method: 'POST',
-        body: JSON.stringify({id}),
+      fetch("/api/beatmaps", {
+        method: "POST",
+        body: JSON.stringify({ id }),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       })
         .then((res) => res.json())
         .then((data) => {
-          if (!data.error)
-            console.log(data);
+          if (!data.error) console.log(data);
         });
     }
   }
@@ -30,7 +28,7 @@ export default function ManualUpdateForm() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="beatmapId">Beatmap ID</label>
         <input type="text" name="beatmapId" id="beatmapId" />
-        <button type="submit" >Update</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );

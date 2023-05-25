@@ -23,7 +23,9 @@ import { PlayersModule } from './players/player.module';
       }),
       inject: [ConfigService],
     }),
-    BeatmapsModule, ScoresModule, PlayersModule
-  ]
+    BeatmapsModule,
+    ScoresModule,
+    PlayersModule,
+  ],
 })
 export class AppModule {}

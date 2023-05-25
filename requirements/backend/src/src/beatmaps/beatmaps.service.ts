@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Beatmap } from 'src/typeorm/beatmap.entity';
 import { RootObject } from 'src/types/mapset';
 import { Repository } from 'typeorm';
-// import { got } from 'got';	
+// import { got } from 'got';
 import { CookieJar } from 'tough-cookie';
 import { JSDOM } from 'jsdom';
 import { ApiScore } from 'src/types/score';
@@ -19,41 +19,45 @@ const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
 const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
   console.log(id);
-  const beatmapDataUrl = "https://osu.ppy.sh/beatmaps/" + id
+  const beatmapDataUrl = 'https://osu.ppy.sh/beatmaps/' + id;
   const got = (await import('got')).default;
-  const response = await got(beatmapDataUrl)
-  const dom = new JSDOM(response.body)
-  const data = dom.window.document.getElementById("json-beatmapset")
+  const response = await got(beatmapDataUrl);
+  const dom = new JSDOM(response.body);
+  const data = dom.window.document.getElementById('json-beatmapset');
   if (data) {
-      return JSON.parse(data.innerHTML)
+    return JSON.parse(data.innerHTML);
   }
-  return undefined
-}
+  return undefined;
+};
 
 const scrapScores = async (id: number, jar: CookieJar) => {
-  const url = "https://osu.ppy.sh/beatmaps/" + id + "/scores?type=country&mode=taiko"
+  const url =
+    'https://osu.ppy.sh/beatmaps/' + id + '/scores?type=country&mode=taiko';
   const got = (await import('got')).default;
-  let log_file = fs.createWriteStream('/app/debug.log', {flags : 'w'});
-  const response = await got(url, {cookieJar: jar, timeout: {request: 5000}}).catch(err => {
-    log_file.write(err.response.body)
-  })
-  if (!response) return undefined
-  const scores: ApiScore[] = JSON.parse(response.body??"[]").scores
-  return scores
-}
+  let log_file = fs.createWriteStream('/app/debug.log', { flags: 'w' });
+  const response = await got(url, {
+    cookieJar: jar,
+    timeout: { request: 5000 },
+  }).catch((err) => {
+    log_file.write(err.response.body);
+  });
+  if (!response) return undefined;
+  const scores: ApiScore[] = JSON.parse(response.body ?? '[]').scores;
+  return scores;
+};
 
 const createBeatmap = async (id: number) => {
-  const mapsetData = await scrapMapsetData(id)
+  const mapsetData = await scrapMapsetData(id);
   if (!mapsetData) {
     throw new Error('Beatmap not found');
   }
-  
-  const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id == id)
+
+  const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id == id);
   if (!beatmapData) {
     throw new Error('Beatmap not found');
   }
 
-  console.log("Creating beatmap")
+  console.log('Creating beatmap');
   const beatmap = new Beatmap();
   beatmap.artist = mapsetData.artist;
   beatmap.song = mapsetData.title;
@@ -71,7 +75,11 @@ const createBeatmap = async (id: number) => {
   return beatmap;
 };
 
-const createNewScore = (score: ApiScore, scoresService: ScoresService, id: number) => {
+const createNewScore = (
+  score: ApiScore,
+  scoresService: ScoresService,
+  id: number,
+) => {
   const newScore = new ScoreEntity();
   newScore.id = score.id;
   newScore.beatmapId = id;
@@ -84,19 +92,22 @@ const createNewScore = (score: ApiScore, scoresService: ScoresService, id: numbe
   newScore.date = score.ended_at;
   newScore.missCount = score.statistics.miss;
 
-  return newScore
+  return newScore;
 };
 
-const createNewSnipe = (existingScore: ScoreEntity, score: ApiScore, id: number) => {
+const createNewSnipe = (
+  existingScore: ScoreEntity,
+  score: ApiScore,
+  id: number,
+) => {
   const newSnipe = new Snipe();
   newSnipe.sniperId = score.user_id;
   newSnipe.victimId = existingScore.playerId;
   newSnipe.beatmapId = id;
   newSnipe.timestamp = new Date(score.ended_at).getTime();
 
-  return newSnipe
+  return newSnipe;
 };
-
 
 @Injectable()
 export class BeatmapsService {
@@ -108,7 +119,12 @@ export class BeatmapsService {
     private readonly snipesService: SnipesService,
   ) {}
 
-  private async updateScores(beatmap: Beatmap, scoresService: ScoresService, playersService: PlayersService, snipesService: SnipesService) {
+  private async updateScores(
+    beatmap: Beatmap,
+    scoresService: ScoresService,
+    playersService: PlayersService,
+    snipesService: SnipesService,
+  ) {
     const jar = await getCookieJar();
     const scores = await scrapScores(beatmap.id, jar);
     if (!scores) {
@@ -123,9 +139,12 @@ export class BeatmapsService {
     }
     const player = await playersService.getPlayer(topScore.user_id);
     if (!player) {
-      await playersService.createPlayer(topScore.user_id, topScore.user.username);
+      await playersService.createPlayer(
+        topScore.user_id,
+        topScore.user.username,
+      );
     }
-  
+
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
     if (!existingScore) {
       let newScore = createNewScore(topScore, scoresService, beatmap.id);
@@ -134,46 +153,60 @@ export class BeatmapsService {
       playersService.updatePlayer(topScore.user_id);
       return topScore.user_id;
     }
-    
+
     if (existingScore.score < topScore.total_score) {
-      const snipedPlayer = await playersService.getPlayer(existingScore.playerId);
+      const snipedPlayer = await playersService.getPlayer(
+        existingScore.playerId,
+      );
       if (existingScore.playerId !== player.id) {
         let newSnipe = createNewSnipe(existingScore, topScore, beatmap.id);
         await snipesService.createSnipe(newSnipe);
-        await this.beatmapRepository.update(beatmap.id, {topPlayerId: topScore.user_id});
+        await this.beatmapRepository.update(beatmap.id, {
+          topPlayerId: topScore.user_id,
+        });
       }
-      await scoresService.updateScore(createNewScore(topScore, scoresService, beatmap.id));
+      await scoresService.updateScore(
+        createNewScore(topScore, scoresService, beatmap.id),
+      );
       await playersService.updatePlayer(topScore.user_id);
       if (snipedPlayer) {
         await playersService.updatePlayer(snipedPlayer.id);
       }
-      return {victimId: existingScore.playerId, sniperId: topScore.user_id};
+      return { victimId: existingScore.playerId, sniperId: topScore.user_id };
     }
   }
-  
 
   getBeatmaps() {
     return this.beatmapRepository.find();
   }
   getBeatmap(id: number) {
-    return this.beatmapRepository.findOneBy({id});
+    return this.beatmapRepository.findOneBy({ id });
   }
 
   async updateBeatmap(id: number) {
-    console.log(`Updating beatmap ${id}`)	
-    let beatmap = await this.beatmapRepository.findOneBy({id: id});
+    console.log(`Updating beatmap ${id}`);
+    let beatmap = await this.beatmapRepository.findOneBy({ id: id });
     if (!beatmap) {
       try {
         beatmap = await createBeatmap(id);
-        this.updateScores(beatmap, this.scoreService, this.playersService, this.snipesService);
+        this.updateScores(
+          beatmap,
+          this.scoreService,
+          this.playersService,
+          this.snipesService,
+        );
         return this.beatmapRepository.save(beatmap);
-      }
-      catch (e) {
+      } catch (e) {
         throw new Error(e.message);
       }
     }
-    this.updateScores(beatmap, this.scoreService, this.playersService, this.snipesService);
-    
+    this.updateScores(
+      beatmap,
+      this.scoreService,
+      this.playersService,
+      this.snipesService,
+    );
+
     return this.beatmapRepository.save(beatmap);
   }
 }

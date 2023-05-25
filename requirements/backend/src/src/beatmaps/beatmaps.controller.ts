@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BeatmapsService } from './beatmaps.service';
 import { updateBeatmapDto } from './beatmaps.dto';
 
@@ -18,7 +25,7 @@ export class BeatmapsController {
   @Post()
   // @UsePipes(ValidationPipe)
   updateBeatmap(@Body() updateBeatmapDto: updateBeatmapDto) {
-    console.log(updateBeatmapDto)
+    console.log(updateBeatmapDto);
     return this.beatmapsService.updateBeatmap(updateBeatmapDto.id);
   }
 }
