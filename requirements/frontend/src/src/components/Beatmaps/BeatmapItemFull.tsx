@@ -8,7 +8,7 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
     window.location.href = `https://osu.ppy.sh/beatmaps/${props.beatmap.id}`;
   };
   const clickPlayer = () => {
-    navigate(`/Player/${props.beatmap.topPlayer.id}`);    
+    navigate(`/Player/${props.beatmap.topPlayer.id}`);
   };
 
   return (
@@ -26,7 +26,13 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
       </div>
       <div>
         <h1>Current Top FR</h1>
-        <h2 onClick={clickPlayer} style={{cursor: "pointer"}}>{props.beatmap.topPlayer.name}</h2>
+        {props.beatmap.topPlayer ? (
+          <h2 onClick={clickPlayer} style={{ cursor: "pointer" }}>
+            {props.beatmap.topPlayer.name}
+          </h2>
+        ) : (
+          <h2>None</h2>
+        )}
       </div>
     </div>
   );

@@ -75,10 +75,7 @@ const createBeatmap = async (id: number) => {
   return beatmap;
 };
 
-const createNewScore = (
-  score: ApiScore,
-  id: number,
-) => {
+const createNewScore = (score: ApiScore, id: number) => {
   const newScore = new ScoreEntity();
   newScore.id = score.id;
   newScore.beatmapId = id;
@@ -176,9 +173,7 @@ export class BeatmapsService {
         let newSnipe = createNewSnipe(existingScore, topScore, beatmap.id);
         await snipesService.createSnipe(newSnipe);
       }
-      await scoresService.updateScore(
-        createNewScore(topScore, beatmap.id),
-      );
+      await scoresService.updateScore(createNewScore(topScore, beatmap.id));
       beatmap.topPlayer = {
         id: topScore.user_id,
         name: topScore.user.username,
@@ -196,7 +191,7 @@ export class BeatmapsService {
     return this.beatmapRepository.find();
   }
   getBeatmap(id: number) {
-    console.log(`Getting beatmap ${id}`)
+    console.log(`Getting beatmap ${id}`);
     return this.beatmapRepository.findOneBy({ id: id });
   }
 
@@ -206,7 +201,7 @@ export class BeatmapsService {
     if (!beatmap) {
       try {
         beatmap = await createBeatmap(id);
-        this.updateScores(
+        await this.updateScores(
           beatmap,
           this.scoreService,
           this.playersService,
