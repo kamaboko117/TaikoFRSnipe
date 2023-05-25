@@ -18,6 +18,10 @@ export class SnipesService {
     return this.snipeRepository.findOneBy({ id });
   }
 
+  getSnipesLimit(limit: number) {
+    return this.snipeRepository.find({ take: limit });
+  }
+
   createSnipe(snipe: Snipe) {
     return this.snipeRepository.save(snipe);
   }

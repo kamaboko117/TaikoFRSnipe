@@ -92,15 +92,15 @@ const createNewScore = (score: ApiScore, id: number) => {
 };
 
 const createNewSnipe = (
-  existingScore: ScoreEntity,
+  existingScore: ScoreEntity | null,
   score: ApiScore,
   id: number,
 ) => {
   const newSnipe = new Snipe();
   newSnipe.sniperId = score.user_id;
-  newSnipe.victimId = existingScore.playerId;
+  newSnipe.victimId = existingScore ? existingScore.playerId : null;
   newSnipe.beatmapId = id;
-  newSnipe.timestamp = new Date(score.ended_at).getTime();
+  newSnipe.timestamp = new Date(score.ended_at);
 
   return newSnipe;
 };
@@ -155,6 +155,8 @@ export class BeatmapsService {
         name: topScore.user.username,
       };
       playersService.updatePlayer(topScore.user_id);
+      let newSnipe = createNewSnipe(null, topScore, beatmap.id);
+      await snipesService.createSnipe(newSnipe);
       console.log(`New top score: ${topScore.user.username} - ${beatmap.song}`);
       return topScore.user_id;
     }
@@ -171,6 +173,9 @@ export class BeatmapsService {
       );
       if (existingScore.playerId !== player.id) {
         let newSnipe = createNewSnipe(existingScore, topScore, beatmap.id);
+        await snipesService.createSnipe(newSnipe);
+      } else {
+        let newSnipe = createNewSnipe(null, topScore, beatmap.id);
         await snipesService.createSnipe(newSnipe);
       }
       await scoresService.updateScore(createNewScore(topScore, beatmap.id));

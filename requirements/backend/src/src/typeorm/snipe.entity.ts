@@ -8,12 +8,12 @@ export class Snipe {
   @Column({ nullable: false })
   sniperId: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   victimId: number;
 
   @Column({ nullable: false })
   beatmapId: number;
 
-  @Column({ nullable: false })
-  timestamp: number;
+  @Column({ type: "timestamptz" ,nullable: false })
+  timestamp: Date;
 }
