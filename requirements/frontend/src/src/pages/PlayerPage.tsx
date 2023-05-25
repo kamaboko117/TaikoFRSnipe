@@ -1,10 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { Player } from "../types/api";
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
-  // const [user, setUser]
+  const [player, setPlayer] = React.useState<Player | null>(null);
 
   React.useEffect(() => {
     fetch(`/api/players/${id}`)
@@ -12,6 +13,7 @@ export default function PlayerPage() {
       .then((data) => {
         if (!data.error) {
           console.log(data);
+          setPlayer(data);
         }
       });
   }, [id]);
@@ -20,7 +22,13 @@ export default function PlayerPage() {
     <div>
       <Navbar />
       <div className="wrapper">
-        <h1>UserPage</h1>
+        <img
+          src={`https://a.ppy.sh/${player?.id}`}
+          alt="avatar"
+          style={{ width: "200px", height: "200px" }}
+        />
+        <h1>{player?.name}</h1>
+        <h2>Top FR Count: {player?.topFRCount}</h2>
       </div>
     </div>
   );

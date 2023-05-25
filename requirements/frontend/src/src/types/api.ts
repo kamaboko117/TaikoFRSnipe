@@ -18,8 +18,8 @@ export interface Beatmap {
   unranked: boolean;
 }
 
-export interface User {
+export interface Player {
   id: number;
   name: string;
-  
+  topFRCount: number;
 }
