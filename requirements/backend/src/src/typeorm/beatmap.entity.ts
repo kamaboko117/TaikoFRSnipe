@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Beatmap {
@@ -11,22 +11,22 @@ export class Beatmap {
   @Column({ nullable: false })
   difficulty: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
   sr: number;
 
   @Column({ nullable: false })
   setId: number;
 
-  @Column({ nullable: false })
+  @PrimaryColumn({ nullable: false })
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
   od: number;
 
   @Column({ nullable: false })
   bpm: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
   hp: number;
 
   @Column({ nullable: false })
@@ -35,7 +35,7 @@ export class Beatmap {
   @Column({ nullable: false })
   mapper: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   topPlayerId: number;
 
   // @Column({ nullable: false })

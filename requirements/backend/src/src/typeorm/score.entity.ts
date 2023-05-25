@@ -1,9 +1,9 @@
 import { Score } from "src/types/score";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class ScoreEntity implements Score {
-  @Column({ nullable: false })
+  @PrimaryColumn({ nullable: false })
   id: number;
 
   @Column({ nullable: false })
@@ -18,7 +18,7 @@ export class ScoreEntity implements Score {
   @Column({ nullable: false })
   acc: number;
 
-  @Column({ nullable: false })
+  @Column("text", { array: true, nullable: false })
   mods: string[];
 
   @Column({ nullable: false })

@@ -1,11 +1,11 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Player {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: false })
+  @PrimaryColumn({ nullable: false })
   id: number;
 
   @Column({ nullable: false })

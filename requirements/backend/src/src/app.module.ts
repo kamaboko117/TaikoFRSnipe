@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BeatmapsModule } from './beatmaps/beatmaps.module';
+import { ScoresModule } from './scores/scores.module';
+import { PlayersModule } from './players/player.module';
 
 @Module({
   imports: [
@@ -22,8 +23,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
       inject: [ConfigService],
     }),
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    BeatmapsModule, ScoresModule, PlayersModule
+  ]
 })
 export class AppModule {}

@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Beatmap } from 'src/typeorm/beatmap.entity';
 import { RootObject } from 'src/types/mapset';
 import { Repository } from 'typeorm';
-import got, { HTTPError } from 'got';
+// import { got } from 'got';	
+import { CookieJar } from 'tough-cookie';
 import { JSDOM } from 'jsdom';
 import { ApiScore } from 'src/types/score';
 import { ScoresService } from 'src/scores/scores.service';
@@ -11,27 +12,33 @@ import { PlayersService } from 'src/players/player.service';
 import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { SnipesService } from 'src/Snipes/snipes.service';
+import { getCookieJar } from 'src/utils/jar';
 
 const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
 const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
+  console.log(id);
   const beatmapDataUrl = "https://osu.ppy.sh/beatmaps/" + id
+  const got = (await import('got')).default;
   const response = await got(beatmapDataUrl)
   const dom = new JSDOM(response.body)
   const data = dom.window.document.getElementById("json-beatmapset")
   if (data) {
       return JSON.parse(data.innerHTML)
   }
-
-  return undefined;
+  return undefined
 }
 
-const scrapScores = async (id: number) => {
-  const url = "https://osu.ppy.sh/beatmaps/" + id + "/scores?type=country&mode=osu"
-  const response = await got(url).catch(err => console.log((err as HTTPError).response.body))
-    if (!response) return undefined
-    const scores: ApiScore[] = JSON.parse(response.body??"[]").scores
-    return scores
+const scrapScores = async (id: number, jar: CookieJar) => {
+  const url = "https://osu.ppy.sh/beatmaps/" + id + "/scores?type=country&mode=taiko"
+  console.log(url)
+  const got = (await import('got')).default;
+  console.log(jar)
+  const response = await got(url, {cookieJar: jar, timeout: {request: 5000}}).catch(err => console.log((err).response.statusCode))
+  console.log(response)
+  if (!response) return undefined
+  const scores: ApiScore[] = JSON.parse(response.body??"[]").scores
+  return scores
 }
 
 const createBeatmap = async (id: number) => {
@@ -39,12 +46,13 @@ const createBeatmap = async (id: number) => {
   if (!mapsetData) {
     throw new Error('Beatmap not found');
   }
-
-  const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id === id)
+  
+  const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id == id)
   if (!beatmapData) {
     throw new Error('Beatmap not found');
   }
 
+  console.log("Creating beatmap")
   const beatmap = new Beatmap();
   beatmap.artist = mapsetData.artist;
   beatmap.song = mapsetData.title;
@@ -98,7 +106,8 @@ export class BeatmapsService {
   ) {}
 
   private async updateScores(beatmap: Beatmap, scoresService: ScoresService, playersService: PlayersService, snipesService: SnipesService) {
-    const scores = await scrapScores(beatmap.id);
+    const jar = await getCookieJar();
+    const scores = await scrapScores(beatmap.id, jar);
     if (!scores) {
       throw new Error('Scores not found');
     }
@@ -148,7 +157,8 @@ export class BeatmapsService {
   }
 
   async updateBeatmap(id: number) {
-    let beatmap = await this.beatmapRepository.findOneBy({id});
+    console.log(`Updating beatmap ${id}`)	
+    let beatmap = await this.beatmapRepository.findOneBy({id: id});
     if (!beatmap) {
       try {
         beatmap = await createBeatmap(id);
@@ -156,7 +166,7 @@ export class BeatmapsService {
         return this.beatmapRepository.save(beatmap);
       }
       catch (e) {
-        throw new Error('Beatmap not found');
+        throw new Error(e.message);
       }
     }
     this.updateScores(beatmap, this.scoreService, this.playersService, this.snipesService);
