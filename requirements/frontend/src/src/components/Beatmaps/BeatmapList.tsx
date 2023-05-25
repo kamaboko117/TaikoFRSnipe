@@ -4,9 +4,9 @@ import BeatmapItem from "./BeatmapItem";
 
 export default function BeatmapList(props: { beatmaps: Beatmap[] }) {
   return (
-    <div>
+    <div className="beatmap-list">
       {props.beatmaps.map((beatmap) => (
-        <BeatmapItem beatmap={beatmap} />
+        <BeatmapItem beatmap={beatmap} key={beatmap.id} />
       ))}
     </div>
   );

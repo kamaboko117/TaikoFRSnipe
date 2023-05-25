@@ -35,8 +35,11 @@ export class Beatmap {
   @Column({ nullable: false })
   mapper: string;
 
-  @Column({ nullable: true })
-  topPlayerId: number;
+  @Column({ type: 'simple-json', nullable: true })
+  topPlayer: {
+    id: number;
+    name: string;
+  };
 
   // @Column({ nullable: false })
   // lastUpdated: number;

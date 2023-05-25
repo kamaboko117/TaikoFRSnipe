@@ -31,3 +31,80 @@ code {
   color: #61dafb;
 }
 
+.beatmap-card {
+  background-color: #55585e;
+  color: white;
+  margin: 10px 10px 0 10px;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.beatmap-card:hover {
+  background-color: #61dafb;
+  color: black;
+}
+
+.beatmap-card h3 {
+  margin: 0;
+}
+
+.beatmap-card p {
+  margin: 0;
+}
+
+.beatmap-List {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.beatmap-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px 10px 0 10px;
+  background-color: #55585e;
+  color: white;
+  border-radius: 10px;
+
+}
+
+.beatmap-item a {
+  color: white;
+  text-decoration: none;
+}
+
+.beatmap-item a:hover {
+  color: #61dafb;
+}
+
+.beatmap-item p {
+  margin: 0;
+}
+
+.beatmap-item p:first-child {
+  margin-right: 10px;
+}
+
+.beatmap-item p:last-child {
+  margin-left: 10px;
+}
+
+.beatmap-item:hover {
+  background-color: #61dafb;
+  color: black;
+  cursor: pointer;
+}
+
+.beatmap-item:hover p {
+  color: black;
+}
+
+.beatmap-item:hover a {
+  color: black;
+}
+
+

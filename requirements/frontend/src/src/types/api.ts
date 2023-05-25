@@ -10,7 +10,14 @@ export interface Beatmap {
   hp: number;
   drain: number;
   mapper: string;
-  playerId: number;
+  topPlayer: {
+    id: number;
+    name: string;
+  };
   lastUpdated: number;
   unranked: boolean;
+}
+
+export interface Score {
+  
 }

@@ -125,18 +125,22 @@ export class BeatmapsService {
     playersService: PlayersService,
     snipesService: SnipesService,
   ) {
+    console.log('Updating scores');
     const jar = await getCookieJar();
     const scores = await scrapScores(beatmap.id, jar);
     if (!scores) {
       throw new Error('Scores not found');
     }
     if (scores.length === 0) {
+      console.log('No scores in France');
       return;
     }
     const topScore = scores[0];
-    if (await scoresService.getScore(topScore.id)) {
-      return;
-    }
+    // if (await scoresService.getScore(topScore.id)) {
+    //   console.log('Score already exists')
+    //   console.log(await scoresService.getScore(topScore.id))
+    //   return;
+    // }
     const player = await playersService.getPlayer(topScore.user_id);
     if (!player) {
       await playersService.createPlayer(
@@ -146,28 +150,41 @@ export class BeatmapsService {
     }
 
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
+    console.log(`Existing score: ${existingScore?.playerId} - ${beatmap.song}`);
     if (!existingScore) {
       let newScore = createNewScore(topScore, scoresService, beatmap.id);
       await scoresService.createScore(newScore);
-      beatmap.topPlayerId = topScore.user_id;
+      beatmap.topPlayer = {
+        id: topScore.user_id,
+        name: topScore.user.username,
+      };
       playersService.updatePlayer(topScore.user_id);
+      console.log(`New top score: ${topScore.user.username} - ${beatmap.song}`);
       return topScore.user_id;
     }
 
-    if (existingScore.score < topScore.total_score) {
+    if (
+      existingScore.score < topScore.total_score ||
+      (existingScore.score === topScore.total_score && !beatmap.topPlayer)
+    ) {
+      console.log(
+        `New top score: ${topScore.user.username} - ${beatmap.song} - ${existingScore.score} -> ${topScore.total_score}`,
+      );
       const snipedPlayer = await playersService.getPlayer(
         existingScore.playerId,
       );
       if (existingScore.playerId !== player.id) {
         let newSnipe = createNewSnipe(existingScore, topScore, beatmap.id);
         await snipesService.createSnipe(newSnipe);
-        await this.beatmapRepository.update(beatmap.id, {
-          topPlayerId: topScore.user_id,
-        });
       }
       await scoresService.updateScore(
         createNewScore(topScore, scoresService, beatmap.id),
       );
+      beatmap.topPlayer = {
+        id: topScore.user_id,
+        name: topScore.user.username,
+      };
+      console.log(beatmap.topPlayer.name);
       await playersService.updatePlayer(topScore.user_id);
       if (snipedPlayer) {
         await playersService.updatePlayer(snipedPlayer.id);
@@ -200,12 +217,14 @@ export class BeatmapsService {
         throw new Error(e.message);
       }
     }
-    this.updateScores(
+    await this.updateScores(
       beatmap,
       this.scoreService,
       this.playersService,
       this.snipesService,
     );
+
+    console.log(beatmap.topPlayer);
 
     return this.beatmapRepository.save(beatmap);
   }
