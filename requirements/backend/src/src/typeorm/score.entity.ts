@@ -15,16 +15,16 @@ export class ScoreEntity implements Score {
   @Column({ nullable: false })
   score: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'decimal', precision: 18, scale: 17, nullable: false })
   acc: number;
 
   @Column("text", { array: true, nullable: false })
   mods: string[];
 
-  @Column({ nullable: false })
+  @Column({ type: "timestamptz", nullable: false })
   date: string;
 
-  @Column({ nullable: false })
+  @Column({ type: "decimal", precision: 6, scale: 3, nullable: false })
   pp: number;
 
   @Column({ nullable: false })

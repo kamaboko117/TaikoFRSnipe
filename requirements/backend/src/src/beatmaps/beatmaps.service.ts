@@ -13,6 +13,7 @@ import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { SnipesService } from 'src/Snipes/snipes.service';
 import { getCookieJar } from 'src/utils/jar';
+import * as fs from 'fs';
 
 const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
@@ -31,11 +32,11 @@ const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
 
 const scrapScores = async (id: number, jar: CookieJar) => {
   const url = "https://osu.ppy.sh/beatmaps/" + id + "/scores?type=country&mode=taiko"
-  console.log(url)
   const got = (await import('got')).default;
-  console.log(jar)
-  const response = await got(url, {cookieJar: jar, timeout: {request: 5000}}).catch(err => console.log((err).response.statusCode))
-  console.log(response)
+  let log_file = fs.createWriteStream('/app/debug.log', {flags : 'w'});
+  const response = await got(url, {cookieJar: jar, timeout: {request: 5000}}).catch(err => {
+    log_file.write(err.response.body)
+  })
   if (!response) return undefined
   const scores: ApiScore[] = JSON.parse(response.body??"[]").scores
   return scores
@@ -79,7 +80,9 @@ const createNewScore = (score: ApiScore, scoresService: ScoresService, id: numbe
   newScore.maxCombo = score.max_combo;
   newScore.pp = score.pp;
   newScore.acc = score.accuracy;
+  newScore.mods = score.mods.map((mod) => mod.acronym);
   newScore.date = score.ended_at;
+  newScore.missCount = score.statistics.miss;
 
   return newScore
 };

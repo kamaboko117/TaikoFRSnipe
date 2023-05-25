@@ -24,6 +24,7 @@ export class PlayersService {
     const player = new Player();
     player.id = id;
     player.name = name;
+    player.topFRCount = 0;
     return this.playerRepository.save(player);
   }
 
