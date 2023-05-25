@@ -7,7 +7,7 @@ import BeatmapPage from "./pages/BeatmapPage";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/Scores" element={<Scores />} />

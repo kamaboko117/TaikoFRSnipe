@@ -1,4 +1,5 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
+import logo from "../logo.svg";
 
 interface NavbarLinkProps {
   dest: string;
@@ -21,9 +22,12 @@ function NavbarLink({ dest, children }: NavbarLinkProps) {
 
 export default function Navbar() {
   return (
-    <nav className="navbar">
-      <NavbarLink dest="/">Home</NavbarLink>
-      <NavbarLink dest="/Scores">Scores</NavbarLink>
-    </nav>
+    <header className="navbar">
+      <nav className="navbar-left">
+        <img src={logo} className="App-logo" alt="logo" />
+        <NavbarLink dest="/">Home</NavbarLink>
+        <NavbarLink dest="/Scores">Scores</NavbarLink>
+      </nav>
+    </header>
   );
 }

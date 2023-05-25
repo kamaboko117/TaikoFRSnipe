@@ -8,10 +8,16 @@ export default function BeatmapItem(props: { beatmap: Beatmap }) {
 
   return (
     <div className="beatmap-item" onClick={handleClick}>
-      <h1>
-        {props.beatmap.song} - {props.beatmap.artist}
-      </h1>
-      <h2>{props.beatmap.difficulty}</h2>
+      <div className="beatmap-thumbnail">
+        <img
+          src={`https://assets.ppy.sh/beatmaps/${props.beatmap.setId}/covers/cover.jpg`}
+          alt="cover"
+        />
+        <h1 className="beatmap-title">
+          {props.beatmap.artist} - {props.beatmap.song}
+        </h1>
+        <h2 className="beatmap-difficulty">{props.beatmap.difficulty}</h2>
+      </div>
     </div>
   );
 }

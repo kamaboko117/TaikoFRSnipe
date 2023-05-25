@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -18,12 +19,13 @@ export class BeatmapsController {
   }
 
   @Get(':id')
-  getBeatmap(@Body() body) {
-    return this.beatmapsService.getBeatmap(body.id);
+  getBeatmap(@Param() { id }: { id: number }) {
+    console.log(`Getting beatmap ${id}`)
+    return this.beatmapsService.getBeatmap(id);
   }
 
   @Post()
-  // @UsePipes(ValidationPipe)
+  @UsePipes(ValidationPipe)
   updateBeatmap(@Body() updateBeatmapDto: updateBeatmapDto) {
     console.log(updateBeatmapDto);
     return this.beatmapsService.updateBeatmap(updateBeatmapDto.id);

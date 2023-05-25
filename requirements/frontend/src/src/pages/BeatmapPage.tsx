@@ -5,7 +5,7 @@ import BeatmapItemFull from "../components/Beatmaps/BeatmapItemFull";
 import Navbar from "../components/Navbar";
 
 export default function BeatmapPage() {
-  const id = useParams().id;
+  const id = parseInt(useParams().id as string);
   const [beatmap, setBeatmap] = useState<Beatmap | null>(null);
   React.useEffect(() => {
     fetch(`/api/beatmaps/${id}`)
@@ -13,6 +13,7 @@ export default function BeatmapPage() {
       .then((data) => {
         if (!data.error) {
           setBeatmap(data);
+          console.log(id);
           console.log(data);
         }
       });
@@ -21,8 +22,9 @@ export default function BeatmapPage() {
   return (
     <div>
       <Navbar/>
-      <h1>Beatmap Page</h1>
+      <div className="wrapper">
       {beatmap ? <BeatmapItemFull beatmap={beatmap} /> : <h1>Loading...</h1>}
+      </div>
     </div>
   );
 }

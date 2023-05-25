@@ -16,8 +16,10 @@ export default function MainPage() {
   return (
     <div>
       <Navbar />
-      <BeatmapList beatmaps={beatmaps} />
-      <ManualUpdateForm />
+      <div className="wrapper">
+        <BeatmapList beatmaps={beatmaps} />
+        <ManualUpdateForm />
+      </div>
     </div>
   );
 }

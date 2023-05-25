@@ -1,25 +1,80 @@
+/* add yellow border to all elements */
+/* * { 
+  border: 1px solid yellow;
+} */
+
 body {
   margin: 0;
-  background-color: #282c34;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  background-color: #1c1d22;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.app-logo {
+  height: 4px;
+  pointer-events: none;
+}
+
+.app-container {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  min-width: none;
+
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 1200px;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 .navbar {
-  background-color: #55585e;
+  width: 100%;
+  min-width: 100%;
+  background-color: #8a41bb;
   color: white;
   display: flex;
-  justify-content: space-evenly;
-  padding: 0 1rem;
-  margin: 10px 10px 0 10px;
+  justify-content: center;
+}
+
+.navbar-left {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.navbar-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px 10px 10px 10px;
+  color: white;
+  border-radius: 10px;
+}
+
+.navbar-item:hover {
+  /* background-color: #61dafb; */
+  color: black;
+  cursor: pointer;
+}
+
+.navbar-item:hover p {
+  color: black;
+}
+
+.navbar-item:hover a {
+  color: black;
 }
 
 .navbar a {
@@ -34,12 +89,40 @@ code {
 .beatmap-card {
   background-color: #55585e;
   color: white;
-  margin: 10px 10px 0 10px;
-  padding: 10px;
+  margin: 10px 0px 0px 0px;
+  /* padding: 10px; */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  max-height: 250px;
+}
+
+.beatmap-card > img {
+  width: 100%;
+  filter: brightness(50%);
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.beatmap-card > .beatmap-title {
+  position: absolute;
+  color: white;
+  left: 0;
+  top: 0;
+  text-shadow: #1c1d22 0px 0px 10px;
+}
+
+.beatmap-card > .beatmap-mapper {
+  position: absolute;
+  color: white;
+  right: 0;
+  top: 0;
+  text-shadow: #1c1d22 0px 0px 10px;
 }
 
 .beatmap-card:hover {
@@ -62,14 +145,79 @@ code {
 }
 
 .beatmap-item {
+  box-sizing: border-box;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center; /* horizontal center */
+  margin: 10px 10px 10px 10px;
+
+  border-radius: 4px; /* Styling */
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.56s ease-in-out; /* Animation */
+}
+
+.beatmap-thumbnail {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  margin: 10px 10px 0 10px;
-  background-color: #55585e;
-  color: white;
-  border-radius: 10px;
+  color: rgb(59, 16, 16);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.beatmap-thumbnail > .beatmap-title {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  text-shadow: #1c1d22 0px 0px 10px;
+}
+
+.beatmap-thumbnail > .beatmap-difficulty {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  text-shadow: #1c1d22 0px 0px 8px;
+}
+
+.beatmap-thumbnail > img {
+  filter: brightness(50%);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.beatmap-title {
+  align-self: flex-end;
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.beatmap-difficulty {
+  align-self: flex-end;
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.beatmap-mapper {
+  align-self: flex-end;
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 600;
 }
 
 .beatmap-item a {
@@ -97,6 +245,8 @@ code {
   background-color: #61dafb;
   color: black;
   cursor: pointer;
+  box-shadow: 0 0px 38px 3px rgba(212, 48, 190, 0.377),
+    0 0px 46px 8px rgba(212, 48, 190, 0.377), 0 0px 15px -7px rgba(212, 48, 190, 0.377);
 }
 
 .beatmap-item:hover p {
@@ -106,5 +256,3 @@ code {
 .beatmap-item:hover a {
   color: black;
 }
-
-

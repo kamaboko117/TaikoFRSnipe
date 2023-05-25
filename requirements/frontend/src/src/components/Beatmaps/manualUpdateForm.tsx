@@ -5,7 +5,8 @@ export default function ManualUpdateForm() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const id = data.get("beatmapId");
+    const formData = data.get("beatmapId")?.valueOf();
+    const id = parseInt(formData as string);
     console.log(id);
     if (id) {
       fetch("/api/beatmaps", {
