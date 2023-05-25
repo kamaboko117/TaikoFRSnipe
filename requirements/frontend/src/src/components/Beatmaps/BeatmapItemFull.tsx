@@ -1,12 +1,14 @@
 import React from "react";
 import { Beatmap } from "../../types/api";
+import { useNavigate } from "react-router-dom";
 
 export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
+  const navigate = useNavigate();
   const handleClick = () => {
     window.location.href = `https://osu.ppy.sh/beatmaps/${props.beatmap.id}`;
   };
   const clickPlayer = () => {
-    window.location.href = `https://osu.ppy.sh/users/${props.beatmap.topPlayer.id}`;
+    navigate(`/Player/${props.beatmap.topPlayer.id}`);    
   };
 
   return (
@@ -24,7 +26,7 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
       </div>
       <div>
         <h1>Current Top FR</h1>
-        <h2 onClick={clickPlayer}>{props.beatmap.topPlayer.name}</h2>
+        <h2 onClick={clickPlayer} style={{cursor: "pointer"}}>{props.beatmap.topPlayer.name}</h2>
       </div>
     </div>
   );

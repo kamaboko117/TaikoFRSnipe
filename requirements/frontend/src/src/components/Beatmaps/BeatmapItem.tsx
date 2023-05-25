@@ -1,9 +1,11 @@
 import React from "react";
 import { Beatmap } from "../../types/api";
+import { useNavigate } from "react-router-dom";
 
 export default function BeatmapItem(props: { beatmap: Beatmap }) {
+  const navigate = useNavigate();
   const handleClick = () => {
-    window.location.href = `/Beatmap/${props.beatmap.id}`;
+    navigate(`/Beatmap/${props.beatmap.id}`);
   };
 
   return (

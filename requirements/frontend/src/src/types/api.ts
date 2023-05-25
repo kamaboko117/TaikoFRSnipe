@@ -18,6 +18,8 @@ export interface Beatmap {
   unranked: boolean;
 }
 
-export interface Score {
+export interface User {
+  id: number;
+  name: string;
   
 }

@@ -8,7 +8,7 @@ import { CookieJar } from 'tough-cookie';
 import { JSDOM } from 'jsdom';
 import { ApiScore } from 'src/types/score';
 import { ScoresService } from 'src/scores/scores.service';
-import { PlayersService } from 'src/players/player.service';
+import { PlayersService } from 'src/players/players.service';
 import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { SnipesService } from 'src/Snipes/snipes.service';

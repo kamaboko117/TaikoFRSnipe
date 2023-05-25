@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BeatmapsModule } from './beatmaps/beatmaps.module';
 import { ScoresModule } from './scores/scores.module';
-import { PlayersModule } from './players/player.module';
+import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [

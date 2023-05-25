@@ -33,6 +33,10 @@ body {
   max-width: 1200px;
 }
 
+.normal-link {
+  text-decoration: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

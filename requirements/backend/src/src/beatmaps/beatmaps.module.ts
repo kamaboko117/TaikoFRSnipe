@@ -6,7 +6,7 @@ import { Beatmap } from 'src/typeorm/beatmap.entity';
 import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { ScoresModule } from 'src/scores/scores.module';
-import { PlayersModule } from 'src/players/player.module';
+import { PlayersModule } from 'src/players/players.module';
 import { SnipesModule } from 'src/Snipes/snipes.module';
 
 @Module({
