@@ -155,7 +155,7 @@ code {
   overflow: hidden;
   display: flex;
   justify-content: center; /* horizontal center */
-  margin: 10px 10px 10px 10px;
+  /* margin: 10px 10px 10px 10px; */
 
   border-radius: 4px; /* Styling */
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -224,6 +224,28 @@ code {
   font-weight: 600;
 }
 
+.snipe-item {
+  position: relative;
+  margin: 10px 0px 0px 0px;
+}
+
+.beatmap-snipe {
+  align-self: flex-end;
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  /* line-height: 1; */
+  font-weight: 600;
+}
+
+.snipe-item > .beatmap-snipe {
+  margin: 10px 0px 0px 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-shadow: #1c1d22 0px 0px 3px;
+}
+
 .beatmap-item a {
   color: white;
   text-decoration: none;
@@ -250,7 +272,8 @@ code {
   color: black;
   cursor: pointer;
   box-shadow: 0 0px 38px 3px rgba(212, 48, 190, 0.377),
-    0 0px 46px 8px rgba(212, 48, 190, 0.377), 0 0px 15px -7px rgba(212, 48, 190, 0.377);
+    0 0px 46px 8px rgba(212, 48, 190, 0.377),
+    0 0px 15px -7px rgba(212, 48, 190, 0.377);
 }
 
 .beatmap-item:hover p {

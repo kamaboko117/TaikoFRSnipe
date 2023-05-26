@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 6vmin;
+  width: 70px;
   pointer-events: none;
 }
 
@@ -14,7 +14,6 @@
 }
 
 .App-header {
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;

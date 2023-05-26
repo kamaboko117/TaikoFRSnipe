@@ -3,10 +3,10 @@ import Navbar from "../components/Navbar";
 import BeatmapList from "../components/Beatmaps/BeatmapList";
 import ManualUpdateForm from "../components/Beatmaps/manualUpdateForm";
 import { Beatmap, Snipe } from "../types/api";
+import SnipeList from "../components/Snipes/SnipeList";
 
 export default function MainPage() {
-  // const [snipes, setSnipes] = useState([] as Snipe[]);
-  const [beatmaps, setBeatmaps] = useState([] as Beatmap[]);
+  const [snipes, setSnipes] = useState([] as Snipe[]);
   React.useEffect(() => {
     let snipesArray = [] as Snipe[];
     fetch("/api/snipes/")
@@ -15,7 +15,7 @@ export default function MainPage() {
         if (!data.error) {
           console.log("snipes");
           console.log(data);
-          // setSnipes(data);
+          setSnipes(data);
           snipesArray = data;
         }
       })
@@ -24,7 +24,6 @@ export default function MainPage() {
         for (let i = 0; i < snipesArray.length; i++) {
           beatmapArray.push(snipesArray[i].beatmap);
         }
-        setBeatmaps(beatmapArray);
       });
   }, []);
 
@@ -32,8 +31,7 @@ export default function MainPage() {
     <div>
       <Navbar />
       <div className="wrapper">
-        <BeatmapList beatmaps={beatmaps} />
-        {/* <SnipeList snipes={snipes} /> */}
+        <SnipeList snipes={snipes} />
         <ManualUpdateForm />
       </div>
     </div>

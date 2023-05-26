@@ -27,7 +27,7 @@ export interface Player {
 export interface Snipe {
   id: number;
   beatmap: Beatmap;
-  sniperId: number;
-  victimId: number | null;
-  timestamp: Date;
+  sniper: Player;
+  victim: Player | null;
+  timestamp: number;
 }
