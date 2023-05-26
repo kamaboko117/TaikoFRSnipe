@@ -103,6 +103,7 @@ code {
   overflow: hidden;
   position: relative;
   max-height: 250px;
+  cursor: pointer;
 }
 
 .beatmap-card > img {
@@ -127,6 +128,49 @@ code {
   right: 0;
   top: 0;
   text-shadow: #1c1d22 0px 0px 10px;
+}
+
+.beatmap-card > .beatmap-difficulties-row {
+  position: absolute;
+  color: white;
+  left: 10px;
+  top: 70px;
+  text-shadow: #1c1d22 0px 0px 10px;
+}
+
+.beatmap-difficulties-row {
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-start;
+  background-color: #55585ebe;
+  align-items: center;
+  width: auto;
+  margin: 0;
+  padding: 2px;
+  border-radius: 10px;
+}
+
+.beatmap-difficulty-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.beatmap-difficulty-icon:hover {
+  box-sizing: border-box;
+  background-color: #55585ee5;
+  border-radius: 9px;
+  border:rgba(255, 255, 255, 0.9) 3px solid;
+}
+
+.beatmap-difficulty-selected {
+  box-sizing: border-box;
+  background-color: #55585eef;
+  border-radius: 9px;
+  border:rgba(255, 255, 255, 0.9) 3px solid;
 }
 
 .beatmap-card:hover {

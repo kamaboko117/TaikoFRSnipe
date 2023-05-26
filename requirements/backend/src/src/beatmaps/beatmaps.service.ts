@@ -11,10 +11,11 @@ import { ScoresService } from 'src/scores/scores.service';
 import { PlayersService } from 'src/players/players.service';
 import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
-import { SnipesService } from 'src/Snipes/snipes.service';
+import { SnipesService } from 'src/snipes/snipes.service';
 import { getCookieJar } from 'src/utils/jar';
 import * as fs from 'fs';
 import { Player } from 'src/typeorm/player.entity';
+import { MapsetsService } from 'src/mapsets/mapsets.service';
 
 const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
@@ -47,12 +48,16 @@ const scrapScores = async (id: number, jar: CookieJar) => {
   return scores;
 };
 
-const createBeatmap = async (id: number) => {
+const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
   const mapsetData = await scrapMapsetData(id);
+
   if (!mapsetData) {
     throw new Error('Beatmap not found');
   }
-
+  let mapset = await mapsetsService.getMapset(mapsetData.id);
+  if (!mapset) {
+    mapset = await mapsetsService.createMapsetFromData(mapsetData);
+  }
   const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id == id);
   if (!beatmapData) {
     throw new Error('Beatmap not found');
@@ -64,7 +69,8 @@ const createBeatmap = async (id: number) => {
   beatmap.song = mapsetData.title;
   beatmap.difficulty = beatmapData.version;
   beatmap.sr = beatmapData.difficulty_rating;
-  beatmap.setId = mapsetData.id;
+  // beatmap.setId = mapsetData.id;
+  beatmap.mapset = mapset;
   beatmap.id = beatmapData.id;
   beatmap.od = beatmapData.accuracy;
   beatmap.bpm = beatmapData.bpm;
@@ -115,6 +121,7 @@ export class BeatmapsService {
     private readonly scoreService: ScoresService,
     private readonly playersService: PlayersService,
     private readonly snipesService: SnipesService,
+    private readonly mapsetsService: MapsetsService,
   ) {}
 
   private async updateScores(
@@ -207,7 +214,10 @@ export class BeatmapsService {
   }
   getBeatmap(id: number) {
     console.log(`Getting beatmap ${id}`);
-    return this.beatmapRepository.findOneBy({ id: id });
+    return this.beatmapRepository.findOne({
+      where: { id: id },
+      relations: ['mapset', 'mapset.beatmaps'],
+    });
   }
 
   async updateBeatmap(id: number) {
@@ -216,7 +226,7 @@ export class BeatmapsService {
     if (!beatmap) {
       try {
         console.log(`new beatmap ${id}`);
-        beatmap = await createBeatmap(id);
+        beatmap = await createBeatmap(id, this.mapsetsService);
         await this.beatmapRepository.save(beatmap);
         await this.updateScores(
           beatmap,

@@ -1,6 +1,7 @@
 import React from "react";
 import { Beatmap } from "../../types/api";
 import { useNavigate } from "react-router-dom";
+import BeatmapDifficultiesRow from "./BeatmapDifficultiesRow";
 
 export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
     <div>
       <div className="beatmap-card" onClick={handleClick}>
         <img
-          src={`https://assets.ppy.sh/beatmaps/${props.beatmap.setId}/covers/cover.jpg`}
+          src={`https://assets.ppy.sh/beatmaps/${props.beatmap.mapset.id}/covers/cover.jpg`}
           alt="cover"
         />
         <h1 className="beatmap-title">
@@ -23,6 +24,10 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
           {props.beatmap.difficulty}]
         </h1>
         <h2 className="beatmap-mapper">Mapset by {props.beatmap.mapper}</h2>
+        <BeatmapDifficultiesRow
+          mapset={props.beatmap.mapset}
+          currentDifficulty={props.beatmap.sr}
+        />
       </div>
       <div>
         <h1>Current Top FR</h1>

@@ -12,7 +12,7 @@ export default function BeatmapItem(props: { beatmap: Beatmap }) {
     <div className="beatmap-item" onClick={handleClick}>
       <div className="beatmap-thumbnail">
         <img
-          src={`https://assets.ppy.sh/beatmaps/${props.beatmap.setId}/covers/cover.jpg`}
+          src={`https://assets.ppy.sh/beatmaps/${props.beatmap.mapset.id}/covers/cover.jpg`}
           alt="cover"
         />
         <h1 className="beatmap-title">

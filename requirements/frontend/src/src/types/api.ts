@@ -1,9 +1,16 @@
+export interface Mapset {
+  artist: string;
+  song: string;
+  id: number;
+  beatmaps: Beatmap[];
+}
+
 export interface Beatmap {
   artist: string;
   song: string;
   difficulty: string;
   sr: number;
-  setId: number;
+  mapset: Mapset;
   id: number;
   od: number;
   bpm: number;

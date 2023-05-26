@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Mapset } from './mapset.entity';
 
 @Entity()
 export class Beatmap {
@@ -14,8 +15,8 @@ export class Beatmap {
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
   sr: number;
 
-  @Column({ nullable: false })
-  setId: number;
+  @ManyToOne(() => Mapset, (mapset) => mapset.beatmaps)
+  mapset: Mapset;
 
   @PrimaryColumn({ nullable: false })
   id: number;
