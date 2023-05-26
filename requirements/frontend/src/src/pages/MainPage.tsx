@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import BeatmapList from "../components/Beatmaps/BeatmapList";
 import ManualUpdateForm from "../components/Beatmaps/manualUpdateForm";
 import { Beatmap, Snipe } from "../types/api";
 import SnipeList from "../components/Snipes/SnipeList";
@@ -9,7 +8,7 @@ export default function MainPage() {
   const [snipes, setSnipes] = useState([] as Snipe[]);
   React.useEffect(() => {
     let snipesArray = [] as Snipe[];
-    fetch("/api/snipes/")
+    fetch("/api/snipes/latest/10")
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {

@@ -5,10 +5,10 @@ import { SnipesService } from "./snipes.service";
 export class SnipesController {
   constructor(private readonly snipesService: SnipesService) {}
 
-  @Get()
-  getSnipes() {
-    return this.snipesService.getSnipes();
-  }
+  // @Get()
+  // getSnipes() {
+  //   return this.snipesService.getSnipes();
+  // }
 
   @Get('/latest/:limit')
   getSnipesLimit(@Param() { limit }: { limit: number }){

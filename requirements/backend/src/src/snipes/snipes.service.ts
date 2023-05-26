@@ -22,10 +22,8 @@ export class SnipesService {
   }
 
   getSnipesLimit(limit: number) {
-    console.log(
-      this.snipeRepository.find({ take: limit, relations: ['beatmap', 'beatmap.mapset'] }),
-    );
-    return this.snipeRepository.find({ take: limit, relations: ['beatmap', 'beatmap.mapset'] });
+    // retun newest snipes first (descending order)
+    return this.snipeRepository.find({ take: limit, order: { timestamp: 'DESC' }, relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'] });
   }
 
   createSnipe(snipe: Snipe) {

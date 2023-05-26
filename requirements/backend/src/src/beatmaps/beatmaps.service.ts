@@ -20,10 +20,16 @@ import { MapsetsService } from 'src/mapsets/mapsets.service';
 const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
 const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
-  console.log(id);
   const beatmapDataUrl = 'https://osu.ppy.sh/beatmaps/' + id;
   const got = (await import('got')).default;
-  const response = await got(beatmapDataUrl);
+  // const response = await got(beatmapDataUrl);
+  // treat errors
+  const response = await got(beatmapDataUrl, {
+    timeout: { request: 5000 },
+  }).catch((err) => {
+    console.log(err);
+  });
+  if (!response) return undefined;
   const dom = new JSDOM(response.body);
   const data = dom.window.document.getElementById('json-beatmapset');
   if (data) {
@@ -49,6 +55,8 @@ const scrapScores = async (id: number, jar: CookieJar) => {
 };
 
 const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
+  // calculate how long it takes to create beatmap
+  const start = Date.now();
   const mapsetData = await scrapMapsetData(id);
 
   if (!mapsetData) {
@@ -63,7 +71,6 @@ const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
     throw new Error('Beatmap not found');
   }
 
-  console.log('Creating beatmap');
   const beatmap = new Beatmap();
   beatmap.artist = mapsetData.artist;
   beatmap.song = mapsetData.title;
@@ -78,6 +85,9 @@ const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
   beatmap.drain = beatmapData.total_length;
   beatmap.mapper = mapsetData.creator;
   beatmap.unranked = isUnranked(mapsetData);
+
+  const end = Date.now();
+  console.log('Beatmap created in ' + (end - start) + 'ms');
 
   return beatmap;
 };
@@ -130,14 +140,12 @@ export class BeatmapsService {
     playersService: PlayersService,
     snipesService: SnipesService,
   ) {
-    console.log('Updating scores');
     const jar = await getCookieJar();
     const scores = await scrapScores(beatmap.id, jar);
     if (!scores) {
       throw new Error('Scores not found');
     }
     if (scores.length === 0) {
-      console.log('No scores in France');
       return;
     }
     const topScore = scores[0];
@@ -155,9 +163,6 @@ export class BeatmapsService {
     }
 
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
-    console.log(
-      `Existing score: ${existingScore?.player.name} - ${beatmap.song}`,
-    );
     if (!existingScore) {
       const player = await playersService.getPlayer(topScore.user_id);
       const newScore = createNewScore(topScore, beatmap.id, player);
@@ -169,7 +174,6 @@ export class BeatmapsService {
       playersService.updatePlayer(topScore.user_id);
       let newSnipe = createNewSnipe(null, topScore, player, beatmap);
       await snipesService.createSnipe(newSnipe);
-      console.log(`New top score: ${topScore.user.username} - ${beatmap.song}`);
       return topScore.user_id;
     }
 
@@ -177,9 +181,6 @@ export class BeatmapsService {
       existingScore.score < topScore.total_score ||
       (existingScore.score === topScore.total_score && !beatmap.topPlayer)
     ) {
-      console.log(
-        `New top score: ${topScore.user.username} - ${beatmap.song} - ${existingScore.score} -> ${topScore.total_score}`,
-      );
       const snipedPlayer = await playersService.getPlayer(
         existingScore.player.id,
       );
@@ -197,7 +198,6 @@ export class BeatmapsService {
         id: topScore.user_id,
         name: topScore.user.username,
       };
-      console.log(beatmap.topPlayer.name);
       await playersService.updatePlayer(topScore.user_id);
       if (snipedPlayer) {
         await playersService.updatePlayer(snipedPlayer.id);
@@ -221,11 +221,9 @@ export class BeatmapsService {
   }
 
   async updateBeatmap(id: number) {
-    console.log(`Updating beatmap ${id}`);
     let beatmap = await this.beatmapRepository.findOneBy({ id: id });
     if (!beatmap) {
       try {
-        console.log(`new beatmap ${id}`);
         beatmap = await createBeatmap(id, this.mapsetsService);
         await this.beatmapRepository.save(beatmap);
         await this.updateScores(
@@ -234,10 +232,10 @@ export class BeatmapsService {
           this.playersService,
           this.snipesService,
         );
-        console.log('beatmap created');
         return this.beatmapRepository.save(beatmap);
       } catch (e) {
-        throw new Error(e.message);
+        console.log(e);
+        return;
       }
     }
     await this.updateScores(
@@ -247,8 +245,27 @@ export class BeatmapsService {
       this.snipesService,
     );
 
-    console.log(beatmap.topPlayer);
-
     return this.beatmapRepository.save(beatmap);
+  }
+
+  populateBeatmaps() {
+    // open beatmapIDs.json with fs
+    fs.readFile('beatmapIds.json', async (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const beatmapIDs = JSON.parse(data.toString());
+      for (let i = 0; i < beatmapIDs.length; i++) {
+        if (i % 4 === 1) {
+          console.log(`Updating beatmap ${i} of ${beatmapIDs.length}`);
+        }
+        if (i > 100) {
+          break;
+        }
+        const beatmapID = beatmapIDs[i];
+        await this.updateBeatmap(beatmapID);
+      }
+    });
   }
 }
