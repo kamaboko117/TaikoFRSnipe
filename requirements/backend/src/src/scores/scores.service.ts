@@ -27,7 +27,7 @@ export class ScoresService {
   }
 
   getTopFRCount(playerId: number) {
-    return this.scoreRepository.countBy({ playerId });
+    return this.scoreRepository.countBy({ player: { id: playerId } });
   }
 
   updateScore(score: ScoreEntity) {

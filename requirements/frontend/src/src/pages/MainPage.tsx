@@ -2,14 +2,18 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import BeatmapList from "../components/Beatmaps/BeatmapList";
 import ManualUpdateForm from "../components/Beatmaps/manualUpdateForm";
+import { Snipe } from "../types/api";
 
 export default function MainPage() {
-  const [beatmaps, setBeatmaps] = React.useState([]);
+  const [snipes, setSnipes] = React.useState([]);
   React.useEffect(() => {
-    fetch("/api/beatmaps")
+    fetch("/api/snipes/")
       .then((res) => res.json())
       .then((data) => {
-        if (!data.error) setBeatmaps(data);
+        if (!data.error) {
+          console.log(data);
+          setSnipes(data);
+        }
       });
   }, []);
 
@@ -17,7 +21,8 @@ export default function MainPage() {
     <div>
       <Navbar />
       <div className="wrapper">
-        <BeatmapList beatmaps={beatmaps} />
+        {/* <BeatmapList beatmaps={beatmaps} /> */}
+        <SnipeList snipes={snipes} />
         <ManualUpdateForm />
       </div>
     </div>

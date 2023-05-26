@@ -1,13 +1,16 @@
 import { Score } from 'src/types/score';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Player } from './player.entity';
 
 @Entity()
-export class ScoreEntity implements Score {
+export class ScoreEntity implements Score{
   @PrimaryColumn({ nullable: false })
   id: number;
 
-  @Column({ nullable: false })
-  playerId: number;
+  // @Column({ nullable: false })
+  // playerId: number;
+  @ManyToOne(() => Player, (player) => player)
+  player: Player;
 
   @Column({ nullable: false })
   beatmapId: number;

@@ -23,3 +23,11 @@ export interface Player {
   name: string;
   topFRCount: number;
 }
+
+export interface Snipe {
+  id: number;
+  beatmapId: number;
+  sniperId: number;
+  victimId: number | null;
+  timestamp: Date;
+}

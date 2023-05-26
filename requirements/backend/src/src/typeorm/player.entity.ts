@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { ScoreEntity } from './score.entity';
 
 @Entity()
 export class Player {
@@ -10,4 +11,8 @@ export class Player {
 
   @Column({ nullable: false })
   topFRCount: number;
+
+  @OneToMany(() => ScoreEntity, (score) => score.player)
+  scores: ScoreEntity[];
+
 }

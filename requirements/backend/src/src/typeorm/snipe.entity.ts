@@ -1,15 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Player } from './player.entity';
 
 @Entity()
 export class Snipe {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
-  sniperId: number;
+  @Column({type: "simple-json", nullable: false })
+  sniper: Player;
 
-  @Column({ nullable: true })
-  victimId: number;
+  @Column({type: "simple-json", nullable: true })
+  victim: Player;
 
   @Column({ nullable: false })
   beatmapId: number;
