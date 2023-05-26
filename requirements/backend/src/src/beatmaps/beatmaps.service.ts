@@ -96,12 +96,12 @@ const createNewSnipe = (
   existingScore: ScoreEntity | null,
   score: ApiScore,
   sniper: Player,
-  id: number,
+  beatmap: Beatmap,
 ) => {
   const newSnipe = new Snipe();
   newSnipe.sniper = sniper;
   newSnipe.victim = existingScore ? existingScore.player : null;
-  newSnipe.beatmapId = id;
+  newSnipe.beatmap = beatmap;
   newSnipe.timestamp = new Date(score.ended_at);
 
   return newSnipe;
@@ -160,7 +160,7 @@ export class BeatmapsService {
         name: topScore.user.username,
       };
       playersService.updatePlayer(topScore.user_id);
-      let newSnipe = createNewSnipe(null, topScore, player, beatmap.id);
+      let newSnipe = createNewSnipe(null, topScore, player, beatmap);
       await snipesService.createSnipe(newSnipe);
       console.log(`New top score: ${topScore.user.username} - ${beatmap.song}`);
       return topScore.user_id;
@@ -177,15 +177,10 @@ export class BeatmapsService {
         existingScore.player.id,
       );
       if (existingScore.player.id !== player.id) {
-        let newSnipe = createNewSnipe(
-          existingScore,
-          topScore,
-          player,
-          beatmap.id,
-        );
+        let newSnipe = createNewSnipe(existingScore, topScore, player, beatmap);
         await snipesService.createSnipe(newSnipe);
       } else {
-        let newSnipe = createNewSnipe(null, topScore, player, beatmap.id);
+        let newSnipe = createNewSnipe(null, topScore, player, beatmap);
         await snipesService.createSnipe(newSnipe);
       }
       await scoresService.updateScore(
@@ -220,13 +215,16 @@ export class BeatmapsService {
     let beatmap = await this.beatmapRepository.findOneBy({ id: id });
     if (!beatmap) {
       try {
+        console.log(`new beatmap ${id}`);
         beatmap = await createBeatmap(id);
+        await this.beatmapRepository.save(beatmap);
         await this.updateScores(
           beatmap,
           this.scoreService,
           this.playersService,
           this.snipesService,
         );
+        console.log('beatmap created');
         return this.beatmapRepository.save(beatmap);
       } catch (e) {
         throw new Error(e.message);

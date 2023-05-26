@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   UsePipes,
   ValidationPipe,
@@ -19,8 +20,9 @@ export class BeatmapsController {
   }
 
   @Get(':id')
-  getBeatmap(@Param() { id }: { id: number }) {
-    console.log(`Getting beatmap ${id}`)
+  @UsePipes(ValidationPipe)
+  getBeatmap(@Param('id', ParseIntPipe) id: number) {
+    console.log(`Getting beatmap ${id}`);
     return this.beatmapsService.getBeatmap(id);
   }
 

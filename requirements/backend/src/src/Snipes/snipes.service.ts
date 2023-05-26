@@ -11,15 +11,21 @@ export class SnipesService {
   ) {}
 
   getSnipes() {
-    return this.snipeRepository.find();
+    return this.snipeRepository.find({ relations: ['beatmap'] });
   }
 
   getSnipe(id: number) {
-    return this.snipeRepository.findOneBy({ id });
+    return this.snipeRepository.findOne({
+      where: { id: id },
+      relations: ['beatmap'],
+    });
   }
 
   getSnipesLimit(limit: number) {
-    return this.snipeRepository.find({ take: limit });
+    console.log(
+      this.snipeRepository.find({ take: limit, relations: ['beatmap'] }),
+    );
+    return this.snipeRepository.find({ take: limit, relations: ['beatmap'] });
   }
 
   createSnipe(snipe: Snipe) {
