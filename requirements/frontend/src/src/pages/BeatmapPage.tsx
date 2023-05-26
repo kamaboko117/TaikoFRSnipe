@@ -19,9 +19,9 @@ export default function BeatmapPage() {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="wrapper">
-      {beatmap ? <BeatmapItemFull beatmap={beatmap} /> : <h1>Loading...</h1>}
+        {beatmap ? <BeatmapItemFull beatmap={beatmap} /> : <h1>Loading...</h1>}
       </div>
     </div>
   );

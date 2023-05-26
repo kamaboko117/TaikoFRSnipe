@@ -1,6 +1,6 @@
 /* add yellow border to all elements */
 /* * { 
-  border: 1px solid yellow;
+  border: 0.1px solid yellow;
 } */
 
 body {
@@ -114,7 +114,7 @@ code {
   border-radius: 10px;
 }
 
-.beatmap-card > .beatmap-title {
+.beatmap-card > .beatmap-card-info {
   position: absolute;
   color: white;
   left: 0;
@@ -126,28 +126,39 @@ code {
   position: absolute;
   color: white;
   right: 0;
-  top: 0;
+  bottom: 0;
   text-shadow: #1c1d22 0px 0px 10px;
 }
 
-.beatmap-card > .beatmap-difficulties-row {
-  position: absolute;
+.beatmap-card-info > .beatmap-difficulties-row {
+  /* position: absolute; */
   color: white;
-  left: 10px;
-  top: 70px;
+  /* left: 10px;
+  top: 70px; */
   text-shadow: #1c1d22 0px 0px 10px;
+}
+
+.beatmap-card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
 }
 
 .beatmap-difficulties-row {
   display: flex;
   flex-direction: row;
-  justify-content:flex-start;
+  justify-content: flex-start;
   background-color: #55585ebe;
   align-items: center;
   width: auto;
   margin: 0;
-  padding: 2px;
+  padding: 0px;
   border-radius: 10px;
+  margin-left: 10px;
 }
 
 .beatmap-difficulty-icon {
@@ -163,14 +174,14 @@ code {
   box-sizing: border-box;
   background-color: #55585ee5;
   border-radius: 9px;
-  border:rgba(255, 255, 255, 0.9) 3px solid;
+  border: rgba(255, 255, 255, 0.9) 3px solid;
 }
 
 .beatmap-difficulty-selected {
   box-sizing: border-box;
   background-color: #55585eef;
   border-radius: 9px;
-  border:rgba(255, 255, 255, 0.9) 3px solid;
+  border: rgba(255, 255, 255, 0.9) 3px solid;
 }
 
 .beatmap-card:hover {
@@ -248,6 +259,7 @@ code {
   font-size: 2rem;
   line-height: 1;
   font-weight: 600;
+  margin-bottom: 0;
 }
 
 .beatmap-difficulty {

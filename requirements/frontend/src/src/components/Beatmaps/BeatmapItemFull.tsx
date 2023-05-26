@@ -19,15 +19,17 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
           src={`https://assets.ppy.sh/beatmaps/${props.beatmap.mapset.id}/covers/cover.jpg`}
           alt="cover"
         />
-        <h1 className="beatmap-title">
-          {props.beatmap.song} - {props.beatmap.artist} [
-          {props.beatmap.difficulty}]
-        </h1>
+        <div className="beatmap-card-info">
+          <h1 className="beatmap-title">
+            {props.beatmap.song} - {props.beatmap.artist} [
+            {props.beatmap.difficulty}]
+          </h1>
+          <BeatmapDifficultiesRow
+            mapset={props.beatmap.mapset}
+            currentDifficulty={props.beatmap.sr}
+          />
+        </div>
         <h2 className="beatmap-mapper">Mapset by {props.beatmap.mapper}</h2>
-        <BeatmapDifficultiesRow
-          mapset={props.beatmap.mapset}
-          currentDifficulty={props.beatmap.sr}
-        />
       </div>
       <div>
         <h1>Current Top FR</h1>
