@@ -7,7 +7,6 @@ export default function ManualUpdateForm() {
     const data = new FormData(event.currentTarget);
     const formData = data.get("beatmapId")?.valueOf();
     const id = parseInt(formData as string);
-    console.log(id);
     if (id) {
       fetch("/api/beatmaps", {
         method: "POST",

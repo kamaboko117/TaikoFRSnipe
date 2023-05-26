@@ -6,7 +6,6 @@ export default function BeatmapDifficultiesRow(props: {
   mapset: Mapset;
   currentDifficulty?: number;
 }) {
-  console.log(props.currentDifficulty);
   return (
     <div className="beatmap-difficulties-row">
       {props.mapset.beatmaps.map((difficulty) => (

@@ -13,8 +13,6 @@ export default function BeatmapPage() {
       .then((data) => {
         if (!data.error) {
           setBeatmap(data);
-          console.log(id);
-          console.log(data);
         }
       });
   }, [id]);

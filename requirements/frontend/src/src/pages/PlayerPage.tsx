@@ -12,7 +12,6 @@ export default function PlayerPage() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
-          console.log(data);
           setPlayer(data);
         }
       });

@@ -34,7 +34,6 @@ export default function BeatmapDifficulty(props: {
     return rating >= 8 ? "#000000" : difficultyColourSpectrum(rating);
   }
 
-  console.log(props.selected);
   return (
     <div className="beatmap-difficulty-item" onClick={handleClick}>
       <div
