@@ -8,8 +8,6 @@ export class ScoreEntity implements Score {
   @PrimaryColumn({ nullable: false })
   id: number;
 
-  // @Column({ nullable: false })
-  // playerId: number;
   @ManyToOne(() => Player, (player) => player)
   player: Player;
 
