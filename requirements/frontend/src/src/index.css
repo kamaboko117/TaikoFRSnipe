@@ -148,6 +148,14 @@ code {
   border-radius: 10px;
 }
 
+.beatmap-sniper {
+  color: #61dafb !important;
+}
+
+.beatmap-victim {
+  color: #a53b3b !important;
+}
+
 .beatmap-difficulties-row {
   display: flex;
   flex-direction: row;
