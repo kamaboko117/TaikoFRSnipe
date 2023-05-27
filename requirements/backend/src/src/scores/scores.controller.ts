@@ -24,4 +24,14 @@ export class ScoresController {
   ) {
     return this.scoresService.getScoresByPP(limit, offset);
   }
+
+  @Get('player/:playerID')
+  @UseInterceptors(new NotFoundInterceptor('Player not found'))
+  async getScoresByPlayerId(
+    @Param('playerID') playerID: number,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    return this.scoresService.getScoresByPlayerId(playerID, limit, offset);
+  }
 }

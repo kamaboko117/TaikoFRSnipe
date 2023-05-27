@@ -28,6 +28,7 @@ export default function Navbar() {
         <img src={logo} className="App-logo" alt="logo" />
         <NavbarLink dest="/">Home</NavbarLink>
         <NavbarLink dest="/Scores">Scores</NavbarLink>
+        <NavbarLink dest="/Players">Players</NavbarLink>
       </nav>
       <div className="navbar-right">
         <SearchBar />

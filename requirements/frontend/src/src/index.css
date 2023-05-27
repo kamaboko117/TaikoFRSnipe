@@ -476,3 +476,23 @@ tr {
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+.user-profile-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 10px 0px;
+}
+
+.user-profile-header > .user-profile-avatar {
+  margin-right: 10px;
+  padding: 0px;
+  overflow: hidden;
+  border-radius: 100%;
+}
+
+.user-profile-header > .user-profile-header-info {
+  margin-left: 10px;
+  padding: 0px;
+}

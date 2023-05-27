@@ -16,6 +16,15 @@ export class PlayersController {
     return this.playersService.searchPlayersByName(name);
   }
 
+  @Get('top')
+  getTopPlayers(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    console.log(`Getting top players`);
+    return this.playersService.getTopPlayers(limit, offset);
+  }
+
   @Get(':id')
   getPlayer(@Param() { id }: { id: number }) {
     console.log(`searching for player ${id}`);

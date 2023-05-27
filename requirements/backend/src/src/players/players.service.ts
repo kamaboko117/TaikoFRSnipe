@@ -24,6 +24,14 @@ export class PlayersService {
     return this.playerRepository.findOneBy({ name });
   }
 
+  getTopPlayers(limit: number, offset: number) {
+    return this.playerRepository.find({
+      order: { topFRCount: 'DESC' },
+      take: limit,
+      skip: offset,
+    });
+  }
+
   searchPlayersByName(name: string) {
     return this.playerRepository
       .createQueryBuilder('player')
@@ -35,7 +43,7 @@ export class PlayersService {
     const player = new Player();
     player.id = id;
     player.name = name;
-    player.topFRCount = 0;
+    player.topFRCount = 1;
     return this.playerRepository.save(player);
   }
 

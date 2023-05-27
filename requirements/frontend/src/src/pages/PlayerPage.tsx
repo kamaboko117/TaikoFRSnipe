@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-import { Player } from "../types/api";
+import { Player, Score } from "../types/api";
+import ScoreList from "../components/Scores/ScoreList";
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
-  const [player, setPlayer] = React.useState<Player | null>(null);
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [scores, setScores] = useState([] as Score[]);
+  // const [index, setIndex] = useState(0);
+  // const limit = 40;
 
   React.useEffect(() => {
     fetch(`/api/players/${id}`)
@@ -15,19 +19,34 @@ export default function PlayerPage() {
           setPlayer(data);
         }
       });
+    fetch(`/api/scores/player/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setScores(data);
+        }
+      });
   }, [id]);
 
   return (
     <div>
       <Navbar />
       <div className="wrapper">
-        <img
-          src={`https://a.ppy.sh/${player?.id}`}
-          alt="avatar"
-          style={{ width: "200px", height: "200px" }}
-        />
-        <h1>{player?.name}</h1>
-        <h2>Top FR Count: {player?.topFRCount}</h2>
+        <div className="user-profile-header">
+          <div className="user-profile-avatar">
+            <img
+              src={`https://a.ppy.sh/${player?.id}`}
+              alt="avatar"
+              style={{ width: "200px", height: "200px" }}
+            />
+          </div>
+          <div className="user-profile-header-info">
+            <h1>{player?.name}</h1>
+            <h2>Top FR Count: {player?.topFRCount}</h2>
+          </div>
+        </div>
+        <h1>Top FRs</h1>
+        <ScoreList scores={scores} index={0} limit={10} />
       </div>
     </div>
   );

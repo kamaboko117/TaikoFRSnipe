@@ -26,6 +26,19 @@ export class ScoresService {
     });
   }
 
+  getScoresByPlayerId(playerId: number, limit: number, offset: number) {
+    if (limit > 100) {
+      limit = 100;
+    }
+    return this.scoreRepository.find({
+      where: { player: { id: playerId } },
+      order: { pp: 'DESC' },
+      take: limit,
+      skip: offset,
+      relations: ['beatmap', 'player'],
+    });
+  }
+
   getScore(id: number) {
     return this.scoreRepository.findOneBy({ id });
   }
