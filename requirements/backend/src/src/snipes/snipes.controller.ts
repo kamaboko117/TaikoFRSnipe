@@ -15,4 +15,8 @@ export class SnipesController {
     return this.snipesService.getSnipesLimit(limit);
   }
   
+  @Get('BeatmapID/:id')
+  getSnipesByBeatmapID(@Param() { id }: { id: number }) {
+    return this.snipesService.getSnipesByBeatmapID(id);
+  }
 }

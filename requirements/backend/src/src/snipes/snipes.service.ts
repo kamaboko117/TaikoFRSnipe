@@ -21,6 +21,12 @@ export class SnipesService {
     });
   }
 
+  getSnipesByBeatmapID(id: number) {
+    return this.snipeRepository.find({
+      where: { beatmap: { id: id } },
+    });
+  }
+
   getSnipesLimit(limit: number) {
     // retun newest snipes first (descending order)
     return this.snipeRepository.find({ take: limit, order: { timestamp: 'DESC' }, relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'] });
