@@ -31,7 +31,10 @@ export class ScoresService {
   }
 
   getScoreByBeatmapId(beatmapId: number) {
-    return this.scoreRepository.findOneBy({ beatmapId });
+    return this.scoreRepository.findOne({
+      where: { beatmap: { id: beatmapId } },
+      relations: ['player'],
+    });
   }
 
   createScore(score: ScoreEntity) {
