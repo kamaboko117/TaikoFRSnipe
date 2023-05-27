@@ -1,5 +1,5 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import logo from "../../logo.svg";
+import logo from "../../assets/taikoFRSnipe.png";
 import SearchBar from "./SearchBar";
 
 interface NavbarLinkProps {

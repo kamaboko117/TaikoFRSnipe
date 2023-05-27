@@ -58,6 +58,16 @@ code {
   max-width: 1200px;
 }
 
+.navbar-right {
+  display: flex;
+  justify-content: flex-end;
+  vertical-align: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px;
+}
+
 .navbar-item {
   display: flex;
   justify-content: space-between;
@@ -250,7 +260,7 @@ code {
 .beatmap-thumbnail > .beatmap-difficulty {
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
   text-shadow: #1c1d22 0px 0px 8px;
 }
 
@@ -359,6 +369,13 @@ code {
 .table-row {
   background-color: #55585e73;
   display: table-row;
+  transition: 300ms;
+}
+
+.table-row:hover {
+  background-color: #61dafb;
+  color: black;
+  cursor: pointer;
 }
 
 .table-row > td {
@@ -495,4 +512,80 @@ tr {
 .user-profile-header > .user-profile-header-info {
   margin-left: 10px;
   padding: 0px;
+}
+
+.search-bar__input {
+  box-sizing: border-box;
+  background-color: #c2c7d173;
+  border: 1px solid #55585e73;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  width: 50%;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.search-bar__input:focus {
+  outline: none;
+  border-color: #61dafb;
+}
+
+.search-bar__input::placeholder {
+  color: #fff;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px 10px 10px 0px;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px 10px 0px 0px;
+  background-color: #55585e73;
+  width: 400px;
+  height: 150px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.player-card:hover {
+  background-color: #61dafb;
+}
+
+.player-card > .player-card-avatar {
+  margin-right: 10px;
+  padding: 0px;
+  overflow: hidden;
+  height: 150px;
+  width: 150px;
+  border-radius: 10px;
+}
+
+.player-card-avatar > img {
+  height: 100%;
+  width: 100%;
+}
+
+.player-card > .player-card-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  padding: 0px;
+}
+
+.player-card-info > .player-card-name {
+  font-weight: 600;
+  font-size: xx-large;
+  color: #fff;
 }

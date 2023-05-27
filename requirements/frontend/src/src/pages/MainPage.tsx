@@ -28,6 +28,7 @@ export default function MainPage() {
     <div>
       <Navbar />
       <div className="wrapper">
+        <h1>Latest Taiko French Tops</h1>
         <SnipeList snipes={snipes} />
         <ManualUpdateForm />
       </div>

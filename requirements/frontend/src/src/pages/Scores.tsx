@@ -23,6 +23,7 @@ export default function Scores() {
       <Navbar />
       <div className="wrapper">
         <h1>Top Scores</h1>
+        <IndexSelector setIndex={setIndex} index={index} />
         <ScoreList scores={scores} index={index} limit={limit}/>
         <IndexSelector setIndex={setIndex} index={index} />
       </div>

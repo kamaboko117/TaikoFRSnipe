@@ -2,34 +2,35 @@ import React from "react";
 import { Snipe } from "../../types/api";
 import { useNavigate } from "react-router-dom";
 
+export const verbList = [
+  "sniped",
+  "destroyed",
+  "annihilated",
+  "rekt",
+  "destroyed",
+  "obliterated",
+  "murdered",
+  "killed",
+  "shot",
+  "assassinated",
+  "executed",
+  "terminated",
+  "slaughtered",
+  "butchered",
+  "massacred",
+  "wasted",
+  "wrecked",
+  "ended",
+];
+
 export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
-  const verbList = [
-    "sniped",
-    "destroyed",
-    "annihilated",
-    "rekt",
-    "destroyed",
-    "obliterated",
-    "murdered",
-    "killed",
-    "shot",
-    "assassinated",
-    "executed",
-    "terminated",
-    "slaughtered",
-    "butchered",
-    "massacred",
-    "wasted",
-    "wrecked",
-    "ended",
-  ];
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const clickSniper = () => {
-    navigate(`/Player/${snipe.sniper.id}`)
-  }
+    navigate(`/Player/${snipe.sniper.id}`);
+  };
   const clickVictim = () => {
-    navigate(`/Player/${snipe.victim?.id}`)
-  }
+    navigate(`/Player/${snipe.victim?.id}`);
+  };
   if (snipe.victim) {
     return (
       <div>
@@ -37,7 +38,10 @@ export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
           {" "}
           {new Date(snipe.timestamp).toLocaleString()}{" "}
         </span>
-        <span className="sniper-name" onClick={clickSniper}> {snipe.sniper.name} </span>
+        <span className="sniper-name" onClick={clickSniper}>
+          {" "}
+          {snipe.sniper.name}{" "}
+        </span>
         <span className="snipe-verb">
           {verbList[Math.floor(Math.random() * verbList.length)]}
         </span>
@@ -53,10 +57,12 @@ export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
   return (
     <div>
       <span className="snipe-timestamp">
-          {" "}
-          {new Date(snipe.timestamp).toLocaleString()}{" "}
-        </span>
-      <span className="sniper-name" onClick={clickSniper}>{snipe.sniper.name}</span>
+        {" "}
+        {new Date(snipe.timestamp).toLocaleString()}{" "}
+      </span>
+      <span className="sniper-name" onClick={clickSniper}>
+        {snipe.sniper.name}
+      </span>
       <span className="snipe-verb"> claimed first place</span>
     </div>
   );

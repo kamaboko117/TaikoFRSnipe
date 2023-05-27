@@ -1,6 +1,6 @@
 import React from "react";
 import { Beatmap } from "../../types/api";
-import { ReactComponent as TaikoIcon } from "../../taikoIcon.svg";
+import { ReactComponent as TaikoIcon } from "../../assets/taikoIcon.svg";
 import * as d3 from "d3";
 import { useNavigate } from "react-router-dom";
 

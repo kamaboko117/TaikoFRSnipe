@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
+import PlayerCard from "../components/Players/PlayerCard";
 
 export default function SearchPage() {
   const [players, setPlayers] = useState([] as Player[]);
@@ -26,16 +27,13 @@ export default function SearchPage() {
         <h1>Results for {query}</h1>
         <div className="player-list">
           {players.map((player) => (
-            <div
-              className="player-list-item"
+            <PlayerCard
+              player={player}
               key={player.id}
               onClick={() => {
                 navigate(`/Player/${player.id}`);
               }}
-            >
-              <h2>{player.name}</h2>
-              <h3>Top FR Count: {player.topFRCount}</h3>
-            </div>
+            />
           ))}
         </div>
       </div>
