@@ -24,7 +24,7 @@ export class Beatmap {
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
   od: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'decimal', nullable: false })
   bpm: number;
 
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: false })
