@@ -42,7 +42,7 @@ export interface Snipe {
 export interface Score {
   acc: number;
   beatmapId: number;
-  data: string;
+  date: string;
   id: number;
   maxCombo: number;
   missCount: number;

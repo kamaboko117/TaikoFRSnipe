@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Beatmap } from "../types/api";
+import { Beatmap, Snipe } from "../types/api";
 import BeatmapItemFull from "../components/Beatmaps/BeatmapItemFull";
 import Navbar from "../components/Navbar/Navbar";
 import { Score } from "../types/api";
+import ScoreDetail from "../components/Scores/ScoreDetail";
+import SnipeHistory from "../components/Snipes/SnipeHistory";
 
 export default function BeatmapPage() {
   const id = parseInt(useParams().id as string);
   const [beatmap, setBeatmap] = useState<Beatmap | null>(null);
   const [score, setScore] = useState<Score | null>(null);
+  const [snipes, setSnipes] = useState([] as Snipe[]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -31,6 +34,13 @@ export default function BeatmapPage() {
             }
           });
       });
+    fetch(`/api/snipes/beatmapID/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setSnipes(data);
+        }
+      });
   }, [id]);
 
   const clickPlayer = () => {
@@ -47,21 +57,12 @@ export default function BeatmapPage() {
       <Navbar />
       <div className="wrapper">
         <BeatmapItemFull beatmap={beatmap} />
-        <div>
-          <h1>Current Top FR</h1>
-          {beatmap.topPlayer ? (
-            <h2 onClick={clickPlayer} style={{ cursor: "pointer" }}>
-              {beatmap.topPlayer.name}
-            </h2>
-          ) : (
-            <h2>None</h2>
-          )}
-          <h3>Score: {score?.score}</h3>
-          <h3>Accuracy: {score ? `${(score.acc * 100).toFixed(2)}%` : ""}</h3>
-          <h3>Combo: {score?.maxCombo}</h3>
-          <h3>Mods: {score?.mods}</h3>
-          <h3>PP: {score?.pp}</h3>
-        </div>
+        <ScoreDetail
+          score={score}
+          beatmap={beatmap}
+          clickPlayer={clickPlayer}
+        />
+        <SnipeHistory snipes={snipes} />
       </div>
     </div>
   );

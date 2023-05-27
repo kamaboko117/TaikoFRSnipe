@@ -13,11 +13,12 @@ export default function SearchBar() {
   return (
     <form onSubmit={searchHandler} className="search-bar">
       <input
+        name="search"
         type="text"
         placeholder="Search"
         onChange={(e) => setSearch(e.currentTarget.value)}
       />
-      <button type="submit">Search</button>
+      <button name="submit" type="submit">Search</button>
     </form>
   );
 }
