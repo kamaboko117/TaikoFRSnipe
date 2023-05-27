@@ -4,12 +4,8 @@ import { useNavigate } from "react-router-dom";
 import BeatmapDifficultiesRow from "./BeatmapDifficultiesRow";
 
 export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
-  const navigate = useNavigate();
   const handleClick = () => {
     window.location.href = `https://osu.ppy.sh/beatmaps/${props.beatmap.id}`;
-  };
-  const clickPlayer = () => {
-    navigate(`/Player/${props.beatmap.topPlayer.id}`);
   };
 
   return (
@@ -30,16 +26,6 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
           />
         </div>
         <h2 className="beatmap-mapper">Mapset by {props.beatmap.mapper}</h2>
-      </div>
-      <div>
-        <h1>Current Top FR</h1>
-        {props.beatmap.topPlayer ? (
-          <h2 onClick={clickPlayer} style={{ cursor: "pointer" }}>
-            {props.beatmap.topPlayer.name}
-          </h2>
-        ) : (
-          <h2>None</h2>
-        )}
       </div>
     </div>
   );

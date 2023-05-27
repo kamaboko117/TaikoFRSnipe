@@ -8,13 +8,15 @@ export default function BeatmapDifficultiesRow(props: {
 }) {
   return (
     <div className="beatmap-difficulties-row">
-      {props.mapset.beatmaps.map((difficulty) => (
-        <BeatmapDifficulty
-          beatmap={difficulty}
-          selected={props.currentDifficulty === difficulty.sr}
-          key={difficulty.id}
-        />
-      ))}
+      {props.mapset.beatmaps
+        .sort((a, b) => a.sr - b.sr)
+        .map((difficulty) => (
+          <BeatmapDifficulty
+            beatmap={difficulty}
+            selected={props.currentDifficulty === difficulty.sr}
+            key={difficulty.id}
+          />
+        ))}
     </div>
   );
 }

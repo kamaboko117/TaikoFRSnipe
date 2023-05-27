@@ -38,3 +38,15 @@ export interface Snipe {
   victim: Player | null;
   timestamp: number;
 }
+
+export interface Score {
+  acc: number;
+  beatmapId: number;
+  data: string;
+  id: number;
+  maxCombo: number;
+  missCount: number;
+  mods: string[];
+  pp: number;
+  score: number;
+}
