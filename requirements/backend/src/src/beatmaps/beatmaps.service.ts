@@ -19,6 +19,10 @@ import { MapsetsService } from 'src/mapsets/mapsets.service';
 
 const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
 
+const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
   const beatmapDataUrl = 'https://osu.ppy.sh/beatmaps/' + id;
   const got = (await import('got')).default;
@@ -238,12 +242,16 @@ export class BeatmapsService {
         return;
       }
     }
+    //time how long it takes to update
+    const start = Date.now();
     await this.updateScores(
       beatmap,
       this.scoreService,
       this.playersService,
       this.snipesService,
     );
+    const end = Date.now();
+    console.log(`Updated beatmap ${id} in ${end - start}ms`);
 
     return this.beatmapRepository.save(beatmap);
   }
@@ -265,6 +273,7 @@ export class BeatmapsService {
         }
         const beatmapID = beatmapIDs[i];
         await this.updateBeatmap(beatmapID);
+        await sleep(2000); //to not get ratelimited
       }
     });
   }
