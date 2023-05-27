@@ -14,6 +14,18 @@ export class ScoresService {
     return this.scoreRepository.find();
   }
 
+  getScoresByPP(limit: number, offset: number) {
+    if (limit > 100) {
+      limit = 100;
+    }
+    return this.scoreRepository.find({
+      order: { pp: 'DESC' },
+      take: limit,
+      skip: offset,
+      relations: ['player', 'beatmap'],
+    });
+  }
+
   getScore(id: number) {
     return this.scoreRepository.findOneBy({ id });
   }

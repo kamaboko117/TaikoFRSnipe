@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import ManualUpdateForm from "../components/Beatmaps/manualUpdateForm";
 import { Beatmap, Snipe } from "../types/api";
 import SnipeList from "../components/Snipes/SnipeList";

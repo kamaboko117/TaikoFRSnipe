@@ -20,6 +20,17 @@ export class PlayersService {
     return this.playerRepository.findOneBy({ id });
   }
 
+  getPlayerByName(name: string) {
+    return this.playerRepository.findOneBy({ name });
+  }
+
+  searchPlayersByName(name: string) {
+    return this.playerRepository
+      .createQueryBuilder('player')
+      .where('player.name ILIKE :name', { name: `%${name}%` })
+      .getMany();
+  }
+
   createPlayer(id: number, name: string) {
     const player = new Player();
     player.id = id;

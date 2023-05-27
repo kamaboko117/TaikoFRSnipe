@@ -96,10 +96,16 @@ const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
   return beatmap;
 };
 
-const createNewScore = (score: ApiScore, id: number, player: Player) => {
+const createNewScore = (
+  score: ApiScore,
+  id: number,
+  player: Player,
+  beatmap: Beatmap,
+) => {
   const newScore = new ScoreEntity();
   newScore.id = score.id;
   newScore.beatmapId = id;
+  newScore.beatmap = beatmap;
   newScore.player = player;
   newScore.score = score.total_score;
   newScore.maxCombo = score.max_combo;
@@ -169,7 +175,7 @@ export class BeatmapsService {
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
     if (!existingScore) {
       const player = await playersService.getPlayer(topScore.user_id);
-      const newScore = createNewScore(topScore, beatmap.id, player);
+      const newScore = createNewScore(topScore, beatmap.id, player, beatmap);
       await scoresService.createScore(newScore);
       beatmap.topPlayer = {
         id: topScore.user_id,
@@ -196,7 +202,7 @@ export class BeatmapsService {
         await snipesService.createSnipe(newSnipe);
       }
       await scoresService.updateScore(
-        createNewScore(topScore, beatmap.id, player),
+        createNewScore(topScore, beatmap.id, player, beatmap),
       );
       beatmap.topPlayer = {
         id: topScore.user_id,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Beatmap } from "../types/api";
 import BeatmapItemFull from "../components/Beatmaps/BeatmapItemFull";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { Score } from "../types/api";
 
 export default function BeatmapPage() {

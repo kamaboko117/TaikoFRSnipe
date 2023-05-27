@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import Scores from "./pages/Scores";
 import BeatmapPage from "./pages/BeatmapPage";
 import PlayerPage from "./pages/PlayerPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/Scores" element={<Scores />} />
         <Route path="/Beatmap/:id" element={<BeatmapPage />} />
         <Route path="/Player/:id" element={<PlayerPage />} />
+        <Route path="/Search/:query" element={<SearchPage />} />
       </Routes>
     </div>
   );

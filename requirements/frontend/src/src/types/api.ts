@@ -49,4 +49,6 @@ export interface Score {
   mods: string[];
   pp: number;
   score: number;
+  player: Player;
+  beatmap: Beatmap;
 }

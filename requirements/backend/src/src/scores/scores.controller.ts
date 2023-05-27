@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common';
 import { ScoresService } from './scores.service';
 import { NotFoundInterceptor } from 'src/interceptor/interceptor';
 
@@ -15,5 +15,13 @@ export class ScoresController {
   @UseInterceptors(new NotFoundInterceptor('Beatmap not found'))
   async getScoreByBeatmapId(@Param('beatmapID') beatmapID: number) {
     return this.scoresService.getScoreByBeatmapId(beatmapID);
+  }
+
+  @Get('top')
+  async getTopScores(
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    return this.scoresService.getScoresByPP(limit, offset);
   }
 }

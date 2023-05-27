@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PlayersService } from './players.service';
 
 @Controller('players')
@@ -10,9 +10,15 @@ export class PlayersController {
     return this.playersService.getPlayers();
   }
 
+  @Get('search')
+  searchPlayersByName(@Query('name') name: string) {
+    console.log(`Getting player ${name}`);
+    return this.playersService.searchPlayersByName(name);
+  }
+
   @Get(':id')
   getPlayer(@Param() { id }: { id: number }) {
-    console.log(`Getting player ${id}`);
+    console.log(`searching for player ${id}`);
     return this.playersService.getPlayer(id);
   }
 }

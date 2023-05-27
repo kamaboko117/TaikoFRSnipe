@@ -1,5 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import logo from "../logo.svg";
+import logo from "../../logo.svg";
+import SearchBar from "./SearchBar";
 
 interface NavbarLinkProps {
   dest: string;
@@ -28,6 +29,9 @@ export default function Navbar() {
         <NavbarLink dest="/">Home</NavbarLink>
         <NavbarLink dest="/Scores">Scores</NavbarLink>
       </nav>
+      <div className="navbar-right">
+        <SearchBar />
+      </div>
     </header>
   );
 }
