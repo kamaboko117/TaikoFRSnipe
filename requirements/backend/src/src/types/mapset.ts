@@ -117,21 +117,23 @@ export interface User {
   username: string;
 }
 
+export interface BeatmapData {
+  id: number;
+  version: string;
+  drain: number;
+  bpm: number;
+  accuracy: number;
+  difficulty_rating: number;
+  total_length: number;
+}
+
 export interface MapsetData {
   id: number;
   artist: string;
   title: string;
   creator: string;
   status: string;
-  beatmaps: [{
-    total_length: number;
-    version: string;
-    drain: number;
-    bpm: number;
-    accuracy: number;
-    id: number;
-    difficulty_rating: number;
-  }]
+  beatmaps: BeatmapData[];
 }
 
 export interface RootObject {

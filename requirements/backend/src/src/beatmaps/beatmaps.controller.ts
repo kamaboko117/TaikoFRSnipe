@@ -36,6 +36,6 @@ export class BeatmapsController {
   @UsePipes(ValidationPipe)
   updateBeatmap(@Body() updateBeatmapDto: updateBeatmapDto) {
     console.log(updateBeatmapDto);
-    return this.beatmapsService.updateBeatmap(updateBeatmapDto.id);
+    return this.beatmapsService.updateBeatmap(updateBeatmapDto.id, {batch: false});
   }
 }

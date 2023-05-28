@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Beatmap, Snipe } from "../types/api";
 import BeatmapItemFull from "../components/Beatmaps/BeatmapItemFull";
@@ -12,9 +12,29 @@ export default function BeatmapPage() {
   const [beatmap, setBeatmap] = useState<Beatmap | null>(null);
   const [score, setScore] = useState<Score | null>(null);
   const [snipes, setSnipes] = useState([] as Snipe[]);
+  const [refreshed, setRefreshed] = useState(false);
   const navigate = useNavigate();
+  const updateBeatmap = () => {
+    if (id) {
+      fetch("/api/beatmaps", {
+        method: "POST",
+        body: JSON.stringify({ id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.error) {
+            console.log(data);
+            setRefreshed(true);
+          }
+        });
+    }
+  };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setRefreshed(false);
     fetch(`/api/beatmaps/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -41,7 +61,7 @@ export default function BeatmapPage() {
           setSnipes(data);
         }
       });
-  }, [id]);
+  }, [id, refreshed]);
 
   const clickPlayer = () => {
     if (!beatmap) return;
@@ -63,6 +83,7 @@ export default function BeatmapPage() {
           clickPlayer={clickPlayer}
         />
         <SnipeHistory snipes={snipes} />
+        <button onClick={updateBeatmap}>refresh</button>
       </div>
     </div>
   );

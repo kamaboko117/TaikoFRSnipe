@@ -505,6 +505,8 @@ tr {
 
 .user-profile-header > .user-profile-avatar {
   margin-right: 10px;
+  width: 200px;
+  height: 200px;
   padding: 0px;
   overflow: hidden;
   border-radius: 100%;

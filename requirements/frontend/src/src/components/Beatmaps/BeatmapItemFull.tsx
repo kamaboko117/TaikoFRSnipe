@@ -1,11 +1,10 @@
 import React from "react";
 import { Beatmap } from "../../types/api";
-import { useNavigate } from "react-router-dom";
 import BeatmapDifficultiesRow from "./BeatmapDifficultiesRow";
 
 export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
   const handleClick = () => {
-    window.location.href = `https://osu.ppy.sh/beatmaps/${props.beatmap.id}`;
+    window.open(`https://osu.ppy.sh/beatmaps/${props.beatmap.id}`)
   };
 
   return (
