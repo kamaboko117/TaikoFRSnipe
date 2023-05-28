@@ -23,7 +23,7 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
+const scrapMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   const beatmapDataUrl = 'https://osu.ppy.sh/beatmaps/' + id;
   const got = await import('got');
   // const response = await got(beatmapDataUrl);
@@ -42,7 +42,27 @@ const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
   const dom = new JSDOM(response.body);
   const data = dom.window.document.getElementById('json-beatmapset');
   if (data) {
-    return JSON.parse(data.innerHTML);
+    const mapsetRootData: RootObject = JSON.parse(data.innerHTML);
+    const mapsetData: MapsetData = {
+      id: mapsetRootData.id,
+      artist: mapsetRootData.artist,
+      title: mapsetRootData.title,
+      creator: mapsetRootData.creator,
+      status: mapsetRootData.status,
+      beatmaps: mapsetRootData.beatmaps.map((beatmap) => {
+        return {
+          id: beatmap.id,
+          version: beatmap.version,
+          difficulty_rating: beatmap.difficulty_rating,
+          total_length: beatmap.total_length,
+          bpm: beatmap.bpm,
+          drain: beatmap.drain,
+          accuracy: beatmap.accuracy,
+        };
+      }),
+    };
+
+    return mapsetData;
   }
   return undefined;
 };
@@ -63,7 +83,9 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
     return undefined;
   }
   const data2 = await fetch(url2 + data1.ParentSetId)
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       if (data.error) {
         return undefined;
@@ -73,8 +95,7 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   if (!data2) {
     return undefined;
   }
-
-  let rankedStatus;
+  let rankedStatus: string;
   if (!data2.RankedStatus) {
     rankedStatus = 'Graveyarded';
   } else if (data2.RankedStatus === 1) {
@@ -88,17 +109,27 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   } else {
     rankedStatus = 'Unranked';
   }
-  const beatmaps = data2.ChildrenBeatmaps.map((beatmap) => {
-    return {
-      id: beatmap.BeatmapId,
-      version: beatmap.DiffName,
-      difficulty_rating: beatmap.DifficultyRating,
-      total_length: beatmap.TotalLength,
-      bpm: beatmap.BPM,
-      accuracy: beatmap.OD,
-      drain: beatmap.HP,
-    };
-  });
+  const beatmaps = data2.ChildrenBeatmaps.map(
+    (beatmap: {
+      BeatmapId: any;
+      DiffName: any;
+      DifficultyRating: any;
+      TotalLength: any;
+      BPM: any;
+      OD: any;
+      HP: any;
+    }) => {
+      return {
+        id: beatmap.BeatmapId,
+        version: beatmap.DiffName,
+        difficulty_rating: beatmap.DifficultyRating,
+        total_length: beatmap.TotalLength,
+        bpm: beatmap.BPM,
+        accuracy: beatmap.OD,
+        drain: beatmap.HP,
+      };
+    },
+  );
   const mapsetData: MapsetData = {
     id: data2.SetId,
     artist: data2.Artist,
@@ -128,12 +159,20 @@ const scrapScores = async (id: number, jar: CookieJar) => {
   return scores;
 };
 
-const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
+const createBeatmap = async (
+  id: number,
+  mapsetsService: MapsetsService,
+  { batch = false },
+) => {
   // calculate how long it takes to create beatmap
   const start = Date.now();
-  // const mapsetData = await scrapMapsetData(id);
-  const mapsetData = await fetchMapsetData(id);
-
+  let mapsetDataProvider: { (id: number): Promise<MapsetData> };
+  if (batch) {
+    mapsetDataProvider = scrapMapsetData;
+  } else {
+    mapsetDataProvider = fetchMapsetData;
+  }
+  const mapsetData = await mapsetDataProvider(id);
   if (!mapsetData) {
     throw new Error('Beatmap not found');
   }
@@ -258,7 +297,6 @@ export class BeatmapsService {
       await snipesService.createSnipe(newSnipe);
       return topScore.user_id;
     }
-
     if (
       existingScore.score < topScore.total_score ||
       (existingScore.score === topScore.total_score && !beatmap.topPlayer)
@@ -271,14 +309,14 @@ export class BeatmapsService {
         let newSnipe = createNewSnipe(null, topScore, player, beatmap);
         await snipesService.createSnipe(newSnipe);
       }
-      await scoresService.updateScoreByBeatmapId(
-        beatmap.id,
-        createNewScore(topScore, beatmap.id, player, beatmap),
-      );
       beatmap.topPlayer = {
         id: topScore.user_id,
         name: topScore.user.username,
       };
+      await scoresService.updateScoreByBeatmapId(
+        beatmap.id,
+        createNewScore(topScore, beatmap.id, player, beatmap),
+      );
       await playersService.updatePlayer(topScore.user_id);
       if (snipedPlayer) {
         await playersService.updatePlayer(snipedPlayer.id);
@@ -301,11 +339,13 @@ export class BeatmapsService {
     });
   }
 
-  async updateBeatmap(id: number) {
+  async updateBeatmap(id: number, { batch = false }) {
     let beatmap = await this.beatmapRepository.findOneBy({ id: id });
     if (!beatmap) {
       try {
-        beatmap = await createBeatmap(id, this.mapsetsService);
+        beatmap = await createBeatmap(id, this.mapsetsService, {
+          batch: batch,
+        });
         await this.beatmapRepository.save(beatmap);
         await this.updateScores(
           beatmap,
@@ -316,6 +356,7 @@ export class BeatmapsService {
         return this.beatmapRepository.save(beatmap);
       } catch (e) {
         console.log(e.message);
+        if (e.message === 'Rate limit exceeded') throw e;
         return;
       }
     }
@@ -342,8 +383,8 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 0;
-        const limit = 100;
+        const start = 2260;
+        const limit = 5000;
         if (i < start) {
           continue;
         }
@@ -355,12 +396,16 @@ export class BeatmapsService {
         }
         const beatmapID = beatmapIDs[i];
         try {
-          await this.updateBeatmap(beatmapID);
+          await this.updateBeatmap(beatmapID, { batch: true });
         } catch (e) {
+          console.log(`Error updating beatmap ${beatmapID}`);
           console.log(e);
+          if (e.message === 'Scores not found') {
+            continue;
+          }
           return;
         }
-        await sleep(2000); //to not get ratelimited
+        await sleep(1500); //to not get ratelimited
       }
     });
   }
