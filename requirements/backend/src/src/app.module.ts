@@ -15,6 +15,7 @@ import { PlayersModule } from './players/players.module';
         type: 'postgres',
         host: process.env.POSTGRES_HOST,
         port: Number(process.env.POSTGRES_PORT),
+        url: process.env.DATABASE_URL,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
