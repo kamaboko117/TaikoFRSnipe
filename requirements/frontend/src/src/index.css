@@ -560,6 +560,7 @@ tr {
   border-radius: 10px;
   cursor: pointer;
   transition: 300ms;
+  overflow: hidden;
 }
 
 .player-card:hover {
@@ -572,12 +573,16 @@ tr {
   overflow: hidden;
   height: 150px;
   width: 150px;
+  min-width: 150px;
+  min-height: 150px;
   border-radius: 10px;
 }
 
 .player-card-avatar > img {
   height: 100%;
   width: 100%;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .player-card > .player-card-info {
@@ -591,4 +596,5 @@ tr {
   font-weight: 600;
   font-size: xx-large;
   color: #fff;
+  text-overflow: ellipsis;
 }
