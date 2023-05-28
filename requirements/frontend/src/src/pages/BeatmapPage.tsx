@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/Navbar";
 import { Score } from "../types/api";
 import ScoreDetail from "../components/Scores/ScoreDetail";
 import SnipeHistory from "../components/Snipes/SnipeHistory";
+const API_URL = process.env.API_URL;
 
 export default function BeatmapPage() {
   const id = parseInt(useParams().id as string);
@@ -16,7 +17,7 @@ export default function BeatmapPage() {
   const navigate = useNavigate();
   const updateBeatmap = () => {
     if (id) {
-      fetch("/api/beatmaps", {
+      fetch(`${API_URL}/beatmaps`, {
         method: "POST",
         body: JSON.stringify({ id }),
         headers: {
@@ -35,7 +36,7 @@ export default function BeatmapPage() {
 
   useEffect(() => {
     setRefreshed(false);
-    fetch(`/api/beatmaps/${id}`)
+    fetch(`${API_URL}/beatmaps/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
@@ -43,7 +44,7 @@ export default function BeatmapPage() {
         }
       })
       .then(() => {
-        fetch(`/api/scores/beatmapID/${id}`)
+        fetch(`${API_URL}/scores/beatmapID/${id}`)
           .then((res) => res.json())
           .catch((err) => console.log(err))
           .then((data) => {
@@ -54,7 +55,7 @@ export default function BeatmapPage() {
             }
           });
       });
-    fetch(`/api/snipes/beatmapID/${id}`)
+    fetch(`${API_URL}/snipes/beatmapID/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {

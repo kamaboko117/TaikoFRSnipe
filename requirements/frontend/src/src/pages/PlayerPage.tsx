@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar/Navbar";
 import { Player, Score } from "../types/api";
 import ScoreList from "../components/Scores/ScoreList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
+const API_URL = process.env.API_URL;
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
@@ -13,14 +14,14 @@ export default function PlayerPage() {
   const limit = 10;
   
   useEffect(() => {
-    fetch(`/api/players/${id}`)
+    fetch(`${API_URL}/players/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
           setPlayer(data);
         }
       });
-    fetch(`/api/scores/player/${id}?limit=${limit}&offset=${index * limit}`)
+    fetch(`${API_URL}/scores/player/${id}?limit=${limit}&offset=${index * limit}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
