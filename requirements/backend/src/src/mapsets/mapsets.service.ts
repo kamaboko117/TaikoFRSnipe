@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Mapset } from 'src/typeorm/mapset.entity';
 import { Repository } from 'typeorm';
-import { RootObject } from 'src/types/mapset';
+import { MapsetData, RootObject } from 'src/types/mapset';
 
 export
 @Injectable()
@@ -15,7 +15,7 @@ class MapsetsService {
     return this.mapsetsRepository.save(mapset);
   }
 
-  async createMapsetFromData(mapsetData: RootObject): Promise<Mapset> {
+  async createMapsetFromData(mapsetData: MapsetData): Promise<Mapset> {
     const mapset = new Mapset();
     mapset.id = mapsetData.id;
     mapset.artist = mapsetData.artist;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Beatmap } from 'src/typeorm/beatmap.entity';
-import { RootObject } from 'src/types/mapset';
+import { MapsetData, RootObject } from 'src/types/mapset';
 import { Repository } from 'typeorm';
 // import { got } from 'got';
 import { CookieJar } from 'tough-cookie';
@@ -17,7 +17,7 @@ import * as fs from 'fs';
 import { Player } from 'src/typeorm/player.entity';
 import { MapsetsService } from 'src/mapsets/mapsets.service';
 
-const isUnranked = (mapsetData: RootObject) => mapsetData.status !== 'ranked';
+const isUnranked = (mapsetData: MapsetData) => mapsetData.status !== 'ranked';
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -25,14 +25,19 @@ const sleep = (ms: number) => {
 
 const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
   const beatmapDataUrl = 'https://osu.ppy.sh/beatmaps/' + id;
-  const got = (await import('got')).default;
+  const got = await import('got');
   // const response = await got(beatmapDataUrl);
   // treat errors
-  const response = await got(beatmapDataUrl, {
-    timeout: { request: 5000 },
-  }).catch((err) => {
-    console.log(err);
-  });
+  const response = await got
+    .default(beatmapDataUrl, {
+      timeout: { request: 5000 },
+    })
+    .catch((err) => {
+      if (err instanceof got.HTTPError && err.response.statusCode === 429) {
+        throw new Error('Rate limit exceeded');
+      }
+      console.log(`${err.response.statusCode} on id ${id}`);
+    });
   if (!response) return undefined;
   const dom = new JSDOM(response.body);
   const data = dom.window.document.getElementById('json-beatmapset');
@@ -42,16 +47,81 @@ const scrapMapsetData = async (id: number): Promise<RootObject | undefined> => {
   return undefined;
 };
 
+const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
+  const url1 = 'https://api.chimu.moe/v1/map/' + id;
+  const url2 = 'https://api.chimu.moe/v1/set/';
+
+  const data1 = await fetch(url1)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        return undefined;
+      }
+      return data;
+    });
+  if (!data1) {
+    return undefined;
+  }
+  const data2 = await fetch(url2 + data1.ParentSetId)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        return undefined;
+      }
+      return data;
+    });
+  if (!data2) {
+    return undefined;
+  }
+
+  let rankedStatus;
+  if (!data2.RankedStatus) {
+    rankedStatus = 'Graveyarded';
+  } else if (data2.RankedStatus === 1) {
+    rankedStatus = 'Ranked';
+  } else if (data2.RankedStatus === 2) {
+    rankedStatus = 'Approved';
+  } else if (data2.RankedStatus === 3) {
+    rankedStatus = 'Qualified';
+  } else if (data2.RankedStatus === 4) {
+    rankedStatus = 'Loved';
+  } else {
+    rankedStatus = 'Unranked';
+  }
+  const beatmaps = data2.ChildrenBeatmaps.map((beatmap) => {
+    return {
+      id: beatmap.BeatmapId,
+      version: beatmap.DiffName,
+      difficulty_rating: beatmap.DifficultyRating,
+      total_length: beatmap.TotalLength,
+      bpm: beatmap.BPM,
+      accuracy: beatmap.OD,
+      drain: beatmap.HP,
+    };
+  });
+  const mapsetData: MapsetData = {
+    id: data2.SetId,
+    artist: data2.Artist,
+    title: data2.Title,
+    status: rankedStatus,
+    creator: data2.Creator,
+    beatmaps: beatmaps,
+  };
+  return mapsetData;
+};
+
 const scrapScores = async (id: number, jar: CookieJar) => {
   const url =
     'https://osu.ppy.sh/beatmaps/' + id + '/scores?type=country&mode=taiko';
   const got = (await import('got')).default;
-  let log_file = fs.createWriteStream('/app/debug.log', { flags: 'w' });
   const response = await got(url, {
     cookieJar: jar,
     timeout: { request: 5000 },
   }).catch((err) => {
-    log_file.write(err.response.body);
+    if (err.response?.statusCode === 429) {
+      throw new Error('Rate limit exceeded');
+    }
+    console.log(`${err.response.statusCode} on id ${id}`);
   });
   if (!response) return undefined;
   const scores: ApiScore[] = JSON.parse(response.body ?? '[]').scores;
@@ -61,11 +131,13 @@ const scrapScores = async (id: number, jar: CookieJar) => {
 const createBeatmap = async (id: number, mapsetsService: MapsetsService) => {
   // calculate how long it takes to create beatmap
   const start = Date.now();
-  const mapsetData = await scrapMapsetData(id);
+  // const mapsetData = await scrapMapsetData(id);
+  const mapsetData = await fetchMapsetData(id);
 
   if (!mapsetData) {
     throw new Error('Beatmap not found');
   }
+  // let mapset = await mapsetsService.getMapset(mapsetData.id);
   let mapset = await mapsetsService.getMapset(mapsetData.id);
   if (!mapset) {
     mapset = await mapsetsService.createMapsetFromData(mapsetData);
@@ -243,7 +315,7 @@ export class BeatmapsService {
         );
         return this.beatmapRepository.save(beatmap);
       } catch (e) {
-        console.log(e);
+        console.log(e.message);
         return;
       }
     }
@@ -270,17 +342,24 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        if (i < 100) {
+        const start = 0;
+        const limit = 100;
+        if (i < start) {
           continue;
         }
         if (i % 4 === 1) {
           console.log(`Updating beatmap ${i} of ${beatmapIDs.length}`);
         }
-        if (i > 1000) {
+        if (i > limit) {
           break;
         }
         const beatmapID = beatmapIDs[i];
-        await this.updateBeatmap(beatmapID);
+        try {
+          await this.updateBeatmap(beatmapID);
+        } catch (e) {
+          console.log(e);
+          return;
+        }
         await sleep(2000); //to not get ratelimited
       }
     });
