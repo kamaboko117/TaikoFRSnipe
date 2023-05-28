@@ -500,6 +500,7 @@ tr {
   justify-content: center;
   align-items: center;
   margin: 10px 0px 10px 0px;
+  cursor: pointer;
 }
 
 .user-profile-header > .user-profile-avatar {

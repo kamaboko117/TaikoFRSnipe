@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { Player, Score } from "../types/api";
@@ -10,8 +10,8 @@ export default function PlayerPage() {
   const [scores, setScores] = useState([] as Score[]);
   // const [index, setIndex] = useState(0);
   // const limit = 40;
-
-  React.useEffect(() => {
+  
+  useEffect(() => {
     fetch(`/api/players/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -28,11 +28,15 @@ export default function PlayerPage() {
       });
   }, [id]);
 
+  const clickPlayer = () => {
+    window.open(`https://osu.ppy.sh/users/${id}`);
+  };
+
   return (
     <div>
       <Navbar />
       <div className="wrapper">
-        <div className="user-profile-header">
+        <div className="user-profile-header" onClick={clickPlayer}>
           <div className="user-profile-avatar">
             <img
               src={`https://a.ppy.sh/${player?.id}`}

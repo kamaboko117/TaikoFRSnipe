@@ -61,4 +61,8 @@ export class ScoresService {
   updateScore(score: ScoreEntity) {
     return this.scoreRepository.update(score.id, score);
   }
+
+  updateScoreByBeatmapId(beatmapId: number, score: ScoreEntity) {
+    return this.scoreRepository.update({ beatmapId: beatmapId }, score);
+  }
 }

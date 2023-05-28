@@ -191,9 +191,7 @@ export class BeatmapsService {
       existingScore.score < topScore.total_score ||
       (existingScore.score === topScore.total_score && !beatmap.topPlayer)
     ) {
-      const snipedPlayer = await playersService.getPlayer(
-        existingScore.player.id,
-      );
+      const snipedPlayer = existingScore.player;
       if (existingScore.player.id !== player.id) {
         let newSnipe = createNewSnipe(existingScore, topScore, player, beatmap);
         await snipesService.createSnipe(newSnipe);
@@ -201,7 +199,8 @@ export class BeatmapsService {
         let newSnipe = createNewSnipe(null, topScore, player, beatmap);
         await snipesService.createSnipe(newSnipe);
       }
-      await scoresService.updateScore(
+      await scoresService.updateScoreByBeatmapId(
+        beatmap.id,
         createNewScore(topScore, beatmap.id, player, beatmap),
       );
       beatmap.topPlayer = {
@@ -271,10 +270,13 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
+        if (i < 100) {
+          continue;
+        }
         if (i % 4 === 1) {
           console.log(`Updating beatmap ${i} of ${beatmapIDs.length}`);
         }
-        if (i > 100) {
+        if (i > 1000) {
           break;
         }
         const beatmapID = beatmapIDs[i];
