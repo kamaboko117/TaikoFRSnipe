@@ -393,9 +393,9 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 8650;
+        const start = 0;
         const limit = 10000;
-        if (i < start) {
+        if (i < start || this.beatmapRepository.findOneBy({ id: i })) {
           continue;
         }
         if (i % 4 === 1) {
