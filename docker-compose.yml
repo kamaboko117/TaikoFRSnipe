@@ -24,6 +24,7 @@ services:
         window: 120s
     environment:
       WDS_SOCKET_PORT: "3000"
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
     volumes:
       - ./requirements/frontend/src:/app
 

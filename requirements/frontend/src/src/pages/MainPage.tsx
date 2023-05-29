@@ -3,13 +3,13 @@ import Navbar from "../components/Navbar/Navbar";
 import ManualUpdateForm from "../components/Beatmaps/manualUpdateForm";
 import { Beatmap, Snipe } from "../types/api";
 import SnipeList from "../components/Snipes/SnipeList";
-const API_URL = process.env.API_URL;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function MainPage() {
   const [snipes, setSnipes] = useState([] as Snipe[]);
   React.useEffect(() => {
     let snipesArray = [] as Snipe[];
-    fetch(`${API_URL}/snipes/latest/10`)
+    fetch(`${REACT_APP_API_URL}/snipes/latest/10`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {

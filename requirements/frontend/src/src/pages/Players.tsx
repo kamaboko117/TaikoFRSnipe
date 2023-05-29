@@ -3,7 +3,7 @@ import { Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
 import PlayerList from "../components/Players/PlayerList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
-const API_URL = process.env.API_URL;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function Players() {
   const [index, setIndex] = useState(0);
@@ -11,7 +11,7 @@ export default function Players() {
 
   const [players, setPlayers] = useState([] as Player[]);
   useEffect(() => {
-    fetch(`${API_URL}/players/top?offset=${index * limit}&limit=${limit}`)
+    fetch(`${REACT_APP_API_URL}/players/top?offset=${index * limit}&limit=${limit}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {

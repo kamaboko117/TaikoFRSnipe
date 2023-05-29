@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
 import PlayerCard from "../components/Players/PlayerCard";
-const API_URL = process.env.API_URL;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function SearchPage() {
   const [players, setPlayers] = useState([] as Player[]);
@@ -11,7 +11,7 @@ export default function SearchPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_URL}/players/search?name=${query}`)
+    fetch(`${REACT_APP_API_URL}/players/search?name=${query}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {

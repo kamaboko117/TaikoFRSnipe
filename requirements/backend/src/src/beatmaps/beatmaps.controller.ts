@@ -19,11 +19,11 @@ export class BeatmapsController {
     return this.beatmapsService.getBeatmaps();
   }
 
-  // @Get('populate')
-  // populateBeatmaps() {
-  //   console.log('populating beatmaps');
-  //   return this.beatmapsService.populateBeatmaps();
-  // }
+  @Get('populate')
+  populateBeatmaps() {
+    console.log('populating beatmaps');
+    return this.beatmapsService.populateBeatmaps();
+  }
 
   @Get(':id')
   @UsePipes(ValidationPipe)

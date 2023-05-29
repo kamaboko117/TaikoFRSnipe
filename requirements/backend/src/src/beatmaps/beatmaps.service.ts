@@ -383,8 +383,8 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 2260;
-        const limit = 5000;
+        const start = 4300;
+        const limit = 10000;
         if (i < start) {
           continue;
         }
@@ -405,7 +405,7 @@ export class BeatmapsService {
           }
           return;
         }
-        await sleep(1500); //to not get ratelimited
+        await sleep(2000); //to not get ratelimited
       }
     });
   }
