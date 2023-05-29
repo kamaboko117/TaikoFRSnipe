@@ -393,7 +393,7 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 7355;
+        const start = 8650;
         const limit = 10000;
         if (i < start) {
           continue;
