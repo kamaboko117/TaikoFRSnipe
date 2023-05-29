@@ -395,7 +395,8 @@ export class BeatmapsService {
       for (let i = 0; i < beatmapIDs.length; i++) {
         const start = 0;
         const limit = 10000;
-        if (i < start || this.beatmapRepository.findOneBy({ id: i })) {
+        if (i < start || await this.beatmapRepository.findOneBy({ id: i })) {
+          console.log (`Skipping beatmap ${i}`)
           continue;
         }
         if (i % 4 === 1) {
