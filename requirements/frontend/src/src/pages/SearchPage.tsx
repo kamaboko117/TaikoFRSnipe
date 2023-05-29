@@ -16,7 +16,6 @@ export default function SearchPage() {
       .then((data) => {
         if (!data.error) {
           setPlayers(data);
-          console.log(data);
         }
       });
   }, [query]);
