@@ -1,4 +1,5 @@
 import React from "react";
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function ManualUpdateForm() {
   //handle the form submission
@@ -8,7 +9,7 @@ export default function ManualUpdateForm() {
     const formData = data.get("beatmapId")?.valueOf();
     const id = parseInt(formData as string);
     if (id) {
-      fetch("/api/beatmaps", {
+      fetch(`${REACT_APP_API_URL}/beatmaps`, {
         method: "POST",
         body: JSON.stringify({ id }),
         headers: {
