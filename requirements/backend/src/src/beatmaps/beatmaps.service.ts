@@ -339,6 +339,16 @@ export class BeatmapsService {
     });
   }
 
+  searchBeatmaps(query: string) {
+    return this.beatmapRepository
+      .createQueryBuilder('beatmap')
+      .where('beatmap.title LIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.artist LIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.creator LIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.difficulty LIKE :query', { query: `%${query}%` })
+      .getMany();
+  }
+
   async updateBeatmap(id: number, { batch = false }) {
     let beatmap = await this.beatmapRepository.findOneBy({ id: id });
     if (!beatmap) {
@@ -383,7 +393,7 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 4990;
+        const start = 7355;
         const limit = 10000;
         if (i < start) {
           continue;

@@ -24,9 +24,9 @@ export class PlayersService {
     return this.playerRepository.findOneBy({ name });
   }
 
-  getTopPlayers(limit: number, offset: number) {
+  getTopPlayers(limit: number, offset: number, order: 'ASC' | 'DESC') {
     return this.playerRepository.find({
-      order: { topFRCount: 'DESC' },
+      order: { topFRCount: order },
       take: limit,
       skip: offset,
     });

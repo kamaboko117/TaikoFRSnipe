@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
-import PlayerList from "../components/Players/PlayerList";
+import { Snipe } from "../types/api";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
+import SnipeList from "../components/Snipes/SnipeList";
 import Sort from "../components/IndexSelector/Sort";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-export default function Players() {
+export default function Snipes() {
+  const [snipes, setSnipes] = useState([] as Snipe[]);
   const [index, setIndex] = useState(0);
-  const limit = 40;
-  const [players, setPlayers] = useState([] as Player[]);
   const [sort, setSort] = useState("DESC");
-
+  const limit = 20;
   useEffect(() => {
     fetch(
-      `${REACT_APP_API_URL}/players/top?offset=${
+      `${REACT_APP_API_URL}/snipes/latest?offset=${
         index * limit
       }&limit=${limit}&order=${sort}`
     )
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
-          setPlayers(data);
+          setSnipes(data);
         }
       });
   }, [index, sort]);
@@ -30,10 +29,10 @@ export default function Players() {
     <div>
       <Navbar />
       <div className="wrapper">
-        <h1>Top Players</h1>
+        <h1>Top Scores</h1>
         <Sort by={sort} setSort={setSort} />
         <IndexSelector setIndex={setIndex} index={index} />
-        <PlayerList players={players} index={index} limit={limit} />
+        <SnipeList snipes={snipes} />
         <IndexSelector setIndex={setIndex} index={index} />
       </div>
     </div>

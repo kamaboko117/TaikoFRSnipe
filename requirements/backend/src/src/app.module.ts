@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BeatmapsModule } from './beatmaps/beatmaps.module';
 import { ScoresModule } from './scores/scores.module';
 import { PlayersModule } from './players/players.module';
+import { SearchModule } from './search/search.module';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -45,6 +46,7 @@ const devFactory = {
     BeatmapsModule,
     ScoresModule,
     PlayersModule,
+    SearchModule,
   ],
 })
 export class AppModule {}

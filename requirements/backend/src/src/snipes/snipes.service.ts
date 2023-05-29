@@ -11,7 +11,9 @@ export class SnipesService {
   ) {}
 
   getSnipes() {
-    return this.snipeRepository.find({ relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'] });
+    return this.snipeRepository.find({
+      relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'],
+    });
   }
 
   getSnipe(id: number) {
@@ -29,7 +31,20 @@ export class SnipesService {
 
   getSnipesLimit(limit: number) {
     // retun newest snipes first (descending order)
-    return this.snipeRepository.find({ take: limit, order: { timestamp: 'DESC' }, relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'] });
+    return this.snipeRepository.find({
+      take: limit,
+      order: { timestamp: 'DESC' },
+      relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'],
+    });
+  }
+
+  getSnipesLatest(limit: number, offset: number, order: 'ASC' | 'DESC') {
+    return this.snipeRepository.find({
+      order: { timestamp: order },
+      take: limit,
+      skip: offset,
+      relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'],
+    });
   }
 
   createSnipe(snipe: Snipe) {

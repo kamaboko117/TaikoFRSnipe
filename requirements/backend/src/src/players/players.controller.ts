@@ -20,9 +20,13 @@ export class PlayersController {
   getTopPlayers(
     @Query('limit') limit: number,
     @Query('offset') offset: number,
+    @Query('order') order: 'ASC' | 'DESC',
   ) {
+    if (limit > 100) {
+      limit = 100;
+    }
     console.log(`Getting top players`);
-    return this.playersService.getTopPlayers(limit, offset);
+    return this.playersService.getTopPlayers(limit, offset, order);
   }
 
   @Get(':id')

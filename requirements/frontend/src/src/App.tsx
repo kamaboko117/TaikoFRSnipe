@@ -7,6 +7,7 @@ import BeatmapPage from "./pages/BeatmapPage";
 import PlayerPage from "./pages/PlayerPage";
 import SearchPage from "./pages/SearchPage";
 import Players from "./pages/Players";
+import Snipes from "./pages/Snipes";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/Player/:id" element={<PlayerPage />} />
         <Route path="/Search/:query" element={<SearchPage />} />
         <Route path="/Players" element={<Players />} />
+        <Route path="/Snipes" element={<Snipes />} />
       </Routes>
     </div>
   );
