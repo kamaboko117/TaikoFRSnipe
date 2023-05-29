@@ -27,7 +27,6 @@ export default function BeatmapPage() {
         .then((res) => res.json())
         .then((data) => {
           if (!data.error) {
-            console.log(data);
             setRefreshed(true);
           }
         });
