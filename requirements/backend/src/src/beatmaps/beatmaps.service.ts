@@ -340,12 +340,15 @@ export class BeatmapsService {
   }
 
   searchBeatmaps(query: string) {
+    const limit = 10;
     return this.beatmapRepository
       .createQueryBuilder('beatmap')
-      .where('beatmap.title LIKE :query', { query: `%${query}%` })
+      .leftJoinAndSelect('beatmap.mapset', 'mapset')
+      .where('beatmap.song LIKE :query', { query: `%${query}%` })
       .orWhere('beatmap.artist LIKE :query', { query: `%${query}%` })
-      .orWhere('beatmap.creator LIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.mapper LIKE :query', { query: `%${query}%` })
       .orWhere('beatmap.difficulty LIKE :query', { query: `%${query}%` })
+      .take(limit)
       .getMany();
   }
 
@@ -395,7 +398,9 @@ export class BeatmapsService {
       for (let i = 0; i < beatmapIDs.length; i++) {
         const start = 0;
         const limit = 10000;
-        const found = await this.beatmapRepository.findOneBy({id: beatmapIDs[i]});
+        const found = await this.beatmapRepository.findOneBy({
+          id: beatmapIDs[i],
+        });
         if (i < start || found) {
           continue;
         }

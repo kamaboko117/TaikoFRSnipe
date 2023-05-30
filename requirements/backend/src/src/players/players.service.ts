@@ -33,9 +33,11 @@ export class PlayersService {
   }
 
   searchPlayersByName(name: string) {
+    const limit = 10;
     return this.playerRepository
       .createQueryBuilder('player')
       .where('player.name ILIKE :name', { name: `%${name}%` })
+      .take(limit)
       .getMany();
   }
 
