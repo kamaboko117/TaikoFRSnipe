@@ -344,10 +344,10 @@ export class BeatmapsService {
     return this.beatmapRepository
       .createQueryBuilder('beatmap')
       .leftJoinAndSelect('beatmap.mapset', 'mapset')
-      .where('beatmap.song LIKE :query', { query: `%${query}%` })
-      .orWhere('beatmap.artist LIKE :query', { query: `%${query}%` })
-      .orWhere('beatmap.mapper LIKE :query', { query: `%${query}%` })
-      .orWhere('beatmap.difficulty LIKE :query', { query: `%${query}%` })
+      .where('beatmap.song ILIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.artist ILIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.mapper ILIKE :query', { query: `%${query}%` })
+      .orWhere('beatmap.difficulty ILIKE :query', { query: `%${query}%` })
       .take(limit)
       .getMany();
   }
