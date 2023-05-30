@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Beatmap } from 'src/typeorm/beatmap.entity';
-import { MapsetData, RootObject } from 'src/types/mapset';
+import { BeatmapData, MapsetData, RootObject } from 'src/types/mapset';
 import { Repository } from 'typeorm';
 // import { got } from 'got';
 import { CookieJar } from 'tough-cookie';
@@ -17,7 +17,8 @@ import * as fs from 'fs';
 import { Player } from 'src/typeorm/player.entity';
 import { MapsetsService } from 'src/mapsets/mapsets.service';
 
-const isUnranked = (mapsetData: MapsetData) => mapsetData.status !== 'ranked';
+const isUnranked = (mapsetData: MapsetData) =>
+  mapsetData.status !== 'ranked' && mapsetData.status !== 'approved';
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,9 +59,14 @@ const scrapMapsetData = async (id: number): Promise<MapsetData | undefined> => {
           bpm: beatmap.bpm,
           drain: beatmap.drain,
           accuracy: beatmap.accuracy,
+          mode: beatmap.mode,
         };
       }),
     };
+
+    if (isUnranked(mapsetData)) {
+      return undefined;
+    }
 
     return mapsetData;
   }
@@ -95,21 +101,19 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   if (!data2) {
     return undefined;
   }
-  let rankedStatus: string;
-  if (!data2.RankedStatus) {
-    rankedStatus = 'Graveyarded';
-  } else if (data2.RankedStatus === 1) {
-    rankedStatus = 'Ranked';
-  } else if (data2.RankedStatus === 2) {
-    rankedStatus = 'Approved';
-  } else if (data2.RankedStatus === 3) {
-    rankedStatus = 'Qualified';
-  } else if (data2.RankedStatus === 4) {
-    rankedStatus = 'Loved';
-  } else {
-    rankedStatus = 'Unranked';
+  let rankedStatus = [
+    'ranked',
+    'approved',
+    'qualified',
+    'loved',
+    'pending',
+    'WIP',
+    'graveyard',
+  ];
+  if (data2.RankedStatus != 0 || data2.RankedStatus != 1) {
+    throw new Error('Mapset is not ranked');
   }
-  const beatmaps = data2.ChildrenBeatmaps.map(
+  const beatmaps: BeatmapData[] = data2.ChildrenBeatmaps.map(
     (beatmap: {
       BeatmapId: any;
       DiffName: any;
@@ -127,14 +131,16 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
         bpm: beatmap.BPM,
         accuracy: beatmap.OD,
         drain: beatmap.HP,
+        mode: data2.Mode,
       };
     },
   );
+
   const mapsetData: MapsetData = {
     id: data2.SetId,
     artist: data2.Artist,
     title: data2.Title,
-    status: rankedStatus,
+    status: rankedStatus[data2.RankedStatus],
     creator: data2.Creator,
     beatmaps: beatmaps,
   };
@@ -170,7 +176,7 @@ const createBeatmap = async (
   if (batch) {
     mapsetDataProvider = scrapMapsetData;
   } else {
-    mapsetDataProvider = fetchMapsetData;
+    mapsetDataProvider = scrapMapsetData;
   }
   const mapsetData = await mapsetDataProvider(id);
   if (!mapsetData) {
@@ -184,6 +190,10 @@ const createBeatmap = async (
   const beatmapData = mapsetData.beatmaps.find((beatmap) => beatmap.id == id);
   if (!beatmapData) {
     throw new Error('Beatmap not found');
+  }
+
+  if (beatmapData.mode != 'taiko') {
+    throw new Error('Beatmap is not taiko');
   }
 
   const beatmap = new Beatmap();

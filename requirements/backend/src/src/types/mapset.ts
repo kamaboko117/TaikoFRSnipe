@@ -125,6 +125,7 @@ export interface BeatmapData {
   accuracy: number;
   difficulty_rating: number;
   total_length: number;
+  mode: string;
 }
 
 export interface MapsetData {
