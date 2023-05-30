@@ -406,8 +406,8 @@ export class BeatmapsService {
       }
       const beatmapIDs = JSON.parse(data.toString());
       for (let i = 0; i < beatmapIDs.length; i++) {
-        const start = 0;
-        const limit = 10000;
+        const start = 10000;
+        const limit = 30000;
         const found = await this.beatmapRepository.findOneBy({
           id: beatmapIDs[i],
         });
