@@ -7,7 +7,6 @@ import MapsetItem from "../components/Beatmaps/MapsetItem";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function SearchPage() {
-  // const [players, setPlayers] = useState([] as Player[]);
   const [result, setResult] = useState({ players: [], mapsets: [] } as {
     players: Player[];
     mapsets: Mapset[];
@@ -22,7 +21,6 @@ export default function SearchPage() {
       .then((data) => {
         if (!data.error) {
           setResult(data);
-          console.log(data);
           setIsLoaded(true);
         }
       });
