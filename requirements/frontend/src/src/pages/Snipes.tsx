@@ -3,19 +3,27 @@ import Navbar from "../components/Navbar/Navbar";
 import { Snipe } from "../types/api";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import SnipeList from "../components/Snipes/SnipeList";
+import { SortObject } from "../types/other";
 import Sort from "../components/IndexSelector/Sort";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function Snipes() {
   const [snipes, setSnipes] = useState([] as Snipe[]);
   const [index, setIndex] = useState(0);
-  const [sort, setSort] = useState("DESC");
+  const [order, setOrder] = useState("DESC" as "DESC" | "ASC");
+  const [victimless, setVictimless] = useState(false);
   const limit = 20;
+  const sort: SortObject = {
+    name: "Date",
+    string: "date",
+  };
+  const sorts = [sort];
+
   useEffect(() => {
     fetch(
       `${REACT_APP_API_URL}/snipes/latest?offset=${
         index * limit
-      }&limit=${limit}&order=${sort}`
+      }&limit=${limit}&order=${order}&victimless=${victimless}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -23,14 +31,25 @@ export default function Snipes() {
           setSnipes(data);
         }
       });
-  }, [index, sort]);
+  }, [index, order, victimless]);
+
+  console.log(victimless);
 
   return (
     <div>
       <Navbar />
       <div className="wrapper">
-        <h1>Top Scores</h1>
-        <Sort by={sort} setSort={setSort} />
+        <h1>Snipes</h1>
+        <div className="snipe-header">
+          <Sort order={order} setOrder={setOrder} sorts={sorts} sort={sort} />
+
+          <button
+            className={victimless ? "toggled" : ""}
+            onClick={() => setVictimless(!victimless)}
+          >
+            With Victims Only
+          </button>
+        </div>
         <IndexSelector setIndex={setIndex} index={index} />
         <SnipeList snipes={snipes} />
         <IndexSelector setIndex={setIndex} index={index} />

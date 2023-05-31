@@ -2,17 +2,40 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { Player, Score } from "../types/api";
-import ScoreList from "../components/Scores/ScoreList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
+import Sort from "../components/IndexSelector/Sort";
+import { SortObject } from "../types/other";
+import PlayerScoreList from "../components/Scores/PlayerScoreList";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+const sorts = [
+  { name: "PP", string: "pp" },
+  { name: "Accuracy", string: "acc" },
+  { name: "Score", string: "score" },
+  { name: "Combo", string: "maxCombo" },
+  { name: "Misses", string: "missCount" },
+  // { name: "Mods", string: "mods" },
+  // { name: "300s", string: "count300" },
+  // { name: "100s", string: "count100" },
+  // { name: "50s", string: "count50" },
+  // { name: "Katus", string: "countkatu" },
+  // { name: "Gekis", string: "countgeki" },
+  // { name: "Max Combo", string: "maxcombo" },
+  { name: "Date", string: "date" },
+];
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
   const [player, setPlayer] = useState<Player | null>(null);
   const [scores, setScores] = useState([] as Score[]);
   const [index, setIndex] = useState(0);
+  const [order, setOrder] = useState("DESC" as "DESC" | "ASC");
+  const [sort, setSort] = useState({
+    name: "PP",
+    string: "pp",
+  } as SortObject);
   const limit = 10;
-  
+
   useEffect(() => {
     fetch(`${REACT_APP_API_URL}/players/${id}`)
       .then((res) => res.json())
@@ -21,14 +44,20 @@ export default function PlayerPage() {
           setPlayer(data);
         }
       });
-    fetch(`${REACT_APP_API_URL}/scores/player/${id}?limit=${limit}&offset=${index * limit}`)
+  }, [id]);
+  useEffect(() => {
+    fetch(
+      `${REACT_APP_API_URL}/scores/player/${id}?limit=${limit}&offset=${
+        index * limit
+      }&order=${order}&sort=${sort.string}`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
           setScores(data);
         }
       });
-  }, [id, index]);
+  }, [id, index, order, sort]);
 
   const clickPlayer = () => {
     window.open(`https://osu.ppy.sh/users/${id}`);
@@ -52,8 +81,20 @@ export default function PlayerPage() {
           </div>
         </div>
         <h1>Top FRs</h1>
+        <Sort
+          order={order}
+          setOrder={setOrder}
+          sort={sort}
+          setSort={setSort}
+          sorts={sorts}
+        />
         <IndexSelector index={index} setIndex={setIndex} />
-        <ScoreList scores={scores} index={index} limit={limit} />
+        <PlayerScoreList
+          scores={scores}
+          index={index}
+          limit={limit}
+          sortColumn={sort}
+        />
         <IndexSelector index={index} setIndex={setIndex} />
       </div>
     </div>

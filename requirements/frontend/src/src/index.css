@@ -692,3 +692,54 @@ tr {
   color: #fff;
   text-overflow: ellipsis;
 }
+
+.sort-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 10px 0px;
+}
+
+button {
+  margin: 0px 10px 0px 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #55585e00;
+  color: #fff;
+  font-size: large;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 300ms;
+  border: 1px solid #55585e73;
+}
+
+.active {
+  border: #61dafb solid 1px !important;
+}
+
+button:hover {
+  background-color: #55585e73;
+  color: #fff;
+}
+
+button:active {
+  background-color: #61dafb;
+}
+
+.toggled {
+  background-color: #61dafb;
+  text-shadow: 0px 0px 10px #000;
+}
+
+.toggled:hover {
+  background-color: #296170;
+}
+
+.snipe-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 10px 0px;
+}

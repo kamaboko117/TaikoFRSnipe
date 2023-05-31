@@ -31,7 +31,16 @@ export class ScoresController {
     @Param('playerID') playerID: number,
     @Query('limit') limit: number = 10,
     @Query('offset') offset: number = 0,
+    @Query('order') order: 'DESC' | 'ASC' = 'DESC',
+    @Query('sort')
+    sort: 'pp' | 'acc' | 'maxCombo' | 'missCount' | 'score' | 'date' = 'pp',
   ) {
-    return this.scoresService.getScoresByPlayerId(playerID, limit, offset);
+    return this.scoresService.getScoresByPlayerId(
+      playerID,
+      limit,
+      offset,
+      order,
+      sort,
+    );
   }
 }

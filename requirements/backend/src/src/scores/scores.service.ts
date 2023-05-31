@@ -26,13 +26,21 @@ export class ScoresService {
     });
   }
 
-  getScoresByPlayerId(playerId: number, limit: number, offset: number) {
+  getScoresByPlayerId(
+    playerId: number,
+    limit: number,
+    offset: number,
+    order: 'ASC' | 'DESC' = 'DESC',
+    sort: 'pp' | 'acc' | 'maxCombo' | 'missCount' | 'score' | 'date' = 'pp',
+  ) {
     if (limit > 100) {
       limit = 100;
     }
+    const orderObj = {};
+    orderObj[sort] = order;
     return this.scoreRepository.find({
       where: { player: { id: playerId } },
-      order: { pp: 'DESC' },
+      order: orderObj,
       take: limit,
       skip: offset,
       relations: ['beatmap', 'player'],

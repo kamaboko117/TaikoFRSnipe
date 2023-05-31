@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Param,
+  ParseBoolPipe,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SnipesService } from './snipes.service';
 
 @Controller('snipes')
@@ -11,13 +20,16 @@ export class SnipesController {
   // }
 
   @Get('/latest')
+  @UsePipes(ValidationPipe)
   getSnipesLatest(
     @Query() { limit }: { limit: number },
     @Query() { offset }: { offset: number },
     @Query() { order }: { order: 'ASC' | 'DESC' },
+    @Query('victimless', new DefaultValuePipe(false), ParseBoolPipe)
+    victimless: boolean,
   ) {
     if (limit > 100) limit = 100;
-    return this.snipesService.getSnipesLatest(limit, offset, order);
+    return this.snipesService.getSnipesLatest(limit, offset, order, victimless);
   }
 
   @Get('/latest/:limit')

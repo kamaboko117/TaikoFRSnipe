@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Snipe } from '../typeorm/snipe.entity';
 
 @Injectable()
@@ -38,7 +38,22 @@ export class SnipesService {
     });
   }
 
-  getSnipesLatest(limit: number, offset: number, order: 'ASC' | 'DESC') {
+  getSnipesLatest(
+    limit: number,
+    offset: number,
+    order: 'ASC' | 'DESC',
+    victimless: boolean,
+  ) {
+    console.log(victimless);
+    if (victimless === true) {
+      return this.snipeRepository.find({
+        order: { timestamp: order },
+        where: { victim: Not(IsNull()) },
+        take: limit,
+        skip: offset,
+        relations: ['beatmap', 'beatmap.mapset', 'beatmap.mapset.beatmaps'],
+      });
+    }
     return this.snipeRepository.find({
       order: { timestamp: order },
       take: limit,
