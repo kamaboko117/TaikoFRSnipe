@@ -2,12 +2,10 @@ import { Module } from '@nestjs/common';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 import { PlayersModule } from '../players/players.module';
-import { BeatmapsModule } from 'src/beatmaps/beatmaps.module';
-
+import { MapsetsModule } from 'src/mapsets/mapsets.module';
 @Module({
   controllers: [SearchController],
   providers: [SearchService],
-  imports: [PlayersModule, BeatmapsModule],
-
+  imports: [PlayersModule, MapsetsModule],
 })
 export class SearchModule {}

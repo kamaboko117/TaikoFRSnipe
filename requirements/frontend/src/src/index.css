@@ -367,7 +367,7 @@ code {
 }
 
 .index-selector-arrow {
-  margin: 10px 10px 10px 10px;;
+  margin: 10px 10px 10px 10px;
   cursor: pointer;
   transition: 300ms;
 }
@@ -557,7 +557,15 @@ tr {
   color: #fff;
 }
 
-.player-list {
+.result-list-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 10px 0px;
+}
+
+.result-list-group-content {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -613,6 +621,74 @@ tr {
 .player-card-info > .player-card-name {
   font-weight: 600;
   font-size: xx-large;
+  color: #fff;
+  text-overflow: ellipsis;
+}
+
+.mapset-card {
+  display: grid;
+  align-items: center;
+  margin: 10px 10px 0px 0px;
+  background-color: #55585e73;
+  width: 400px;
+  height: 150px;
+  position: relative;
+
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 300ms;
+  overflow: hidden;
+}
+
+.mapset-card:hover {
+  box-shadow: 0px 0px 10px 5px #61dafb;
+  /*lift the box*/
+  transform: translate(0px, -5px);
+}
+
+.mapset-card > .mapset-card-cover-header {
+  display: contents;
+  overflow: hidden;
+  /* position: relative; */
+}
+
+.mapset-card-cover {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  margin-right: 10px;
+  padding: 0px;
+  overflow: hidden;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-image: url("https://osu.ppy.sh/assets/images/default-bg.7594e945.png");
+}
+
+.mapset-card-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  padding: 0px;
+  position: relative;
+  text-shadow: 0px 0px 10px #000;
+}
+
+.mapset-card-info__title {
+  font-weight: 600;
+  font-size: x-large;
+  color: #fff;
+  text-overflow: ellipsis;
+}
+
+.mapset-card-info__mapper {
+  font-weight: 600;
+  font-size: large;
   color: #fff;
   text-overflow: ellipsis;
 }

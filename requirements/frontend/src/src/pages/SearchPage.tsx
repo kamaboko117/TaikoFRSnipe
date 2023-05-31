@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Player } from "../types/api";
-import { Beatmap } from "../types/api";
+import { Mapset, Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
 import PlayerCard from "../components/Players/PlayerCard";
-import BeatmapItem from "../components/Beatmaps/BeatmapItem";
+import MapsetItem from "../components/Beatmaps/MapsetItem";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function SearchPage() {
   // const [players, setPlayers] = useState([] as Player[]);
-  const [result, setResult] = useState({ players: [], beatmaps: [] } as {
+  const [result, setResult] = useState({ players: [], mapsets: [] } as {
     players: Player[];
-    beatmaps: Beatmap[];
+    mapsets: Mapset[];
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const { query } = useParams();
@@ -45,21 +44,33 @@ export default function SearchPage() {
       <Navbar />
       <div className="wrapper">
         <h1>Results for {query}</h1>
-        <div className="player-list">
-          {result.players.map((player) => (
-            <PlayerCard
-              player={player}
-              key={player.id}
-              onClick={() => {
-                navigate(`/Player/${player.id}`);
-              }}
-            />
-          ))}
+        <div className="result-list-group">
+          <h1>Players</h1>
+          <div className="result-list-group-content">
+            {result.players.map((player) => (
+              <PlayerCard
+                player={player}
+                key={player.id}
+                onClick={() => {
+                  navigate(`/Player/${player.id}`);
+                }}
+              />
+            ))}
+          </div>
         </div>
-        <div className="player-list">
-          {result.beatmaps.map((beatmap) => (
-            <BeatmapItem beatmap={beatmap} key={beatmap.id} />
-          ))}
+        <div className="result-list-group">
+          <h1>Beatmaps</h1>
+          <div className="result-list-group-content">
+            {result.mapsets.map((mapset) => (
+              <MapsetItem
+                mapset={mapset}
+                key={mapset.id}
+                onClick={() => {
+                  navigate(`/Beatmap/${mapset.beatmaps[0].id}`);
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

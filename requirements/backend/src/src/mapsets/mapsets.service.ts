@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Mapset } from 'src/typeorm/mapset.entity';
 import { Repository } from 'typeorm';
-import { MapsetData, RootObject } from 'src/types/mapset';
+import { MapsetData } from 'src/types/mapset';
 
 export
 @Injectable()
@@ -35,11 +35,17 @@ class MapsetsService {
     return this.mapsetsRepository.find({ relations: ['beatmaps'] });
   }
 
-  // async updateMapset(id: number, mapset: Mapset) {
-  //   return this.mapsetsRepository.update(id, mapset);
-  // }
-
-  // async deleteMapset(id: number): Promise<void> {
-  //   await this.mapsetsRepository.delete(id);
-  // }
+  async searchMapsets(query: string): Promise<Mapset[]> {
+    const limit = 20;
+    return (
+      this.mapsetsRepository
+        .createQueryBuilder('mapset')
+        .leftJoinAndSelect('mapset.beatmaps', 'beatmap')
+        .where('mapset.artist ILIKE :query', { query: `%${query}%` })
+        .orWhere('mapset.song ILIKE :query', { query: `%${query}%` })
+        // .orWhere('mapset.beatmap.mapper ILIKE :query', { query: `%${query}%` })
+        .limit(limit)
+        .getMany()
+    );
+  }
 }
