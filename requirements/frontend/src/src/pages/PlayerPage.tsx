@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-import { Player, Score } from "../types/api";
+import { Player, Score, Snipe } from "../types/api";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import Sort from "../components/IndexSelector/Sort";
 import { SortObject } from "../types/other";
 import PlayerScoreList from "../components/Scores/PlayerScoreList";
+import SnipeHistory from "../components/Snipes/SnipeHistory";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const sorts = [
@@ -26,6 +27,7 @@ const sorts = [
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
+  const [snipes, setSnipes] = useState([] as Snipe[]);
   const [player, setPlayer] = useState<Player | null>(null);
   const [scores, setScores] = useState([] as Score[]);
   const [index, setIndex] = useState(0);
@@ -58,6 +60,15 @@ export default function PlayerPage() {
         }
       });
   }, [id, index, order, sort]);
+  useEffect(() => {
+    fetch(`${REACT_APP_API_URL}/snipes/player/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setSnipes(data);
+        }
+      });
+  }, [id]);
 
   const clickPlayer = () => {
     window.open(`https://osu.ppy.sh/users/${id}`);
@@ -96,6 +107,8 @@ export default function PlayerPage() {
           sortColumn={sort}
         />
         <IndexSelector index={index} setIndex={setIndex} />
+        <h1>Activity</h1>
+        <SnipeHistory snipes={snipes} verbose={true} />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { SnipesService } from './snipes.service';
 
@@ -40,5 +41,10 @@ export class SnipesController {
   @Get('BeatmapID/:id')
   getSnipesByBeatmapID(@Param() { id }: { id: number }) {
     return this.snipesService.getSnipesByBeatmapID(id);
+  }
+
+  @Get('/player/:id')
+  getSnipesByPlayerID(@Param('id', ParseIntPipe) id: number) {
+    return this.snipesService.getSnipesByPlayerID(id);
   }
 }

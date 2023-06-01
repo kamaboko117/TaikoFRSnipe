@@ -512,6 +512,18 @@ tr {
   font-weight: 600;
 }
 
+.snipe-map {
+  color: #dffb61;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.snipe-map:hover {
+  color: #dffb61;
+  text-decoration: underline;
+}
+
 .user-profile-header {
   display: flex;
   flex-direction: row;

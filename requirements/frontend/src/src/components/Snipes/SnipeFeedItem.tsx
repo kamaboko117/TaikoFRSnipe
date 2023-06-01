@@ -23,13 +23,22 @@ export const verbList = [
   "ended",
 ];
 
-export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
+export default function SnipeFeedItem({
+  snipe,
+  verbose = false,
+}: {
+  snipe: Snipe;
+  verbose?: boolean;
+}) {
   const navigate = useNavigate();
   const clickSniper = () => {
     navigate(`/Player/${snipe.sniper.id}`);
   };
   const clickVictim = () => {
     navigate(`/Player/${snipe.victim?.id}`);
+  };
+  const clickMap = () => {
+    navigate(`/Beatmap/${snipe.beatmap.id}`);
   };
   if (snipe.victim) {
     return (
@@ -51,6 +60,17 @@ export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
             ? "themselves"
             : snipe.victim.name}
         </span>
+        {verbose ? (
+          <span>
+            {" "}
+            on{" "}
+            <span className="snipe-map" onClick={clickMap}>
+              {snipe.beatmap?.artist} - {snipe.beatmap?.song}
+            </span>
+          </span>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
@@ -64,6 +84,17 @@ export default function SnipeHistory({ snipe }: { snipe: Snipe }) {
         {snipe.sniper.name}
       </span>
       <span className="snipe-verb"> claimed first place</span>
+      {verbose ? (
+        <span>
+          {" "}
+          on{" "}
+          <span className="snipe-map" onClick={clickMap}>
+            {snipe.beatmap?.artist} - {snipe.beatmap?.song}
+          </span>
+        </span>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

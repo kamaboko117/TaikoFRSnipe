@@ -82,6 +82,7 @@ export default function BeatmapPage() {
           beatmap={beatmap}
           clickPlayer={clickPlayer}
         />
+        <h1>Snipe History</h1>
         <SnipeHistory snipes={snipes} />
         <button onClick={updateBeatmap}>refresh</button>
       </div>

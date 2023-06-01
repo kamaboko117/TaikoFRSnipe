@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { Snipe } from '../typeorm/snipe.entity';
+import { Player } from 'src/typeorm/player.entity';
 
 @Injectable()
 export class SnipesService {
@@ -29,6 +30,19 @@ export class SnipesService {
     });
   }
 
+  getSnipesByPlayerID(id: number) {
+    console.log(id);
+    console.log(typeof id);
+
+    return this.snipeRepository
+      .createQueryBuilder('snipe')
+      .leftJoinAndSelect('snipe.beatmap', 'beatmap')
+      .where('snipe.sniper ILIKE :id', { id: `%${id}%` })
+      .orWhere('snipe.victim ILIKE :id', { id: `%${id}%` })
+      .take(100)
+      .getMany();
+  }
+
   getSnipesLimit(limit: number) {
     // retun newest snipes first (descending order)
     return this.snipeRepository.find({
@@ -44,7 +58,6 @@ export class SnipesService {
     order: 'ASC' | 'DESC',
     victimless: boolean,
   ) {
-    console.log(victimless);
     if (victimless === true) {
       return this.snipeRepository.find({
         order: { timestamp: order },

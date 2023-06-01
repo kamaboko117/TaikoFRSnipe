@@ -26,6 +26,25 @@ export class ScoresService {
     });
   }
 
+  getScoresSorted(
+    limit: number,
+    offset: number,
+    sort: 'pp' | 'acc' | 'maxCombo' | 'missCount' | 'score' | 'date' = 'pp',
+    order: 'ASC' | 'DESC' = 'DESC',
+  ) {
+    if (limit > 100) {
+      limit = 100;
+    }
+    const orderObj = {};
+    orderObj[sort] = order;
+    return this.scoreRepository.find({
+      order: orderObj,
+      take: limit,
+      skip: offset,
+      relations: ['player', 'beatmap'],
+    });
+  }
+
   getScoresByPlayerId(
     playerId: number,
     limit: number,

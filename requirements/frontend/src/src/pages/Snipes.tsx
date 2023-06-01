@@ -33,8 +33,6 @@ export default function Snipes() {
       });
   }, [index, order, victimless]);
 
-  console.log(victimless);
-
   return (
     <div>
       <Navbar />

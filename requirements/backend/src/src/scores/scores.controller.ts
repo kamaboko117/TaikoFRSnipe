@@ -21,8 +21,11 @@ export class ScoresController {
   async getTopScores(
     @Query('limit') limit: number = 10,
     @Query('offset') offset: number = 0,
+    @Query('order') order: 'DESC' | 'ASC' = 'DESC',
+    @Query('sort')
+    sort: 'pp' | 'acc' | 'maxCombo' | 'missCount' | 'score' = 'pp',
   ) {
-    return this.scoresService.getScoresByPP(limit, offset);
+    return this.scoresService.getScoresSorted(limit, offset, sort, order);
   }
 
   @Get('player/:playerID')
