@@ -39,6 +39,7 @@ export class SnipesService {
       .leftJoinAndSelect('snipe.beatmap', 'beatmap')
       .where('snipe.sniper ILIKE :id', { id: `%${id}%` })
       .orWhere('snipe.victim ILIKE :id', { id: `%${id}%` })
+      .orderBy('snipe.timestamp', 'DESC')
       .take(100)
       .getMany();
   }

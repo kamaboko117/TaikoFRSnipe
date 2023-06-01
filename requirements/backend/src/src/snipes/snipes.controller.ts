@@ -8,10 +8,13 @@ import {
   UsePipes,
   ValidationPipe,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { SnipesService } from './snipes.service';
+import { NotFoundInterceptor } from 'src/interceptor/interceptor';
 
 @Controller('snipes')
+@UseInterceptors(NotFoundInterceptor)
 export class SnipesController {
   constructor(private readonly snipesService: SnipesService) {}
 
@@ -23,18 +26,20 @@ export class SnipesController {
   @Get('/latest')
   @UsePipes(ValidationPipe)
   getSnipesLatest(
-    @Query() { limit }: { limit: number },
-    @Query() { offset }: { offset: number },
+    @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
     @Query() { order }: { order: 'ASC' | 'DESC' },
     @Query('victimless', new DefaultValuePipe(false), ParseBoolPipe)
     victimless: boolean,
   ) {
-    if (limit > 100) limit = 100;
+    if (limit > 100 || limit < 0) limit = 100;
     return this.snipesService.getSnipesLatest(limit, offset, order, victimless);
   }
 
   @Get('/latest/:limit')
-  getSnipesLimit(@Param() { limit }: { limit: number }) {
+  getSnipesLimit(
+    @Param('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
+  ) {
     return this.snipesService.getSnipesLimit(limit);
   }
 

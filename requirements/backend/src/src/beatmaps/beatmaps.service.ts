@@ -338,8 +338,12 @@ export class BeatmapsService {
     }
   }
 
-  getBeatmaps() {
-    return this.beatmapRepository.find();
+  getBeatmaps(limit: number, offset: number) {
+    return this.beatmapRepository.find({
+      take: limit,
+      skip: offset,
+      order: { id: 'DESC' },
+    });
   }
   getBeatmap(id: number) {
     console.log(`Getting beatmap ${id}`);

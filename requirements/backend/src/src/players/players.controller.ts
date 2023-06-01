@@ -1,14 +1,25 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { PlayersService } from './players.service';
+import { NotFoundInterceptor } from 'src/interceptor/interceptor';
 
 @Controller('players')
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
-  @Get()
-  getPlayers() {
-    return this.playersService.getPlayers();
-  }
+  // @Get()
+  // getPlayers() {
+  //   return this.playersService.getPlayers();
+  // }
 
   @Get('search')
   searchPlayersByName(@Query('name') name: string) {
@@ -17,9 +28,10 @@ export class PlayersController {
   }
 
   @Get('top')
+  @UsePipes(ValidationPipe)
   getTopPlayers(
-    @Query('limit') limit: number,
-    @Query('offset') offset: number,
+    @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
+    @Query('offset', new DefaultValuePipe(100), ParseIntPipe) offset: number,
     @Query('order') order: 'ASC' | 'DESC',
   ) {
     if (limit > 100) {
@@ -30,7 +42,8 @@ export class PlayersController {
   }
 
   @Get(':id')
-  getPlayer(@Param() { id }: { id: number }) {
+  @UseInterceptors(new NotFoundInterceptor('Player not found'))
+  getPlayer(@Param('id', ParseIntPipe) id: number) {
     console.log(`searching for player ${id}`);
     return this.playersService.getPlayer(id);
   }

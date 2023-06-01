@@ -23,7 +23,7 @@ const sorts = [
   // { name: "Gekis", string: "countgeki" },
   // { name: "Max Combo", string: "maxcombo" },
   { name: "Date", string: "date" },
-];
+] as SortObject[];
 
 export default function PlayerPage() {
   const id = parseInt(useParams().id as string);
@@ -32,10 +32,7 @@ export default function PlayerPage() {
   const [scores, setScores] = useState([] as Score[]);
   const [index, setIndex] = useState(0);
   const [order, setOrder] = useState("DESC" as "DESC" | "ASC");
-  const [sort, setSort] = useState({
-    name: "PP",
-    string: "pp",
-  } as SortObject);
+  const [sort, setSort] = useState(sorts[0] as SortObject);
   const limit = 10;
 
   useEffect(() => {
