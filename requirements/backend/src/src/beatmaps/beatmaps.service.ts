@@ -73,7 +73,9 @@ const scrapMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   return undefined;
 };
 
-const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
+const fetchMapsetDataChimu = async (
+  id: number,
+): Promise<MapsetData | undefined> => {
   const url1 = 'https://api.chimu.moe/v1/map/' + id;
   const url2 = 'https://api.chimu.moe/v1/set/';
 
@@ -147,6 +149,57 @@ const fetchMapsetData = async (id: number): Promise<MapsetData | undefined> => {
   return mapsetData;
 };
 
+const fetchMapsetDataOsuDirect = async (
+  id: number,
+): Promise<MapsetData | undefined> => {
+  const url = `https://osu.direct/api/v2/b/${id}`;
+
+  const data = await fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        return undefined;
+      }
+      return data;
+    });
+  if (!data) {
+    return undefined;
+  }
+  const beatmaps: BeatmapData[] = data.beatmaps.map(
+    (beatmap: {
+      id: any;
+      version: any;
+      difficulty_rating: any;
+      total_length: any;
+      bpm: any;
+      accuracy: any;
+      drain: any;
+      mode: any;
+    }) => {
+      return {
+        id: beatmap.id,
+        version: beatmap.version,
+        difficulty_rating: beatmap.difficulty_rating,
+        total_length: beatmap.total_length,
+        bpm: beatmap.bpm,
+        accuracy: beatmap.accuracy,
+        drain: beatmap.drain,
+        mode: beatmap.mode,
+      };
+    },
+  );
+
+  const mapsetData: MapsetData = {
+    id: data.id,
+    artist: data.artist,
+    title: data.title,
+    status: data.status,
+    creator: data.creator,
+    beatmaps: beatmaps,
+  };
+  return mapsetData;
+};
+
 const scrapScores = async (id: number, jar: CookieJar) => {
   const url =
     'https://osu.ppy.sh/beatmaps/' + id + '/scores?type=country&mode=taiko';
@@ -174,7 +227,7 @@ const createBeatmap = async (
   const start = Date.now();
   let mapsetDataProvider: { (id: number): Promise<MapsetData> };
   if (batch) {
-    mapsetDataProvider = scrapMapsetData;
+    mapsetDataProvider = fetchMapsetDataOsuDirect;
   } else {
     mapsetDataProvider = scrapMapsetData;
   }
