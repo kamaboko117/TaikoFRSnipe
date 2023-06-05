@@ -154,7 +154,20 @@ const fetchMapsetDataOsuDirect = async (
 ): Promise<MapsetData | undefined> => {
   const url = `https://osu.direct/api/v2/b/${id}`;
 
-  const data = await fetch(url)
+  let data = await fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        return undefined;
+      }
+      return data;
+    });
+  if (!data) {
+    return undefined;
+  }
+  const mapsetId = data.beatmapset_id;
+  const mapsetUrl = `https://osu.direct/api/v2/s/${mapsetId}`;
+  data = await fetch(mapsetUrl)
     .then((response) => response.json())
     .then((data) => {
       if (data.error) {

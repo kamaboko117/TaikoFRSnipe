@@ -14,7 +14,7 @@ import { SnipesService } from './snipes.service';
 import { NotFoundInterceptor } from 'src/interceptor/interceptor';
 
 @Controller('snipes')
-@UseInterceptors(NotFoundInterceptor)
+// @UseInterceptors(NotFoundInterceptor)
 export class SnipesController {
   constructor(private readonly snipesService: SnipesService) {}
 
