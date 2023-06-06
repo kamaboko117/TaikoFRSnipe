@@ -500,7 +500,7 @@ export class BeatmapsService implements OnModuleInit {
 
   private populateIDs = async () => {
     let response: Response;
-    let data: { beatmapsets: any; cursor_string: string; };
+    let data: { beatmapsets: any; cursor_string: string };
     let cursor_string = '';
     let mapsets = [];
     let beatmaps = [];
@@ -579,7 +579,7 @@ export class BeatmapsService implements OnModuleInit {
         }
         await sleep(2000); //to not get ratelimited
       }
+      this.populateIDs().then(this.populateBeatmaps);
     });
-    this.populateIDs().then(this.populateBeatmaps);
   }
 }
