@@ -527,6 +527,7 @@ export class BeatmapsService implements OnModuleInit {
     } while (data.cursor_string && i < 500);
 
     for (let i = 0; i < mapsets.length; i++) {
+      if (mapsets[i].status === "ranked" || mapsets[i].status === "approved")
       beatmaps.push(...mapsets[i].beatmaps);
     }
     for (let i = 0; i < beatmaps.length; i++) {
@@ -554,10 +555,10 @@ export class BeatmapsService implements OnModuleInit {
       for (let i = 0; i < beatmapIDs.length; i++) {
         const start = 0;
         const limit = 30000;
-        const found = await this.beatmapRepository.findOneBy({
-          id: beatmapIDs[i],
-        });
-        if (i < start || found) {
+        // const found = await this.beatmapRepository.findOneBy({
+        //   id: beatmapIDs[i],
+        // });
+        if (i < start) {
           continue;
         }
         if (i % 4 === 1) {
