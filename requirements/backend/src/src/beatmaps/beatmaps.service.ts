@@ -345,6 +345,7 @@ export class BeatmapsService {
     if (scores.length === 0) {
       return;
     }
+    console.log(scores[0])
     const topScore = scores[0];
     // if (await scoresService.getScore(topScore.id)) {
     //   console.log('Score already exists')
