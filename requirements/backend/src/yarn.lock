@@ -2827,6 +2827,14 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+heroku-keep-awake@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/heroku-keep-awake/-/heroku-keep-awake-1.1.2.tgz#f828fdf66ac11bfccb91fdce89e855a77e6caeb5"
+  integrity sha512-XGQ2XiptXIOiKui3ZQDVwVZVnnnFkY3doxUDg9LR2YcFiBESJCsWR2GbPVf3oY+3dcrIo20LXEcH6rpOyF9cag==
+  dependencies:
+    moment "^2.27.0"
+    node-fetch "^2.6.0"
+
 hexoid@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hexoid/-/hexoid-1.0.0.tgz#ad10c6573fb907de23d9ec63a711267d9dc9bc18"
@@ -3863,6 +3871,11 @@ mkdirp@^2.1.3:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
   integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
 
+moment@^2.27.0:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -3937,7 +3950,7 @@ node-emoji@1.11.0:
   dependencies:
     lodash "^4.17.21"
 
-node-fetch@^2.6.1:
+node-fetch@^2.6.0, node-fetch@^2.6.1:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
   integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==

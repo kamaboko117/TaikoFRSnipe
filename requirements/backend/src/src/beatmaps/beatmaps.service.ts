@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Beatmap } from 'src/typeorm/beatmap.entity';
 import { BeatmapData, MapsetData, RootObject } from 'src/types/mapset';
@@ -321,7 +321,7 @@ const createNewSnipe = (
 };
 
 @Injectable()
-export class BeatmapsService {
+export class BeatmapsService implements OnModuleInit {
   constructor(
     @InjectRepository(Beatmap)
     private beatmapRepository: Repository<Beatmap>,
@@ -330,6 +330,10 @@ export class BeatmapsService {
     private readonly snipesService: SnipesService,
     private readonly mapsetsService: MapsetsService,
   ) {}
+
+  async onModuleInit() {
+    this.populateBeatmaps();
+  }
 
   private async updateScores(
     beatmap: Beatmap,
@@ -345,7 +349,6 @@ export class BeatmapsService {
     if (scores.length === 0) {
       return;
     }
-    console.log(scores[0])
     const topScore = scores[0];
     // if (await scoresService.getScore(topScore.id)) {
     //   console.log('Score already exists')
@@ -468,7 +471,79 @@ export class BeatmapsService {
     return this.beatmapRepository.save(beatmap);
   }
 
-  populateBeatmaps() {
+  private getToken = async () => {
+    const response = await fetch('https://osu.ppy.sh/oauth/token', {
+      method: 'POST',
+      body: JSON.stringify({
+        client_id: process.env.ID,
+        client_secret: process.env.SECRET,
+        grant_type: 'client_credentials',
+        scope: 'public',
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data.access_token;
+  };
+
+  // define a function that fetches api with secret
+  private fetchWithSecret = async (url: string, token: string) => {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  };
+
+  private populateIDs = async () => {
+    let response: Response;
+    let data: { beatmapsets: any; cursor_string: string; };
+    let cursor_string = '';
+    let mapsets = [];
+    let beatmaps = [];
+    let beatmapIds = [];
+    const token = await this.getToken();
+
+    let i = 0;
+
+    response = await this.fetchWithSecret(
+      `https://osu.ppy.sh/api/v2/beatmapsets/search?m=1&s=ranked`,
+      token,
+    );
+    data = await response.json();
+    do {
+      response = await this.fetchWithSecret(
+        `https://osu.ppy.sh/api/v2/beatmapsets/search?m=1&cursor_string=${cursor_string}`,
+        token,
+      );
+      data = await response.json();
+      mapsets.push(...data.beatmapsets);
+      cursor_string = data.cursor_string;
+      console.log(cursor_string);
+      i++;
+    } while (data.cursor_string && i < 500);
+
+    for (let i = 0; i < mapsets.length; i++) {
+      beatmaps.push(...mapsets[i].beatmaps);
+    }
+    for (let i = 0; i < beatmaps.length; i++) {
+      if (beatmaps[i].mode != 'taiko') {
+        console.log(`${beatmaps[i].id} not taiko`);
+        continue;
+      }
+      beatmapIds.push(beatmaps[i].id);
+    }
+    //create a json file with the beatmap ids
+    fs.writeFile('beatmapIds.json', JSON.stringify(beatmapIds), (err) => {
+      if (err) throw err;
+      console.log('The file has been saved!');
+    });
+  };
+
+  private populateBeatmaps() {
     // open beatmapIDs.json with fs
     fs.readFile('beatmapIds.json', async (err, data) => {
       if (err) {
@@ -505,5 +580,6 @@ export class BeatmapsService {
         await sleep(2000); //to not get ratelimited
       }
     });
+    this.populateIDs().then(this.populateBeatmaps);
   }
 }

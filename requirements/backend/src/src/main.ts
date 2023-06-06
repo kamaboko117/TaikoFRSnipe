@@ -8,6 +8,8 @@ async function bootstrap() {
   app.setGlobalPrefix("/api");
   app.enableCors();
   const PORT = process.env.PORT || 3000;
+  const herokuKeepAwake = require("heroku-keep-awake");
+  herokuKeepAwake.wakeDyno("https://tfrs-backend.herokuapp.com/");
   await app.listen(PORT);
 }
 bootstrap();
