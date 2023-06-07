@@ -355,9 +355,9 @@ export class BeatmapsService implements OnModuleInit {
     //   console.log(await scoresService.getScore(topScore.id))
     //   return;
     // }
-    const player = await playersService.getPlayer(topScore.user_id);
+    let player = await playersService.getPlayer(topScore.user_id);
     if (!player) {
-      await playersService.createPlayer(
+      player = await playersService.createPlayer(
         topScore.user_id,
         topScore.user.username,
       );
@@ -573,7 +573,7 @@ export class BeatmapsService implements OnModuleInit {
         } catch (e) {
           console.log(`Error updating beatmap ${beatmapID}`);
           console.log(e);
-          if (e.message === 'Scores not found') {
+          if (e.message !== 'Rate limit exceeded') {
             continue;
           }
           return;

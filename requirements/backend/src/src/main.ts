@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors();
   const PORT = process.env.PORT || 3000;
   const herokuKeepAwake = require("heroku-keep-awake");
-  herokuKeepAwake.wakeDyno("https://tfrs-backend.herokuapp.com/");
+  herokuKeepAwake.wakeDyno("https://tfrs-backend.herokuapp.com/", {stopTimes: {start: "00:00", end: "00:00"}});
   await app.listen(PORT);
 }
 bootstrap();
