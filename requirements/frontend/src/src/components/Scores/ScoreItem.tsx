@@ -2,7 +2,13 @@ import React from "react";
 import { Score } from "../../types/api";
 import { useNavigate } from "react-router-dom";
 
-export default function ScoreItem({ score, rank }: { score: Score, rank: number }) {
+export default function ScoreItem({
+  score,
+  rank,
+}: {
+  score: Score;
+  rank: number;
+}) {
   const navigate = useNavigate();
   const clickPlayer = () => {
     navigate(`/player/${score.player.id}`);
@@ -10,9 +16,14 @@ export default function ScoreItem({ score, rank }: { score: Score, rank: number 
   const clickBeatmap = () => {
     navigate(`/beatmap/${score.beatmap.id}`);
   };
+  const onAuxClick = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/beatmap/${score.beatmap.id}`);
+    }
+  };
   return (
-    <tr className="table-row">
-      <td style={{fontWeight: "800"}}>#{rank}</td>
+    <tr className="table-row" onMouseDown={onAuxClick}>
+      <td style={{ fontWeight: "800" }}>#{rank}</td>
       <td onClick={clickBeatmap} style={{ cursor: "pointer" }}>
         {score.beatmap.artist} - {score.beatmap.song} [
         {score.beatmap.difficulty}]

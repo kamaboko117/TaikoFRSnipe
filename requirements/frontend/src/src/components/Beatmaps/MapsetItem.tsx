@@ -7,8 +7,14 @@ interface Props {
 }
 
 export default function MapsetItem({ mapset, onClick }: Props) {
+  const onAuxClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/beatmap/${mapset.id}`);
+    }
+  };
+
   return (
-    <div className="mapset-card" onClick={onClick}>
+    <div className="mapset-card" onClick={onClick} onMouseDown={onAuxClick}>
       <div className="mapset-card-cover-header">
         <div
           className="mapset-card-cover"

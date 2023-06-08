@@ -17,6 +17,11 @@ export default function ScoreItem({
   const clickBeatmap = () => {
     navigate(`/beatmap/${score.beatmap.id}`);
   };
+  const onAuxClick = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/beatmap/${score.beatmap.id}`);
+    }
+  };
   const sortColumnValue = () => {
     switch (sortColumn.name) {
       case "Accuracy":
@@ -36,7 +41,7 @@ export default function ScoreItem({
     }
   };
   return (
-    <tr className="table-row">
+    <tr className="table-row" onMouseDown={onAuxClick}>
       <td style={{ fontWeight: "800" }}>#{rank}</td>
       <td onClick={clickBeatmap} style={{ cursor: "pointer" }}>
         {score.beatmap.artist} - {score.beatmap.song} [

@@ -8,8 +8,14 @@ export default function PlayerCard({
   player: Player;
   onClick: () => void;
 }) {
+  const onAuxClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/player/${player.id}`);
+    }
+  };
+
   return (
-    <div className="player-card" onClick={onClick}>
+    <div className="player-card" onClick={onClick} onMouseDown={onAuxClick}>
       <div className="player-card-avatar">
         <img src={`https://a.ppy.sh/${player.id}`} alt="avatar" />
       </div>

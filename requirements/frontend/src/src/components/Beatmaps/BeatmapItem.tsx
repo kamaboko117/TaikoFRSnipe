@@ -7,18 +7,27 @@ export default function BeatmapItem(props: { beatmap: Beatmap }) {
   const handleClick = () => {
     navigate(`/Beatmap/${props.beatmap.id}`);
   };
+  const onAuxClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/Beatmap/${props.beatmap.id}`);
+    }
+  };
 
   return (
-    <div className="beatmap-item" onClick={handleClick}>
+    <div
+      className="beatmap-item"
+      onClick={handleClick}
+      onMouseDown={onAuxClick}
+    >
       <div className="beatmap-thumbnail">
         <img
           src={`https://assets.ppy.sh/beatmaps/${props.beatmap.mapset.id}/covers/cover.jpg`}
           alt="cover"
         />
-        <h1 className="beatmap-title">
+        <span className="beatmap-title">
           {props.beatmap.artist} - {props.beatmap.song}
-        </h1>
-        <h2 className="beatmap-difficulty">{props.beatmap.difficulty}</h2>
+        </span>
+        <span className="beatmap-difficulty">{props.beatmap.difficulty}</span>
       </div>
     </div>
   );

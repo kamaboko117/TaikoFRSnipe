@@ -34,12 +34,28 @@ export default function SnipeFeedItem({
   const clickSniper = () => {
     navigate(`/Player/${snipe.sniper.id}`);
   };
+  const auxClickSniper = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/Player/${snipe.sniper.id}`);
+    }
+  };
   const clickVictim = () => {
     navigate(`/Player/${snipe.victim?.id}`);
+  };
+  const auxClickVictim = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/Player/${snipe.victim?.id}`);
+    }
   };
   const clickMap = () => {
     navigate(`/Beatmap/${snipe.beatmap.id}`);
   };
+  const auxClickMap = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/Beatmap/${snipe.beatmap.id}`);
+    }
+  };
+
   if (snipe.victim) {
     return (
       <div>
@@ -47,7 +63,11 @@ export default function SnipeFeedItem({
           {" "}
           {new Date(snipe.timestamp).toLocaleString()}{" "}
         </span>
-        <span className="sniper-name" onClick={clickSniper}>
+        <span
+          className="sniper-name"
+          onClick={clickSniper}
+          onMouseDown={auxClickSniper}
+        >
           {" "}
           {snipe.sniper.name}{" "}
         </span>
@@ -55,7 +75,11 @@ export default function SnipeFeedItem({
           {verbList[Math.floor(Math.random() * verbList.length)]}
         </span>
         <span> </span>
-        <span className="victim-name" onClick={clickVictim}>
+        <span
+          className="victim-name"
+          onClick={clickVictim}
+          onMouseDown={auxClickVictim}
+        >
           {snipe.victim.id === snipe.sniper.id
             ? "themselves"
             : snipe.victim.name}
@@ -64,7 +88,11 @@ export default function SnipeFeedItem({
           <span>
             {" "}
             on{" "}
-            <span className="snipe-map" onClick={clickMap}>
+            <span
+              className="snipe-map"
+              onClick={clickMap}
+              onMouseDown={auxClickMap}
+            >
               {snipe.beatmap?.artist} - {snipe.beatmap?.song}
             </span>
           </span>
@@ -80,7 +108,11 @@ export default function SnipeFeedItem({
         {" "}
         {new Date(snipe.timestamp).toLocaleString()}{" "}
       </span>
-      <span className="sniper-name" onClick={clickSniper}>
+      <span
+        className="sniper-name"
+        onClick={clickSniper}
+        onMouseDown={auxClickSniper}
+      >
         {snipe.sniper.name}
       </span>
       <span className="snipe-verb"> claimed first place</span>
@@ -88,7 +120,11 @@ export default function SnipeFeedItem({
         <span>
           {" "}
           on{" "}
-          <span className="snipe-map" onClick={clickMap}>
+          <span
+            className="snipe-map"
+            onClick={clickMap}
+            onMouseDown={auxClickMap}
+          >
             {snipe.beatmap?.artist} - {snipe.beatmap?.song}
           </span>
         </span>

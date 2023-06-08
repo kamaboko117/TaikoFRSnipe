@@ -13,11 +13,17 @@ export default function PlayerItem({
   const clickPlayer = () => {
     navigate(`/player/${player.id}`);
   };
+  const onAuxClick = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+    if (e.button === 1) {
+      window.open(`/player/${player.id}`);
+    }
+  };
 
   return (
     <tr
       className="table-row"
       onClick={clickPlayer}
+      onMouseDown={onAuxClick}
       style={{ cursor: "pointer" }}
     >
       <td style={{ fontWeight: "800" }}>#{rank}</td>
