@@ -50,13 +50,30 @@ export class ScoresService {
     limit: number,
     offset: number,
     order: 'ASC' | 'DESC' = 'DESC',
-    sort: 'pp' | 'acc' | 'maxCombo' | 'missCount' | 'score' | 'date' = 'pp',
+    sort:
+      | 'pp'
+      | 'acc'
+      | 'maxCombo'
+      | 'missCount'
+      | 'score'
+      | 'date'
+      | 'sr' = 'pp',
   ) {
     if (limit > 100) {
       limit = 100;
     }
     const orderObj = {};
     orderObj[sort] = order;
+    if (sort === 'sr') {
+      return this.scoreRepository
+        .createQueryBuilder('score')
+        .leftJoinAndSelect('score.beatmap', 'beatmap')
+        .where('score.playerId = :playerId', { playerId })
+        .orderBy('beatmap.sr', order)
+        .take(limit)
+        .skip(offset)
+        .getMany();
+    }
     return this.scoreRepository.find({
       where: { player: { id: playerId } },
       order: orderObj,

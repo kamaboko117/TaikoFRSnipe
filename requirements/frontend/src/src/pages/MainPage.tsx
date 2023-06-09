@@ -33,7 +33,9 @@ export default function MainPage() {
       <div className="wrapper">
         <h1>Latest Taiko French Tops</h1>
         <SnipeList snipes={snipes} />
-        <button onClick={() => navigate("/Snipes")}>View All</button>
+        <button className={"center"} onClick={() => navigate("/Snipes")}>
+          View All
+        </button>
         <ManualUpdateForm />
       </div>
     </div>

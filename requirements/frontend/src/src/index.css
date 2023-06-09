@@ -14,6 +14,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: #61dafb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 .app-logo {
   height: 4px;
   pointer-events: none;
@@ -31,6 +37,13 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
   max-width: 1200px;
+}
+
+.center {
+  margin: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .normal-link {
@@ -98,6 +111,15 @@ code {
 
 .navbar a:hover {
   color: #61dafb;
+}
+
+.navbar_2 {
+  width: 100%;
+  min-width: 100%;
+  background-color: #83308a7a;
+  color: white;
+  display: flex;
+  justify-content: center;
 }
 
 .beatmap-card {

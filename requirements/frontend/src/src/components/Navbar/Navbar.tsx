@@ -7,7 +7,7 @@ interface NavbarLinkProps {
   children: any;
 }
 
-function NavbarLink({ dest, children }: NavbarLinkProps) {
+export function NavbarLink({ dest, children }: NavbarLinkProps) {
   const resolvedPath = useResolvedPath(dest);
   const isActive = useMatch(resolvedPath.pathname);
 
@@ -29,6 +29,7 @@ export default function Navbar() {
         <NavbarLink dest="/">Home</NavbarLink>
         <NavbarLink dest="/Scores">Scores</NavbarLink>
         <NavbarLink dest="/Players">Players</NavbarLink>
+        <NavbarLink dest="/About">About</NavbarLink>
       </nav>
       <div className="navbar-right">
         <SearchBar />

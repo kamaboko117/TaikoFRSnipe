@@ -1,5 +1,5 @@
 import React from "react";
-import { Score } from "../../types/api";
+import { Beatmap, Score } from "../../types/api";
 import { useNavigate } from "react-router-dom";
 import { SortObject } from "../../types/other";
 import { getTimeSinceDate } from "../../utils";
@@ -36,6 +36,8 @@ export default function ScoreItem({
         return score.pp;
       case "Date":
         return `${getTimeSinceDate(new Date(score.date))} ago`;
+      case "Star Rating":
+        return score.beatmap.sr;
       default:
         return "";
     }

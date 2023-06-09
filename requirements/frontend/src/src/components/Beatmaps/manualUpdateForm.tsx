@@ -26,6 +26,12 @@ export default function ManualUpdateForm() {
   return (
     <div>
       <h1>Manual Update</h1>
+      <p>
+        Is a beatmap missing? The database automatic updates can take up to
+        24 hours. Also keep in mind that only ranked maps are tracked at the
+        moment. If you want to update a map faster or if the automatic update
+        failed to capture a map, feel free to use the manual updater below
+      </p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="beatmapId">Beatmap ID</label>
         <input type="text" name="beatmapId" id="beatmapId" />

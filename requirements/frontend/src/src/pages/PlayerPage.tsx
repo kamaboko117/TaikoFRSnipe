@@ -23,6 +23,7 @@ const sorts = [
   // { name: "Gekis", string: "countgeki" },
   // { name: "Max Combo", string: "maxcombo" },
   { name: "Date", string: "date" },
+  { name: "Star Rating", string: "sr" },
 ] as SortObject[];
 
 export default function PlayerPage() {

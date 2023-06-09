@@ -8,6 +8,8 @@ import PlayerPage from "./pages/PlayerPage";
 import SearchPage from "./pages/SearchPage";
 import Players from "./pages/Players";
 import Snipes from "./pages/Snipes";
+import About from "./pages/About";
+// import HallOfFame from "./pages/HallOfFame";
 
 function App() {
   return (
@@ -19,7 +21,10 @@ function App() {
         <Route path="/Player/:id" element={<PlayerPage />} />
         <Route path="/Search/:query" element={<SearchPage />} />
         <Route path="/Players" element={<Players />} />
+        <Route path="/Players/Top" element={<Players />} />
+        {/* <Route path="/Players/HallOfFame" element={<HallOfFame />} /> */}
         <Route path="/Snipes" element={<Snipes />} />
+        <Route path="/About" element={<About />} />
       </Routes>
     </div>
   );
