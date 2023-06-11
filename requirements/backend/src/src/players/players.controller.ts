@@ -41,6 +41,12 @@ export class PlayersController {
     return this.playersService.getTopPlayers(limit, offset, order);
   }
 
+  @Get('hof')
+  getHallOfFame() {
+    console.log(`Getting hall of fame`);
+    return this.playersService.getHallOfFame();
+  }
+
   @Get(':id')
   @UseInterceptors(new NotFoundInterceptor('Player not found'))
   getPlayer(@Param('id', ParseIntPipe) id: number) {

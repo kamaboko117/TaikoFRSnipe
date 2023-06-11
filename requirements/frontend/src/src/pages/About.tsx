@@ -18,7 +18,7 @@ export default function About() {
         </span>
         <h2>How does it work?</h2>
         <span>
-          The website checks each map manually for new scores and updates it if
+          The website checks each map manually for new scores and updates them if
           a better score is found. updating every map in the database takes up
           to 24 hours. after clearing the list we add the latest maps to the
           list and we start again. If you want to update a score faster, you can

@@ -5,6 +5,7 @@ import PlayerList from "../components/Players/PlayerList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import Sort from "../components/IndexSelector/Sort";
 import { SortObject } from "../types/other";
+import PlayersNav from "../components/Navbar/PlayersNav";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function Players() {
@@ -35,7 +36,7 @@ export default function Players() {
     <div>
       <Navbar />
       <div className="wrapper">
-        <h1>Top Players</h1>
+        <PlayersNav />
         <Sort order={order} setOrder={setOrder} sort={sort} sorts={sorts} />
         <IndexSelector setIndex={setIndex} index={index} />
         <PlayerList players={players} index={index} limit={limit} />

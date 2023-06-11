@@ -249,13 +249,13 @@ code {
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* horizontal center */
+  justify-content: center;
   /* margin: 10px 10px 10px 10px; */
 
-  border-radius: 4px; /* Styling */
+  border-radius: 4px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.56s ease-in-out; /* Animation */
+  transition: box-shadow 0.56s ease-in-out;
 }
 
 .beatmap-thumbnail {
@@ -776,4 +776,64 @@ button:active {
   justify-content: center;
   align-items: center;
   margin: 10px 0px 10px 0px;
+}
+
+.hof-container {
+  display: grid;
+  /* grid-template-rows: repeat(4, 1fr); */
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+}
+
+.hof-element {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 300ms;
+  /* overflow: hidden; */
+}
+
+.hof-card {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  margin: 10px 0px 0px 0px;
+  background-color: #55585e73;
+  max-width: 256px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 300ms;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 5px #13141473;
+}
+
+.hof-card_avatar {
+  width: 256px;
+  /* position: relative; */
+}
+
+.hof-card:hover {
+  background-color: #61dafb;
+  transform: translate(0px, -5px);
+  /* box-shadow: 0px 0px 10px 5px #61dafb; */
+}
+
+.hof-card_content {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-start; */
+  align-items: center;
+  margin: 0px 10px 0px 10px;
+  font-weight: normal;
+}
+
+.hof-card_content > .player-name {
+  font-weight: 600;
+  margin: 5px;
+  font-size: x-large;
+  color: #fff;
+  text-overflow: ellipsis;
 }

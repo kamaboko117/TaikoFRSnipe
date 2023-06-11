@@ -94,6 +94,51 @@ export class ScoresService {
     });
   }
 
+  getHighestPPPlay() {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.beatmap', 'beatmap')
+      .orderBy('score.pp', 'DESC')
+      .take(1)
+      .getOne();
+  }
+
+  getLongestPlay() {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.beatmap', 'beatmap')
+      .orderBy('score.score', 'DESC')
+      .take(1)
+      .getOne();
+  }
+
+  getMostMisses() {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.beatmap', 'beatmap')
+      .orderBy('score.missCount', 'DESC')
+      .take(1)
+      .getOne();
+  }
+
+  getLessAcc() {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.beatmap', 'beatmap')
+      .orderBy('score.acc', 'ASC')
+      .take(1)
+      .getOne();
+  }
+  
+  getOldestScore() {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.beatmap', 'beatmap')
+      .orderBy('score.date', 'ASC')
+      .take(1)
+      .getOne();
+  }
+
   createScore(score: ScoreEntity) {
     return this.scoreRepository.save(score);
   }

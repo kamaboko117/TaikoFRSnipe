@@ -52,3 +52,17 @@ export interface Score {
   player: Player;
   beatmap: Beatmap;
 }
+
+export interface hof {
+  highestPPPlay: Score;
+  longestPlay: Score;
+  mostMisses: Score;
+  lessAcc: Score;
+  FLModLover: Player;
+  // HDModLover: Player;
+  // HRModLover: Player;
+  // DTModLover: Player;
+  // EZModLover: Player;
+  // NCModLover: Player;
+  OldestScore: Score;
+}

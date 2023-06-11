@@ -32,6 +32,89 @@ export class PlayersService {
     });
   }
 
+  async getHallOfFame() {
+    const highestPPPlay = this.scoresService.getHighestPPPlay();
+    const longestPlay = this.scoresService.getLongestPlay();
+    const mostMisses = this.scoresService.getMostMisses();
+    const lessAcc = this.scoresService.getLessAcc();
+    const FLModLover = this.playerRepository
+      .createQueryBuilder('player')
+      .leftJoinAndSelect('player.scores', 'scores')
+      // .leftJoinAndSelect('scores.beatmap', 'beatmap')
+      .where('scores.mods @> ARRAY[:mod]', { mod: 'FL' })
+      .orderBy('scores.pp', 'DESC')
+      .take(1)
+      .getOne();
+    // const HDModLover = this.playerRepository
+    //   .createQueryBuilder('player')
+    //   .leftJoinAndSelect('player.scores', 'scores')
+    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
+    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'HD' })
+    //   .orderBy('scores.pp', 'DESC')
+    //   .take(1)
+    //   .getOne();
+    // const HRModLover = this.playerRepository
+    //   .createQueryBuilder('player')
+    //   .leftJoinAndSelect('player.scores', 'scores')
+    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
+    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'HR' })
+    //   .orderBy('scores.pp', 'DESC')
+    //   .take(1)
+    //   .getOne();
+    // const DTModLover = this.playerRepository
+    //   .createQueryBuilder('player')
+    //   .leftJoinAndSelect('player.scores', 'scores')
+    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
+    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'DT' })
+    //   .orderBy('scores.pp', 'DESC')
+    //   .take(1)
+    //   .getOne();
+    // const EZModLover = this.playerRepository
+    //   .createQueryBuilder('player')
+    //   .leftJoinAndSelect('player.scores', 'scores')
+    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
+    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'EZ' })
+    //   .orderBy('scores.pp', 'DESC')
+    //   .take(1)
+    //   .getOne();
+    // const NCModLover = this.playerRepository
+    //   .createQueryBuilder('player')
+    //   .leftJoinAndSelect('player.scores', 'scores')
+    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
+    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'NC' })
+    //   .orderBy('scores.pp', 'DESC')
+    //   .take(1)
+    //   .getOne();
+    const OldestScore = this.scoresService.getOldestScore();
+
+    const values_1 = await Promise.all([
+      highestPPPlay,
+      longestPlay,
+      mostMisses,
+      lessAcc,
+      FLModLover,
+      // HDModLover,
+      // HRModLover,
+      // DTModLover,
+      // EZModLover,
+      // NCModLover,
+      OldestScore,
+    ]);
+    return {
+      highestPPPlay: values_1[0],
+      longestPlay: values_1[1],
+      mostMisses: values_1[2],
+      lessAcc: values_1[3],
+      FLModLover: values_1[4],
+      // HDModLover: values[5],
+      // HRModLover: values[6],
+      // DTModLover: values[7],
+      // EZModLover: values[8],
+      // NCModLover: values[9],
+      OldestScore: values_1[5],
+    };
+  }
+
   searchPlayersByName(name: string) {
     const limit = 10;
     return this.playerRepository
