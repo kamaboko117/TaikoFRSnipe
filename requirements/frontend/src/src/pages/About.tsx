@@ -18,9 +18,9 @@ export default function About() {
         </span>
         <h2>How does it work?</h2>
         <span>
-          The website checks each map manually for new scores and updates them if
-          a better score is found. updating every map in the database takes up
-          to 24 hours. after clearing the list we add the latest maps to the
+          The website checks each map manually for new scores and updates them
+          if a better score is found. updating every map in the database takes
+          up to 24 hours. after clearing the list we add the latest maps to the
           list and we start again. If you want to update a score faster, you can
           use the manual updater on the homepage, or go to the beatmap page and
           click on the refresh button.
@@ -48,6 +48,24 @@ export default function About() {
         <span>
           thanks <a href="https://github.com/YaniFR">YaniFR</a> for (?) and for
           being a good friend
+        </span>
+        <br />
+        <span>
+          Thanks to Nethen for being a good friend and for being a good friend I
+          guess ? I don't know what to say about him but he's a good friend. I
+          guess. -Copilot
+        </span>
+        <br />
+        <span>
+          Thank you Briesmas for being so beautiful and nice. I love you and I
+          will marry you one day.
+        </span>
+        <br />
+        <span>
+          Thanks Acii for making an announcement about this website on the
+          French osu!taiko Discord server. I don't know how i can thank you
+          enough for this. this was the most important thing that happened to me
+          in my life. I love you Acii. I will marry you one day.
         </span>
         <br />
         <span>
