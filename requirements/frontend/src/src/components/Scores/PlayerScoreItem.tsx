@@ -1,6 +1,6 @@
 import React from "react";
-import { Beatmap, Score } from "../../types/api";
-import { useNavigate } from "react-router-dom";
+import { Score } from "../../types/api";
+import { Link } from "react-router-dom";
 import { SortObject } from "../../types/other";
 import { getTimeSinceDate } from "../../utils";
 
@@ -13,15 +13,6 @@ export default function ScoreItem({
   rank: number;
   sortColumn: SortObject;
 }) {
-  const navigate = useNavigate();
-  const clickBeatmap = () => {
-    navigate(`/beatmap/${score.beatmap.id}`);
-  };
-  const onAuxClick = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
-    if (e.button === 1) {
-      window.open(`/beatmap/${score.beatmap.id}`);
-    }
-  };
   const sortColumnValue = () => {
     switch (sortColumn.name) {
       case "Accuracy":
@@ -43,9 +34,9 @@ export default function ScoreItem({
     }
   };
   return (
-    <tr className="table-row" onMouseDown={onAuxClick}>
+    <Link className="table-row" to={`/Beatmap/${score.beatmap.id}`}>
       <td style={{ fontWeight: "800" }}>#{rank}</td>
-      <td onClick={clickBeatmap} style={{ cursor: "pointer" }}>
+      <td>
         {score.beatmap.artist} - {score.beatmap.song} [
         {score.beatmap.difficulty}]
       </td>
@@ -56,6 +47,6 @@ export default function ScoreItem({
       {sortColumn.name !== "Misses" ? <td>{score.missCount}</td> : null}
       {sortColumn.name !== "Score" ? <td>{score.score}</td> : null}
       <td>{sortColumnValue()}</td>
-    </tr>
+    </Link>
   );
 }

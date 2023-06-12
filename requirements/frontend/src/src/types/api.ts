@@ -29,6 +29,7 @@ export interface Player {
   id: number;
   name: string;
   topFRCount: number;
+  scores: Score[];
 }
 
 export interface Snipe {

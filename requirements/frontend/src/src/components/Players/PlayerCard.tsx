@@ -1,21 +1,14 @@
 import React from "react";
 import { Player } from "../../types/api";
+import { Link } from "react-router-dom";
 
 export default function PlayerCard({
   player,
-  onClick,
 }: {
   player: Player;
-  onClick: () => void;
 }) {
-  const onAuxClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.button === 1) {
-      window.open(`/player/${player.id}`);
-    }
-  };
-
   return (
-    <div className="player-card" onClick={onClick} onMouseDown={onAuxClick}>
+    <Link className="player-card" to={`/player/${player.id}`}>
       <div className="player-card-avatar">
         <img src={`https://a.ppy.sh/${player.id}`} alt="avatar" />
       </div>
@@ -25,6 +18,6 @@ export default function PlayerCard({
           {player.topFRCount} Top FR
         </span>
       </div>
-    </div>
+    </Link>
   );
 }

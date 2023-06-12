@@ -1,5 +1,6 @@
 import React from "react";
 import { Player } from "../../types/api";
+import { Link } from "react-router-dom";
 
 export default function PlayerHallOfFame({
   player,
@@ -13,13 +14,17 @@ export default function PlayerHallOfFame({
   return (
     <div className="hof-element">
       {children}
-      <div className="hof-card">
-        <img src={`https://a.ppy.sh/${player.id}`} alt={player.name} />
+      <Link className="hof-card" to={`/Player/${player.id}`}>
+        <img
+          className="hof-card_avatar"
+          src={`https://a.ppy.sh/${player.id}`}
+          alt={player.name}
+        />
         <div className="hof-card_content">
           <p className="player-name">{player.name}</p>
           <p>{description}</p>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

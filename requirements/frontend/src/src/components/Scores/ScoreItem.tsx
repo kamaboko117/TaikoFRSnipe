@@ -1,6 +1,6 @@
 import React from "react";
 import { Score } from "../../types/api";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function ScoreItem({
   score,
@@ -9,22 +9,10 @@ export default function ScoreItem({
   score: Score;
   rank: number;
 }) {
-  const navigate = useNavigate();
-  const clickPlayer = () => {
-    navigate(`/player/${score.player.id}`);
-  };
-  const clickBeatmap = () => {
-    navigate(`/beatmap/${score.beatmap.id}`);
-  };
-  const onAuxClick = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
-    if (e.button === 1) {
-      window.open(`/beatmap/${score.beatmap.id}`);
-    }
-  };
   return (
-    <tr className="table-row" onMouseDown={onAuxClick}>
+    <Link className="table-row" to={`/Beatmap/${score.beatmap.id}`}>
       <td style={{ fontWeight: "800" }}>#{rank}</td>
-      <td onClick={clickBeatmap} style={{ cursor: "pointer" }}>
+      <td>
         {score.beatmap.artist} - {score.beatmap.song} [
         {score.beatmap.difficulty}]
       </td>
@@ -33,9 +21,9 @@ export default function ScoreItem({
       <td>{score.missCount}</td>
       <td>{score.score}</td>
       <td>{score.pp}</td>
-      <td onClick={clickPlayer} style={{ cursor: "pointer" }}>
+      <Link className="player-name" to={`/Player/${score.player.id}`}>
         {score.player.name}
-      </td>
-    </tr>
+      </Link>
+    </Link>
   );
 }

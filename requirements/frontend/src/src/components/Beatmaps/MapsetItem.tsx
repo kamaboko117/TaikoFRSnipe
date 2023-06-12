@@ -1,20 +1,14 @@
 import React from "react";
 import { Mapset } from "../../types/api";
+import { Link } from "react-router-dom";
 
 interface Props {
   mapset: Mapset;
-  onClick: () => void;
 }
 
-export default function MapsetItem({ mapset, onClick }: Props) {
-  const onAuxClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.button === 1) {
-      window.open(`/beatmap/${mapset.id}`);
-    }
-  };
-
+export default function MapsetItem({ mapset }: Props) {
   return (
-    <div className="mapset-card" onClick={onClick} onMouseDown={onAuxClick}>
+    <Link className="mapset-card" to={`/Beatmap/${mapset.beatmaps[0].id}`}>
       <div className="mapset-card-cover-header">
         <div
           className="mapset-card-cover"
@@ -31,6 +25,6 @@ export default function MapsetItem({ mapset, onClick }: Props) {
           Mapped by {mapset.beatmaps[0].mapper}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }

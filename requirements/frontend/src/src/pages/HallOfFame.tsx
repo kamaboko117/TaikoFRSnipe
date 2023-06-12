@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import PlayersNav from "../components/Navbar/PlayersNav";
-import { hof } from "../types/api";
+import { Score, hof } from "../types/api";
 import PlayerHallOfFame from "../components/Players/PlayerHallOfFame";
 import ScoreHallOfFame from "../components/Scores/ScoreHallOfFame";
 
@@ -14,6 +14,10 @@ function getHHMMSS(seconds: number) {
   return `${
     hours ? `${hours} hours ` : ""
   }${minutes} minutes and ${sec} seconds`;
+}
+
+function countModPlays(scores: Score[], mod: string) {
+  return scores.filter((score) => score.mods.includes(mod)).length;
 }
 
 export default function HallOfFame() {
@@ -29,7 +33,15 @@ export default function HallOfFame() {
   }, []);
 
   if (!hof) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Navbar />
+        <div className="wrapper">
+          <PlayersNav />
+          <div>Loading...</div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -37,11 +49,13 @@ export default function HallOfFame() {
       <Navbar />
       <div className="wrapper">
         <PlayersNav />
-        <h1>WORK IN WIP IN PROGRESS</h1>
         <div className="hof-container">
           <PlayerHallOfFame
             player={hof.FLModLover}
-            description={`Needs therapy after getting {ouais ouais plus tard} top FRs with FL`}
+            description={`Needs therapy after getting ${countModPlays(
+              hof.FLModLover.scores,
+              "FL"
+            )} top FRs with FL`}
           >
             FL LOVER
           </PlayerHallOfFame>

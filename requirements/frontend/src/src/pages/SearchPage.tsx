@@ -46,13 +46,7 @@ export default function SearchPage() {
           <h1>Players</h1>
           <div className="result-list-group-content">
             {result.players.map((player) => (
-              <PlayerCard
-                player={player}
-                key={player.id}
-                onClick={() => {
-                  navigate(`/Player/${player.id}`);
-                }}
-              />
+              <PlayerCard player={player} key={player.id} />
             ))}
           </div>
         </div>
@@ -60,13 +54,7 @@ export default function SearchPage() {
           <h1>Beatmaps</h1>
           <div className="result-list-group-content">
             {result.mapsets.map((mapset) => (
-              <MapsetItem
-                mapset={mapset}
-                key={mapset.id}
-                onClick={() => {
-                  navigate(`/Beatmap/${mapset.beatmaps[0].id}`);
-                }}
-              />
+              <MapsetItem mapset={mapset} key={mapset.id} />
             ))}
           </div>
         </div>

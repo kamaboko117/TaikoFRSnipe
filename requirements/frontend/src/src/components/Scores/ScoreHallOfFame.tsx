@@ -1,5 +1,6 @@
 import React from "react";
 import { Score } from "../../types/api";
+import { Link } from "react-router-dom";
 
 export default function ScoreHallOfFame({
   score,
@@ -13,7 +14,7 @@ export default function ScoreHallOfFame({
   return (
     <div className="hof-element">
       {children}
-      <div className="hof-card">
+      <Link className="hof-card" to={`/Player/${score.beatmap.topPlayer.id}`}>
         <img
           className="hof-card_avatar"
           src={`https://a.ppy.sh/${score.beatmap.topPlayer.id}`}
@@ -22,11 +23,11 @@ export default function ScoreHallOfFame({
         <div className="hof-card_content">
           <p className="player-name">{score.beatmap.topPlayer.name}</p>
           <p>{description}</p>
-          <p>
-            {score.beatmap.artist} - {score.beatmap.song}
-          </p>
+          <Link className="map-name" to={`/Beatmap/${score.beatmap.id}`}>
+            {score.beatmap.artist} - {score.beatmap.song} [{score.beatmap.difficulty}]
+          </Link>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

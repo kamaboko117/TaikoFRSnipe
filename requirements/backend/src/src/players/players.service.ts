@@ -32,59 +32,32 @@ export class PlayersService {
     });
   }
 
+  async getModLover(mod: string) {
+    const modLover = await this.playerRepository
+      .createQueryBuilder('player')
+      .innerJoin('player.scores', 'score')
+      .where('score.mods @> ARRAY[:mod]', { mod })
+      .groupBy('player.id')
+      .orderBy('COUNT(score.id)', 'DESC')
+      .limit(1)
+      .getOne();
+    
+    if (modLover) {
+      const playerId = modLover.id;
+
+      return (this.playerRepository.findOne({where: {id: playerId}, relations: ['scores']}));
+    }
+    return null;
+  }
+
   async getHallOfFame() {
     const highestPPPlay = this.scoresService.getHighestPPPlay();
     const longestPlay = this.scoresService.getLongestPlay();
     const mostMisses = this.scoresService.getMostMisses();
     const lessAcc = this.scoresService.getLessAcc();
-    const FLModLover = this.playerRepository
-      .createQueryBuilder('player')
-      .leftJoinAndSelect('player.scores', 'scores')
-      // .leftJoinAndSelect('scores.beatmap', 'beatmap')
-      .where('scores.mods @> ARRAY[:mod]', { mod: 'FL' })
-      .orderBy('scores.pp', 'DESC')
-      .take(1)
-      .getOne();
-    // const HDModLover = this.playerRepository
-    //   .createQueryBuilder('player')
-    //   .leftJoinAndSelect('player.scores', 'scores')
-    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
-    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'HD' })
-    //   .orderBy('scores.pp', 'DESC')
-    //   .take(1)
-    //   .getOne();
-    // const HRModLover = this.playerRepository
-    //   .createQueryBuilder('player')
-    //   .leftJoinAndSelect('player.scores', 'scores')
-    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
-    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'HR' })
-    //   .orderBy('scores.pp', 'DESC')
-    //   .take(1)
-    //   .getOne();
-    // const DTModLover = this.playerRepository
-    //   .createQueryBuilder('player')
-    //   .leftJoinAndSelect('player.scores', 'scores')
-    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
-    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'DT' })
-    //   .orderBy('scores.pp', 'DESC')
-    //   .take(1)
-    //   .getOne();
-    // const EZModLover = this.playerRepository
-    //   .createQueryBuilder('player')
-    //   .leftJoinAndSelect('player.scores', 'scores')
-    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
-    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'EZ' })
-    //   .orderBy('scores.pp', 'DESC')
-    //   .take(1)
-    //   .getOne();
-    // const NCModLover = this.playerRepository
-    //   .createQueryBuilder('player')
-    //   .leftJoinAndSelect('player.scores', 'scores')
-    //   .leftJoinAndSelect('scores.beatmap', 'beatmap')
-    //   .where('scores.mods @> ARRAY[:mod]', { mod: 'NC' })
-    //   .orderBy('scores.pp', 'DESC')
-    //   .take(1)
-    //   .getOne();
+    // gets the player with the most FL plays
+    const FLModLover = this.getModLover('FL');
+   
     const OldestScore = this.scoresService.getOldestScore();
 
     const values_1 = await Promise.all([
