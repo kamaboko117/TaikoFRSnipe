@@ -377,6 +377,22 @@ export class BeatmapsService implements OnModuleInit {
       await snipesService.createSnipe(newSnipe);
       return topScore.user_id;
     }
+    // in some cases, the beatmap's top score doesn't match the existing score because i didn't handle the SQL transactions correctly and race conditions exist
+    // this is a workaround fix for that
+    if (beatmap.topPlayer.id !== topScore.user_id && existingScore.score === topScore.total_score) {
+      console.log('Top score mismatch');
+      beatmap.topPlayer = {
+        id: topScore.user_id,
+        name: topScore.user.username,
+      };
+      await scoresService.updateScoreByBeatmapId(
+        beatmap.id,
+        createNewScore(topScore, beatmap.id, player, beatmap),
+      );
+      await playersService.updatePlayer(topScore.user_id);
+      return;
+    }
+
     if (
       existingScore.score < topScore.total_score ||
       (existingScore.score === topScore.total_score && !beatmap.topPlayer)
