@@ -22,3 +22,8 @@ export const getTimeSinceDate = (date: Date) => {
   const years = Math.floor(months / 12);
   return `${years} ${years === 1 ? "year" : "years"}`;
 };
+
+export const isDecember = () => {
+  const date = new Date();
+  return date.getMonth() === 11;
+};

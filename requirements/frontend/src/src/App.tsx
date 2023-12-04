@@ -10,10 +10,16 @@ import Players from "./pages/Players";
 import Snipes from "./pages/Snipes";
 import About from "./pages/About";
 import HallOfFame from "./pages/HallOfFame";
+import { isDecember } from "./utils";
 
 function App() {
+  let snowflakes = [];
+  for (let i = 0; i < 100; i++) {
+    snowflakes.push(<div className="snowflake"></div>);
+  }
   return (
     <div>
+      {isDecember() && snowflakes}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/Scores" element={<Scores />} />

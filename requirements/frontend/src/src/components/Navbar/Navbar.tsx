@@ -1,7 +1,8 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import logo from "../../assets/taikoFRSnipe.png";
+import xmaslogo from "../../assets/taikoFRSnipeXMAS.png";
 import SearchBar from "./SearchBar";
-
+import { isDecember } from "../../utils";
 interface NavbarLinkProps {
   dest: string;
   children: any;
@@ -25,7 +26,11 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <nav className="navbar-left">
-        <img src={logo} className="App-logo" alt="logo" />
+        {isDecember() ? (
+          <img src={xmaslogo} alt="Taiko FR Snipe" className="App-logo" />
+        ) : (
+          <img src={logo} alt="Taiko FR Snipe" className="App-logo" />
+        )}
         <NavbarLink dest="/">Home</NavbarLink>
         <NavbarLink dest="/Scores">Scores</NavbarLink>
         <NavbarLink dest="/Players">Players</NavbarLink>
