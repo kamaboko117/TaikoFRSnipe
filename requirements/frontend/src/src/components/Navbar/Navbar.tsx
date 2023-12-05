@@ -1,12 +1,14 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import logo from "../logo.svg";
-
+import logo from "../../assets/taikoFRSnipe.png";
+import xmaslogo from "../../assets/taikoFRSnipeXMAS.png";
+import SearchBar from "./SearchBar";
+import { isDecember } from "../../utils";
 interface NavbarLinkProps {
   dest: string;
   children: any;
 }
 
-function NavbarLink({ dest, children }: NavbarLinkProps) {
+export function NavbarLink({ dest, children }: NavbarLinkProps) {
   const resolvedPath = useResolvedPath(dest);
   const isActive = useMatch(resolvedPath.pathname);
 
@@ -24,10 +26,19 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <nav className="navbar-left">
-        <img src={logo} className="App-logo" alt="logo" />
+        {isDecember() ? (
+          <img src={xmaslogo} alt="Taiko FR Snipe" className="App-logo" />
+        ) : (
+          <img src={logo} alt="Taiko FR Snipe" className="App-logo" />
+        )}
         <NavbarLink dest="/">Home</NavbarLink>
         <NavbarLink dest="/Scores">Scores</NavbarLink>
+        <NavbarLink dest="/Players">Players</NavbarLink>
+        <NavbarLink dest="/About">About</NavbarLink>
       </nav>
+      <div className="navbar-right">
+        <SearchBar />
+      </div>
     </header>
   );
 }

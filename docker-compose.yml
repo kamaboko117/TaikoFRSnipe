@@ -24,6 +24,7 @@ services:
         window: 120s
     environment:
       WDS_SOCKET_PORT: "3000"
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
     volumes:
       - ./requirements/frontend/src:/app
 
@@ -43,6 +44,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
       COOKIE: ${COOKIE}
+      SECRET: ${SECRET}
+      ID: ${ID}
     volumes:
       - ./requirements/backend/src:/app
 
@@ -60,10 +63,10 @@ services:
         window: 120s
     volumes:
       - db:/var/lib/postgresql/data
-    # ports:
-    #   - "5432:5432"
-    # expose:
-    #   - 5432
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
 
 volumes:
   db:

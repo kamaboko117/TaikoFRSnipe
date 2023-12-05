@@ -1,12 +1,12 @@
 export interface Covers {
   cover: string;
-  "cover@2x": string;
+  'cover@2x': string;
   card: string;
-  "card@2x": string;
+  'card@2x': string;
   list: string;
-  "list@2x": string;
+  'list@2x': string;
   slimcover: string;
-  "slimcover@2x": string;
+  'slimcover@2x': string;
 }
 
 export interface Availability {
@@ -115,6 +115,26 @@ export interface User {
   pm_friends_only: boolean;
   profile_colour: string;
   username: string;
+}
+
+export interface BeatmapData {
+  id: number;
+  version: string;
+  drain: number;
+  bpm: number;
+  accuracy: number;
+  difficulty_rating: number;
+  total_length: number;
+  mode: string;
+}
+
+export interface MapsetData {
+  id: number;
+  artist: string;
+  title: string;
+  creator: string;
+  status: string;
+  beatmaps: BeatmapData[];
 }
 
 export interface RootObject {

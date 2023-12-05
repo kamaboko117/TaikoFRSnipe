@@ -7,7 +7,8 @@ import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { ScoresModule } from 'src/scores/scores.module';
 import { PlayersModule } from 'src/players/players.module';
-import { SnipesModule } from 'src/Snipes/snipes.module';
+import { SnipesModule } from 'src/snipes/snipes.module';
+import { MapsetsModule } from 'src/mapsets/mapsets.module';
 
 @Module({
   controllers: [BeatmapsController],
@@ -18,6 +19,7 @@ import { SnipesModule } from 'src/Snipes/snipes.module';
     ScoresModule,
     PlayersModule,
     SnipesModule,
+    MapsetsModule,
   ],
 })
 export class BeatmapsModule {}

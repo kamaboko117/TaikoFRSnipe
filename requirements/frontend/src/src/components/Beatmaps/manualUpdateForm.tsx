@@ -1,4 +1,5 @@
 import React from "react";
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function ManualUpdateForm() {
   //handle the form submission
@@ -7,9 +8,8 @@ export default function ManualUpdateForm() {
     const data = new FormData(event.currentTarget);
     const formData = data.get("beatmapId")?.valueOf();
     const id = parseInt(formData as string);
-    console.log(id);
     if (id) {
-      fetch("/api/beatmaps", {
+      fetch(`${REACT_APP_API_URL}/beatmaps`, {
         method: "POST",
         body: JSON.stringify({ id }),
         headers: {
@@ -26,6 +26,12 @@ export default function ManualUpdateForm() {
   return (
     <div>
       <h1>Manual Update</h1>
+      <p>
+        Is a beatmap missing? The database automatic updates can take up to
+        24 hours. Also keep in mind that only ranked maps are tracked at the
+        moment. If you want to update a map faster or if the automatic update
+        failed to capture a map, feel free to use the manual updater below
+      </p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="beatmapId">Beatmap ID</label>
         <input type="text" name="beatmapId" id="beatmapId" />

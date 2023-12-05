@@ -1,19 +1,21 @@
 import { Score } from 'src/types/score';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Player } from './player.entity';
+import { Beatmap } from './beatmap.entity';
 
 @Entity()
-export class ScoreEntity implements Score{
+export class ScoreEntity implements Score {
   @PrimaryColumn({ nullable: false })
   id: number;
 
-  // @Column({ nullable: false })
-  // playerId: number;
   @ManyToOne(() => Player, (player) => player)
   player: Player;
 
   @Column({ nullable: false })
   beatmapId: number;
+
+  @ManyToOne(() => Beatmap, (beatmap) => beatmap)
+  beatmap: Beatmap;
 
   @Column({ nullable: false })
   score: number;
@@ -27,7 +29,7 @@ export class ScoreEntity implements Score{
   @Column({ type: 'timestamptz', nullable: false })
   date: string;
 
-  @Column({ type: 'decimal', precision: 6, scale: 3, nullable: false })
+  @Column({ type: 'decimal', precision: 7, scale: 3, nullable: false })
   pp: number;
 
   @Column({ nullable: false })
