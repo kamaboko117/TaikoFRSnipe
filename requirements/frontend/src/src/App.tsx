@@ -11,15 +11,12 @@ import Snipes from "./pages/Snipes";
 import About from "./pages/About";
 import HallOfFame from "./pages/HallOfFame";
 import { isDecember } from "./utils";
+import { Snow } from "./components/Other/Snow";
 
 function App() {
-  let snowflakes = [];
-  for (let i = 0; i < 100; i++) {
-    snowflakes.push(<div className="snowflake"></div>);
-  }
   return (
     <div>
-      {isDecember() && snowflakes}
+      {isDecember() && <Snow />}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/Scores" element={<Scores />} />
