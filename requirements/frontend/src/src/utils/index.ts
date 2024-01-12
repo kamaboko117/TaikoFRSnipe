@@ -5,7 +5,7 @@ export const getTimeSinceDate = (date: Date) => {
   }
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) {
-    return `${minutes} ${minutes === 1 ? "minute" : "minutes"}}`;
+    return `${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
   }
   const hours = Math.floor(minutes / 60);
   if (hours < 24) {
