@@ -332,7 +332,7 @@ export class BeatmapsService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.populateBeatmaps();
+    // this.populateBeatmaps();
   }
 
   private async updateScores(
@@ -365,15 +365,15 @@ export class BeatmapsService implements OnModuleInit {
 
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
     if (!existingScore) {
-      const player = await playersService.getPlayer(topScore.user_id);
-      const newScore = createNewScore(topScore, beatmap.id, player, beatmap);
+      const existingPlayer = await playersService.getPlayer(topScore.user_id);
+      const newScore = createNewScore(topScore, beatmap.id, existingPlayer, beatmap);
       await scoresService.createScore(newScore);
       beatmap.topPlayer = {
         id: topScore.user_id,
         name: topScore.user.username,
       };
       playersService.updatePlayer(topScore.user_id);
-      let newSnipe = createNewSnipe(null, topScore, player, beatmap);
+      let newSnipe = createNewSnipe(null, topScore, existingPlayer, beatmap);
       await snipesService.createSnipe(newSnipe);
       return topScore.user_id;
     }
@@ -391,6 +391,38 @@ export class BeatmapsService implements OnModuleInit {
       );
       await playersService.updatePlayer(topScore.user_id);
       return;
+    }
+
+    // since january 30th 2024, scores have been updated to go from 0 to 1,000,000 in NoMod
+    // this section of code handles old scores that are still in the old format and converts them to the new format
+    // we can check for mismatches in the score by checking if the existing score is less than the top score
+    // if player is different, we can create a snipe
+    if (topScore.total_score < existingScore.score) {
+      console.log('Old score format detected');
+      const snipedPlayer = existingScore.player;
+      if (existingScore.player.id !== player.id) {
+        let newSnipe = createNewSnipe(existingScore, topScore, player, beatmap);
+        await snipesService.createSnipe(newSnipe);
+      } else {
+        let newSnipe = createNewSnipe(null, topScore, player, beatmap);
+        await snipesService.createSnipe(newSnipe);
+      }
+      beatmap.topPlayer = {
+        id: topScore.user_id,
+        name: topScore.user.username,
+      };
+      await scoresService.updateScoreByBeatmapId(
+        beatmap.id,
+        createNewScore(topScore, beatmap.id, player, beatmap),
+      );
+      await playersService.updatePlayer(topScore.user_id);
+      if (snipedPlayer) {
+        await playersService.updatePlayer(snipedPlayer.id);
+      }
+      return {
+        victim: existingScore.player.name,
+        sniper: topScore.user.username,
+      };
     }
 
     if (

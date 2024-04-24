@@ -5,7 +5,7 @@ import { Beatmap } from './beatmap.entity';
 
 @Entity()
 export class ScoreEntity implements Score {
-  @PrimaryColumn({ nullable: false })
+  @PrimaryColumn({ type: 'bigint', nullable: false })
   id: number;
 
   @ManyToOne(() => Player, (player) => player)
