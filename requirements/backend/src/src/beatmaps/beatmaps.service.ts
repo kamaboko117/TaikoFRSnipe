@@ -332,7 +332,7 @@ export class BeatmapsService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    // this.populateBeatmaps();
+    this.populateBeatmaps();
   }
 
   private async updateScores(
