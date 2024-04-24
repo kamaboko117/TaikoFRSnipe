@@ -107,7 +107,7 @@ export class ScoresService {
     return this.scoreRepository
       .createQueryBuilder('score')
       .leftJoinAndSelect('score.beatmap', 'beatmap')
-      .orderBy('score.score', 'DESC')
+      .orderBy('beatmap.drain', 'DESC')
       .take(1)
       .getOne();
   }
