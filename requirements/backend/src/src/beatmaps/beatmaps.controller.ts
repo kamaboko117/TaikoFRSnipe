@@ -37,7 +37,7 @@ export class BeatmapsController {
   @UsePipes(ValidationPipe)
   @UseInterceptors(new NotFoundInterceptor('Beatmap not found'))
   getBeatmap(@Param('id', ParseIntPipe) id: number) {
-    console.log(`Getting beatmap ${id}`);
+    console.log(`CONTROLLER: Getting beatmap ${id}`);
     return this.beatmapsService.getBeatmap(id);
   }
 
