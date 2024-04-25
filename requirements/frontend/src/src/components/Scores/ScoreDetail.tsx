@@ -27,13 +27,13 @@ export default function ScoreDetail({
             <img
               src={`https://a.ppy.sh/${player.id}`}
               alt="profile"
-              style={{ width: "100px", height: "100px" }}
             />
           </div>
           <div className="score-detail-player-info">
-            <span
+            <span 
+              className="player-name"
               onClick={clickPlayer}
-              style={{ cursor: "pointer", fontSize: "50px", fontWeight: "750" }}
+              // style={{ cursor: "pointer", fontSize: "50px", fontWeight: "750" }}
             >
               {beatmap.topPlayer.name}
             </span>

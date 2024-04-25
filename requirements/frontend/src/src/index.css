@@ -20,11 +20,6 @@ a {
   font-weight: 600;
 }
 
-.app-logo {
-  height: 4px;
-  pointer-events: none;
-}
-
 .app-container {
   margin: 0;
   padding: 0;
@@ -69,6 +64,7 @@ code {
   justify-content: flex-start;
   width: 100%;
   max-width: 1200px;
+  align-items: center;
 }
 
 .navbar-right {
@@ -84,7 +80,7 @@ code {
 .navbar-item {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 0rem 0.8rem;
   margin: 10px 10px 10px 10px;
   color: white;
   border-radius: 10px;
@@ -202,8 +198,8 @@ code {
 }
 
 .beatmap-difficulty-icon {
-  width: 50px;
-  height: 50px;
+  width: 3rem;
+  height: 3rem;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -245,7 +241,7 @@ code {
 
 .beatmap-item {
   box-sizing: border-box;
-  height: 150px;
+  max-height: 10rem;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -492,6 +488,13 @@ tr {
   padding: 0px;
 }
 
+.score-detail-player-info .player-name {
+  font-weight: 750;
+  font-size: 3rem;
+  color: #61dafb;
+  cursor: pointer;
+}
+
 .score-detail {
   display: flex;
   flex-direction: row;
@@ -513,8 +516,17 @@ tr {
   border-radius: 100%;
   width: 100px;
   height: 100px;
+  min-width: 100px;
+  min-height: 100px;
   margin: 0px;
   padding: 0px;
+}
+
+.score-detail-avatar img {
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .sniper-name {
@@ -2707,4 +2719,51 @@ button:active {
   animation: snowfall 11s linear infinite;
   animation-delay: -7s;
   opacity: 0.9052;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  .score-detail-player-info .player-name {
+    font-size: 2rem
+  }
+
+  .beatmap-title {
+    font-size: 1.2rem;
+  }
+
+  .score-detail {
+    flex-direction: column;
+  }
+
+  .navbar {
+    flex-direction: column;
+  }
+
+  .navbar-left {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .navbar-right {
+    justify-content: center;
+    padding: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .score-detail .score-detail-score {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .beatmap-difficulty-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .manual-update {
+    margin-top: 4rem;
+  }
 }

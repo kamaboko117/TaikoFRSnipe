@@ -24,7 +24,7 @@ export default function ManualUpdateForm() {
   }
 
   return (
-    <div>
+    <div className="manual-update">
       <h1>Manual Update</h1>
       <p>
         Is a beatmap missing? The database automatic updates can take up to
