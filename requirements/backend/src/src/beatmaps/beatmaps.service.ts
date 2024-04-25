@@ -624,7 +624,8 @@ export class BeatmapsService implements OnModuleInit {
           if (e.message !== 'Rate limit exceeded') {
             continue;
           }
-          return;
+          //sleep 1 hour before trying again
+          await sleep(3600000);
         }
         await sleep(2000); //to not get ratelimited
       }
