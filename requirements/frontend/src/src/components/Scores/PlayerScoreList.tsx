@@ -20,11 +20,17 @@ export default function ScoreList({
       <thead>
         <tr>
           <td></td>
-          <td></td>
+          <td style={{ width: "60%" }}></td>
           <td>Mods</td>
-          {sortColumn.name !== "Accuracy" ? <td>Acc</td> : null}
-          {sortColumn.name !== "Misses" ? <td>Misses</td> : null}
-          {sortColumn.name !== "Score" ? <td>Score</td> : null}
+          {sortColumn.name !== "Accuracy" ? (
+            <td className="secondary-td">Acc</td>
+          ) : null}
+          {sortColumn.name !== "Misses" ? (
+            <td className="secondary-td">Misses</td>
+          ) : null}
+          {sortColumn.name !== "Score" ? (
+            <td className="secondary-td">Score</td>
+          ) : null}
           <td>{sortColumn.name}</td>
         </tr>
       </thead>

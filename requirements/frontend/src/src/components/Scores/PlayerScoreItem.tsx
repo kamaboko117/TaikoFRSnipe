@@ -42,10 +42,14 @@ export default function ScoreItem({
       </td>
       <td>{score.mods}</td>
       {sortColumn.name !== "Accuracy" ? (
-        <td>{Number(score.acc * 100).toFixed(2)}%</td>
+        <td className="secondary-td">{Number(score.acc * 100).toFixed(2)}%</td>
       ) : null}
-      {sortColumn.name !== "Misses" ? <td>{score.missCount}</td> : null}
-      {sortColumn.name !== "Score" ? <td>{score.score}</td> : null}
+      {sortColumn.name !== "Misses" ? (
+        <td className="secondary-td">{score.missCount}</td>
+      ) : null}
+      {sortColumn.name !== "Score" ? (
+        <td className="secondary-td">{score.score}</td>
+      ) : null}
       <td>{sortColumnValue()}</td>
     </Link>
   );
