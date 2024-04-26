@@ -29,7 +29,7 @@ export class ScoreEntity implements Score {
   @Column({ type: 'timestamptz', nullable: false })
   date: string;
 
-  @Column({ type: 'decimal', precision: 7, scale: 3, nullable: false })
+  @Column({ type: 'decimal', precision: 7, scale: 3, nullable: true })
   pp: number;
 
   @Column({ nullable: false })
