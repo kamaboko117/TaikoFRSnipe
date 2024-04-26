@@ -73,6 +73,35 @@ export default function About() {
           making this website.
         </span>
         <br />
+        <br />
+        <span>update: STOP ASKING ME TO ADD YOU TO THE SPECIAL THANKS!</span>
+        <br />
+        <br />
+        <span>
+          update: I'm sorry for the last message, I was just a bit mad. I will
+          add you to the special thanks if you ask me to. I'm sorry.
+        </span>
+        <br />
+        <br />
+        <span>
+          Thank you <a href="https://github.com/FelixNIS">Trypha</a> for the
+          internship at NIS. I love you.
+        </span>
+        <br />
+        <span>
+          Thank you polemik victor for asking me to add you to the special
+          thanks. I love you.
+        </span>
+        <br />
+        <h2>Github Repo</h2>
+        <span>
+          The code for this website is available on{" "}
+          <a href="https://github.com/kamaboko117/TaikoFRSnipe">Github</a>. If
+          you want to contribute, feel free to make a pull request. If you want
+          to report a bug, you can do it on the issues page. You may also
+          suggest features there. Making a fork to add your own country
+          shouldn't be too hard. Don't be afraid to ask for help.
+        </span>
         <div className="center">
           <img src={donchan} />
         </div>

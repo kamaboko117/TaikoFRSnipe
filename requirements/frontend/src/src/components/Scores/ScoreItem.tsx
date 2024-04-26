@@ -16,14 +16,16 @@ export default function ScoreItem({
         {score.beatmap.artist} - {score.beatmap.song} [
         {score.beatmap.difficulty}]
       </td>
-      <td>{score.mods}</td>
-      <td>{Number(score.acc * 100).toFixed(2)}%</td>
-      <td>{score.missCount}</td>
-      <td>{score.score}</td>
-      <td>{score.pp}</td>
-      <Link className="player-name" to={`/Player/${score.player.id}`}>
-        {score.player.name}
-      </Link>
+      <td className="secondary-td">{score.mods}</td>
+      <td className="secondary-td">{Number(score.acc * 100).toFixed(2)}%</td>
+      <td className="secondary-td">{score.missCount}</td>
+      <td className="secondary-td">{score.score}</td>
+      <td className="secondary-td">{score.pp}</td>
+      <td>
+        <Link className="player-name" to={`/Player/${score.player.id}`}>
+          {score.player.name}
+        </Link>
+      </td>
     </Link>
   );
 }

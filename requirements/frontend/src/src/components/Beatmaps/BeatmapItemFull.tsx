@@ -16,7 +16,7 @@ export default function BeatmapItemFull(props: { beatmap: Beatmap }) {
         />
         <div className="beatmap-card-info">
           <h1 className="beatmap-title">
-            {props.beatmap.song} - {props.beatmap.artist} [
+            {props.beatmap.artist} - {props.beatmap.song} [
             {props.beatmap.difficulty}]
           </h1>
           <BeatmapDifficultiesRow

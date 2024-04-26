@@ -8,14 +8,14 @@ export default function ScoreList({ scores, index, limit }: { scores: Score[], i
     <table>
       <thead>
         <tr>
-          <td></td>
-          <td></td>
-          <td>Mods</td>
-          <td>Acc</td>
-          <td>Misses</td>
-          <td>Score</td>
-          <td>PP</td>
-          <td>Player</td>
+          <td style={{width:"3.5rem"}}></td>
+          <td style={{width:"50%"}}></td>
+          <td className="secondary-td">Mods</td>
+          <td className="secondary-td">Acc</td>
+          <td className="secondary-td">Misses</td>
+          <td className="secondary-td">Score</td>
+          <td className="secondary-td">PP</td>
+          <td style={{width:"8rem"}}>Player</td>
         </tr>
       </thead>
       <tbody>
