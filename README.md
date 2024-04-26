@@ -31,4 +31,4 @@ in the root of the project to run a local version of the website. Of course, you
 
 Contact
 ===============================
-just use Discord => i have disabled friend request because of the bots but you can just join my [server](discord.gg/Fu9PTJ4), or any other osu!taiko related server really, and ping me there
+just use Discord => i have disabled friend request because of the bots but you can just join my [server](https://discord.gg/Fu9PTJ4), or any other osu!taiko related server really, and ping me there
