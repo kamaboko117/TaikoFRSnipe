@@ -20,7 +20,7 @@ const prodFactory = {
   url: process.env.DATABASE_URL,
   port: Number(process.env.POSTGRES_PORT),
   autoLoadEntities: true,
-  synchronize: false,
+  synchronize: true,
 };
 
 const devFactory = {
