@@ -17,8 +17,8 @@ export default function PlayerList({
       <thead>
         <tr>
           <td></td>
-          <td>Player</td>
-          <td>Top FR Count</td>
+          <td style={{width:"60%"}}>Player</td>
+          <td style={{textWrap:"wrap"}}>Top FR Count</td>
         </tr>
       </thead>
       <tbody>
