@@ -419,11 +419,13 @@ code {
   color: white;
 }
 
-.table-row > td {
+.table-row td {
   padding: 7px;
-  display: table-cell;
+  /* display: table-cell; */
   text-align: center;
   vertical-align: middle;
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
 }
 
 .table-row > td:first-child {
@@ -446,6 +448,7 @@ table {
   border-spacing: 0 3px;
   width: 100%;
   display: table;
+  table-layout: fixed;
   text-align: center;
   background-color: transparent;
   white-space: nowrap;
@@ -580,6 +583,7 @@ tr {
 .user-profile-header > .user-profile-avatar {
   margin-right: 10px;
   width: 200px;
+  min-width: 200px;
   height: 200px;
   padding: 0px;
   overflow: hidden;
@@ -759,6 +763,7 @@ tr {
 
 .sort-selector {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -766,12 +771,12 @@ tr {
 }
 
 button {
-  margin: 0px 10px 0px 10px;
+  margin: 0px 0.3rem 0px 0.3rem;
   padding: 10px;
   border-radius: 10px;
   background-color: #55585e00;
   color: #fff;
-  font-size: large;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: 300ms;
@@ -2742,6 +2747,10 @@ button:active {
     flex-direction: column;
   }
 
+  .navbar_2 {
+    flex-direction: row !important;
+  }
+
   .navbar-left {
     justify-content: center;
     padding: 0;
@@ -2765,5 +2774,15 @@ button:active {
 
   .manual-update {
     margin-top: 4rem;
+  }
+
+  table {
+    font-size: 0.7rem;
+  }
+
+  .secondary-td {
+    display: none;
+    /* overflow: hidden; */
+    /* width: 0px; */
   }
 }
