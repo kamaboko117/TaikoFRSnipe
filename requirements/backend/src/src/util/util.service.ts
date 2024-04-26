@@ -12,9 +12,9 @@ export class UtilService {
 
   async getId() {
     // there is only one row in the table
-    const util = await this.utilRepository.findOne({});
-    if (util) {
-      return util.id;
+    const util = await this.utilRepository.find({});
+    if (util.length > 0) {
+      return util[0].id;
     } else {
       return null;
     }

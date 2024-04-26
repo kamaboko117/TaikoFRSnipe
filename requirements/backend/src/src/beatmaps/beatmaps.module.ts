@@ -9,6 +9,7 @@ import { ScoresModule } from 'src/scores/scores.module';
 import { PlayersModule } from 'src/players/players.module';
 import { SnipesModule } from 'src/snipes/snipes.module';
 import { MapsetsModule } from 'src/mapsets/mapsets.module';
+import { UtilModule } from 'src/util/util.module';
 
 @Module({
   controllers: [BeatmapsController],
@@ -20,6 +21,7 @@ import { MapsetsModule } from 'src/mapsets/mapsets.module';
     PlayersModule,
     SnipesModule,
     MapsetsModule,
+    UtilModule,
   ],
 })
 export class BeatmapsModule {}
