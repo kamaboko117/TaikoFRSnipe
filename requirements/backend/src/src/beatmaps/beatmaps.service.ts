@@ -16,6 +16,7 @@ import { getCookieJar } from 'src/utils/jar';
 import * as fs from 'fs';
 import { Player } from 'src/typeorm/player.entity';
 import { MapsetsService } from 'src/mapsets/mapsets.service';
+import { UtilService } from 'src/util/util.service';
 
 const isUnranked = (mapsetData: MapsetData) =>
   mapsetData.status !== 'ranked' && mapsetData.status !== 'approved';
@@ -329,6 +330,7 @@ export class BeatmapsService implements OnModuleInit {
     private readonly playersService: PlayersService,
     private readonly snipesService: SnipesService,
     private readonly mapsetsService: MapsetsService,
+    private readonly utilService: UtilService,
   ) {}
 
   async onModuleInit() {
@@ -600,7 +602,8 @@ export class BeatmapsService implements OnModuleInit {
         return;
       }
       const beatmapIDs = JSON.parse(data.toString());
-      for (let i = 0; i < beatmapIDs.length; i++) {
+      const firstId = await this.utilService.getId();
+      for (let i = firstId ?? 0; i < beatmapIDs.length; i++) {
         const start = 0;
         const limit = 30000;
         // const found = await this.beatmapRepository.findOneBy({
@@ -624,9 +627,17 @@ export class BeatmapsService implements OnModuleInit {
           if (e.message !== 'Rate limit exceeded') {
             continue;
           }
-          //sleep 1 hour before trying again
-          await sleep(3600000);
+          //sleep 10 min before trying again
+          await sleep(600000);
         }
+        //save progress every 100 beatmaps in util table
+        if (i % 100 === 0) {
+          await this.utilService.updateId(i);
+          await sleep(2000); //to not get ratelimited
+        }
+        //reset progress to 0
+        await this.utilService.updateId(0);
+
         await sleep(2000); //to not get ratelimited
       }
       this.populateIDs().then(this.populateBeatmaps);
