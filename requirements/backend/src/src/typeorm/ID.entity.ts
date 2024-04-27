@@ -1,7 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class IDs {
-  @Column({ type: 'array', nullable: false })
-  ids: number[];
+export class ID {
+  @PrimaryColumn({ type: 'int', nullable: false })
+  id: number;
 }
