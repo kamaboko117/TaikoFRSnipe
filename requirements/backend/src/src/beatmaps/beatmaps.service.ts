@@ -368,7 +368,12 @@ export class BeatmapsService implements OnModuleInit {
     let existingScore = await scoresService.getScoreByBeatmapId(beatmap.id);
     if (!existingScore) {
       const existingPlayer = await playersService.getPlayer(topScore.user_id);
-      const newScore = createNewScore(topScore, beatmap.id, existingPlayer, beatmap);
+      const newScore = createNewScore(
+        topScore,
+        beatmap.id,
+        existingPlayer,
+        beatmap,
+      );
       await scoresService.createScore(newScore);
       beatmap.topPlayer = {
         id: topScore.user_id,
@@ -381,7 +386,10 @@ export class BeatmapsService implements OnModuleInit {
     }
     // in some cases, the beatmap's top score doesn't match the existing score because i didn't handle the SQL transactions correctly and race conditions exist
     // this is a workaround fix for that
-    if (beatmap.topPlayer.id !== topScore.user_id && existingScore.score === topScore.total_score) {
+    if (
+      beatmap.topPlayer.id !== topScore.user_id &&
+      existingScore.score === topScore.total_score
+    ) {
       console.log('Top score mismatch');
       beatmap.topPlayer = {
         id: topScore.user_id,
@@ -584,8 +592,8 @@ export class BeatmapsService implements OnModuleInit {
     } while (data.cursor_string && i < 500);
 
     for (let i = 0; i < mapsets.length; i++) {
-      if (mapsets[i].status === "ranked" || mapsets[i].status === "approved")
-      beatmaps.push(...mapsets[i].beatmaps);
+      if (mapsets[i].status === 'ranked' || mapsets[i].status === 'approved')
+        beatmaps.push(...mapsets[i].beatmaps);
     }
     for (let i = 0; i < beatmaps.length; i++) {
       if (beatmaps[i].mode != 'taiko') {
@@ -606,9 +614,25 @@ export class BeatmapsService implements OnModuleInit {
     }
 
     //create a json file with the beatmap ids
-    fs.writeFile('beatmapIds.json', JSON.stringify(beatmapIds), (err) => {
-      if (err) throw err;
+    const writeStream = fs.createWriteStream('beatmapIds.json');
+    writeStream.write('[');
+
+    beatmapIds.forEach((id, index) => {
+      if (index > 0) {
+        writeStream.write(',');
+      }
+      writeStream.write(JSON.stringify(id));
+    });
+
+    writeStream.write(']');
+    writeStream.end();
+
+    writeStream.on('finish', () => {
       console.log('The file has been saved!');
+    });
+
+    writeStream.on('error', (err) => {
+      throw err;
     });
   };
 
