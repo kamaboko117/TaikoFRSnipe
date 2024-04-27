@@ -335,8 +335,7 @@ export class BeatmapsService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.populateIDs();
-    this.populateBeatmaps();
+    this.populateIDs().then(this.populateBeatmaps);
   }
 
   private async updateScores(
