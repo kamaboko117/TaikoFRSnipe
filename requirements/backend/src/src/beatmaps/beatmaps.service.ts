@@ -638,11 +638,9 @@ export class BeatmapsService implements OnModuleInit {
           await this.utilService.updateId(i);
           await sleep(2000); //to not get ratelimited
         }
-        //reset progress to 0
-        await this.utilService.updateId(0);
-
         await sleep(2000); //to not get ratelimited
       }
+      await this.utilService.updateId(0);
       this.populateIDs().then(this.populateBeatmaps);
     });
   }
