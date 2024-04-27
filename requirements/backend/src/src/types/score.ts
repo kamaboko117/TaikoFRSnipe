@@ -35,7 +35,7 @@ export interface ApiScore {
   best_id: number;
   id: number;
   legacy_perfect: false;
-  pp: number;
+  pp?: number;
   replay: boolean;
   current_user_attributes: {
     pin: boolean | null;

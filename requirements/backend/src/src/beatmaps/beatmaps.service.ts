@@ -297,7 +297,7 @@ const createNewScore = (
   newScore.player = player;
   newScore.score = score.total_score;
   newScore.maxCombo = score.max_combo;
-  newScore.pp = score.pp;
+  newScore.pp = score.pp ?? 0;
   newScore.acc = score.accuracy;
   newScore.mods = score.mods.map((mod) => mod.acronym);
   newScore.date = score.ended_at;
