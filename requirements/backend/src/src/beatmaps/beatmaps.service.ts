@@ -13,10 +13,10 @@ import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
 import { SnipesService } from 'src/snipes/snipes.service';
 import { getCookieJar } from 'src/utils/jar';
-import * as fs from 'fs';
 import { Player } from 'src/typeorm/player.entity';
 import { MapsetsService } from 'src/mapsets/mapsets.service';
 import { UtilService } from 'src/util/util.service';
+import { IDsService } from 'src/IDs/IDs.service';
 
 const isUnranked = (mapsetData: MapsetData) =>
   mapsetData.status !== 'ranked' && mapsetData.status !== 'approved';
@@ -331,10 +331,12 @@ export class BeatmapsService implements OnModuleInit {
     private readonly snipesService: SnipesService,
     private readonly mapsetsService: MapsetsService,
     private readonly utilService: UtilService,
+    private readonly idsService: IDsService,
   ) {}
 
   async onModuleInit() {
-    this.populateIDs().then(this.populateBeatmaps);
+    await this.populateIDs();
+    this.populateBeatmaps();
   }
 
   private async updateScores(
@@ -613,77 +615,57 @@ export class BeatmapsService implements OnModuleInit {
       }
     }
 
-    //create a json file with the beatmap ids
-    const writeStream = fs.createWriteStream('beatmapIds.json');
-    writeStream.write('[');
-
-    beatmapIds.forEach((id, index) => {
-      if (index > 0) {
-        writeStream.write(',');
-      }
-      writeStream.write(JSON.stringify(id));
-    });
-
-    writeStream.write(']');
-    writeStream.end();
-
-    writeStream.on('finish', () => {
-      console.log('The file has been saved!');
-    });
-
-    writeStream.on('error', (err) => {
-      throw err;
-    });
+    // save IDs in database
+    this.idsService.addIds(beatmapIds);
   };
 
-  private populateBeatmaps() {
+  private populateBeatmaps = async () => {
     // open beatmapIDs.json with fs
-    fs.readFile('beatmapIds.json', async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
+
+    const IDs = await this.idsService.getIds();
+    if (IDs === null) {
+      return;
+    }
+    const beatmapIDs = IDs.map((id) => id.id);
+    const firstId = await this.utilService.getId();
+    if (firstId === null) {
+      await this.utilService.createUtil();
+    }
+    for (let i = firstId ?? 0; i < beatmapIDs.length; i++) {
+      const start = 0;
+      const limit = 30000;
+      // const found = await this.beatmapRepository.findOneBy({
+      //   id: beatmapIDs[i],
+      // });
+      if (i < start) {
+        continue;
       }
-      const beatmapIDs = JSON.parse(data.toString());
-      const firstId = await this.utilService.getId();
-      if (firstId === null) {
-        await this.utilService.createUtil();
+      if (i % 4 === 1) {
+        console.log(`Updating beatmap ${i} of ${beatmapIDs.length}`);
       }
-      for (let i = firstId ?? 0; i < beatmapIDs.length; i++) {
-        const start = 0;
-        const limit = 30000;
-        // const found = await this.beatmapRepository.findOneBy({
-        //   id: beatmapIDs[i],
-        // });
-        if (i < start) {
+      if (i > limit) {
+        break;
+      }
+      const beatmapID = beatmapIDs[i];
+      try {
+        await this.updateBeatmap(beatmapID, { batch: true });
+      } catch (e) {
+        console.log(`Error updating beatmap ${beatmapID}`);
+        console.log(e);
+        if (e.message !== 'Rate limit exceeded') {
           continue;
         }
-        if (i % 4 === 1) {
-          console.log(`Updating beatmap ${i} of ${beatmapIDs.length}`);
-        }
-        if (i > limit) {
-          break;
-        }
-        const beatmapID = beatmapIDs[i];
-        try {
-          await this.updateBeatmap(beatmapID, { batch: true });
-        } catch (e) {
-          console.log(`Error updating beatmap ${beatmapID}`);
-          console.log(e);
-          if (e.message !== 'Rate limit exceeded') {
-            continue;
-          }
-          //sleep 10 min before trying again
-          await sleep(600000);
-        }
-        //save progress every 100 beatmaps in util table
-        if (i % 100 === 0) {
-          await this.utilService.updateId(i);
-          await sleep(2000); //to not get ratelimited
-        }
+        //sleep 10 min before trying again
+        await sleep(600000);
+      }
+      //save progress every 100 beatmaps in util table
+      if (i % 100 === 0) {
+        await this.utilService.updateId(i);
         await sleep(2000); //to not get ratelimited
       }
-      await this.utilService.updateId(0);
-      this.populateIDs().then(this.populateBeatmaps);
-    });
-  }
+      await sleep(2000); //to not get ratelimited
+    }
+    await this.utilService.updateId(0);
+    this.populateIDs().then(this.populateBeatmaps);
+  };
 }
