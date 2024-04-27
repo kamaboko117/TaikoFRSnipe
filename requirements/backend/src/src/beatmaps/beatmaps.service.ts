@@ -334,7 +334,7 @@ export class BeatmapsService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.populateBeatmaps();
+    this.populateIDs().then(this.populateBeatmaps);
   }
 
   private async updateScores(
@@ -465,11 +465,18 @@ export class BeatmapsService implements OnModuleInit {
       order: { id: 'DESC' },
     });
   }
+
   getBeatmap(id: number) {
     console.log(`Getting beatmap ${id}`);
     return this.beatmapRepository.findOne({
       where: { id: id },
       relations: ['mapset', 'mapset.beatmaps'],
+    });
+  }
+
+  getAllBeatampIdsInDB() {
+    return this.beatmapRepository.find({
+      select: ['id'],
     });
   }
 
@@ -587,6 +594,17 @@ export class BeatmapsService implements OnModuleInit {
       }
       beatmapIds.push(beatmaps[i].id);
     }
+
+    const allBeatmapIdsInDB = await this.getAllBeatampIdsInDB();
+
+    // if an id is in the db but not in the beatmapIds array,
+    // we add it to the array
+    for (let i = 0; i < allBeatmapIdsInDB.length; i++) {
+      if (!beatmapIds.includes(allBeatmapIdsInDB[i].id)) {
+        beatmapIds.push(allBeatmapIdsInDB[i].id);
+      }
+    }
+
     //create a json file with the beatmap ids
     fs.writeFile('beatmapIds.json', JSON.stringify(beatmapIds), (err) => {
       if (err) throw err;
