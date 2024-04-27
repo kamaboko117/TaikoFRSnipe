@@ -29,7 +29,7 @@ export class UtilService {
   async createUtil() {
     const util = await this.utilRepository.find({});
     if (util.length === 0) {
-      await this.utilRepository.insert({});
+      await this.utilRepository.insert({ id: 0 });
     }
   }
 }
