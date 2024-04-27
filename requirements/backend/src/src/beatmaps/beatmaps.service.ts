@@ -603,6 +603,9 @@ export class BeatmapsService implements OnModuleInit {
       }
       const beatmapIDs = JSON.parse(data.toString());
       const firstId = await this.utilService.getId();
+      if (firstId === null) {
+        await this.utilService.createUtil();
+      }
       for (let i = firstId ?? 0; i < beatmapIDs.length; i++) {
         const start = 0;
         const limit = 30000;

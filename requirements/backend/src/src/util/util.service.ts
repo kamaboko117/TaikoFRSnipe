@@ -24,4 +24,12 @@ export class UtilService {
     // there is only one row in the table
     await this.utilRepository.update({}, { id });
   }
+
+  // do not create a new row if one already exists
+  async createUtil() {
+    const util = await this.utilRepository.find({});
+    if (util.length === 0) {
+      await this.utilRepository.insert({});
+    }
+  }
 }
