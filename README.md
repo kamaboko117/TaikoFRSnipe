@@ -21,13 +21,16 @@ Project Structure
 - FRONTEND: React with Typescript
 - BACKEND: Nestjs with Typescript using TypeORM
 - DATABASE: postgres
-- SERVER REVERSE PROXY: NGINX
+- SERVER REVERSE PROXY: NGINX (local only. website is hosted on heroku and uses their server)
+
 Everything is bundled using docker with docker-commpose.
 RUN
 ```
 docker-compose up --build
 ```
 in the root of the project to run a local version of the website. Of course, you will need docker and docker-compose to do that.
+
+you will also need to setup a .env with the required variables
 
 Contact
 ===============================
