@@ -39,6 +39,8 @@ Key | Value
 `SECRET=` | This is your osu api secret
 `ID=` | This is your osu api client id
 
+The app should start running on http://localhost:3000
+
 Contact
 ===============================
 just use Discord => i have disabled friend request because of the bots but you can just join my [server](https://discord.gg/Fu9PTJ4), or any other osu!taiko related server really, and ping me there
