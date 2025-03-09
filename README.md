@@ -24,13 +24,20 @@ Project Structure
 - SERVER REVERSE PROXY: NGINX (local only. website is hosted on heroku and uses their server)
 
 Everything is bundled using docker with docker-commpose.
+
 RUN
 ```
 docker-compose up --build
 ```
 in the root of the project to run a local version of the website. Of course, you will need docker and docker-compose to do that.
 
-you will also need to setup a .env with the required variables
+you will also need to setup a .env with the required variables. You can rename the `example.env` file to `.env` but you will still need to change some values:
+
+Key | Value 
+:---: | :---: 
+`COOKIE=` | This is the session cookie from the account that will be used to scrap the data
+`SECRET=` | This is your osu api secret
+`ID=` | This is your osu api client id
 
 Contact
 ===============================
