@@ -44,7 +44,7 @@ you can run
 cd requirements/backend/src
 npm run load-dump
 ```
-to hydrate your local database
+to hydrate your local database. Make sure the containers are running before attempting this !
 
 The app should start running on http://localhost:3000
 
