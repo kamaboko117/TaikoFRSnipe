@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Mapset, Player } from "../types/api";
-import Navbar from "../components/Navbar/Navbar";
 import PlayerCard from "../components/Players/PlayerCard";
 import MapsetItem from "../components/Beatmaps/MapsetItem";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -13,6 +12,7 @@ export default function SearchPage() {
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const { query } = useParams();
+
   useEffect(() => {
     fetch(`${REACT_APP_API_URL}/search/${query}`)
       .then((res) => res.json())
@@ -27,7 +27,6 @@ export default function SearchPage() {
   if (!isLoaded) {
     return (
       <div>
-        <Navbar />
         <div className="wrapper">
           <h1>Loading...</h1>
         </div>
@@ -37,7 +36,6 @@ export default function SearchPage() {
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <h1>Results for {query}</h1>
         <div className="result-list-group">

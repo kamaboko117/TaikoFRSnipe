@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar/Navbar";
 import { Snipe } from "../types/api";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import SnipeList from "../components/Snipes/SnipeList";
@@ -35,7 +34,6 @@ export default function Snipes() {
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <h1>Snipes</h1>
         <div className="snipe-header">

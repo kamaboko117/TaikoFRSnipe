@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
 import { Player, Score, Snipe } from "../types/api";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import Sort from "../components/IndexSelector/Sort";
@@ -15,13 +14,6 @@ const sorts = [
   { name: "Score", string: "score" },
   { name: "Combo", string: "maxCombo" },
   { name: "Misses", string: "missCount" },
-  // { name: "Mods", string: "mods" },
-  // { name: "300s", string: "count300" },
-  // { name: "100s", string: "count100" },
-  // { name: "50s", string: "count50" },
-  // { name: "Katus", string: "countkatu" },
-  // { name: "Gekis", string: "countgeki" },
-  // { name: "Max Combo", string: "maxcombo" },
   { name: "Date", string: "date" },
   { name: "Star Rating", string: "sr" },
 ] as SortObject[];
@@ -45,6 +37,7 @@ export default function PlayerPage() {
         }
       });
   }, [id]);
+
   useEffect(() => {
     fetch(
       `${REACT_APP_API_URL}/scores/player/${id}?limit=${limit}&offset=${
@@ -58,6 +51,7 @@ export default function PlayerPage() {
         }
       });
   }, [id, index, order, sort]);
+
   useEffect(() => {
     fetch(`${REACT_APP_API_URL}/snipes/player/${id}`)
       .then((res) => res.json())
@@ -74,7 +68,6 @@ export default function PlayerPage() {
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <div className="user-profile-header" onClick={clickPlayer}>
           <div className="user-profile-avatar">
@@ -89,7 +82,7 @@ export default function PlayerPage() {
             <h2>Top FR Count: {player?.topFRCount}</h2>
           </div>
         </div>
-        <h1>Top FRs</h1>
+        <h1>Top FR</h1>
         <Sort
           order={order}
           setOrder={setOrder}

@@ -3,6 +3,7 @@ import logo from "../../assets/taikoFRSnipe.png";
 import xmaslogo from "../../assets/taikoFRSnipeXMAS.png";
 import SearchBar from "./SearchBar";
 import { isDecember } from "../../utils";
+import "./Navbar.css";
 interface NavbarLinkProps {
   dest: string;
   children: any;

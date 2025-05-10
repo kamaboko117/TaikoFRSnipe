@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar/Navbar";
 import { Score } from "../types/api";
 import ScoreList from "../components/Scores/ScoreList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
@@ -22,6 +21,7 @@ const sorts = [
   // { name: "Max Combo", string: "maxcombo" },
   { name: "Date", string: "date" },
 ] as SortObject[];
+
 export default function Scores() {
   const [scores, setScores] = useState([] as Score[]);
   const [index, setIndex] = useState(0);
@@ -29,6 +29,7 @@ export default function Scores() {
   const [sort, setSort] = useState(sorts[0] as SortObject);
 
   const limit = 40;
+
   useEffect(() => {
     fetch(
       `${REACT_APP_API_URL}/scores/top?offset=${
@@ -45,7 +46,6 @@ export default function Scores() {
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <h1>Top Scores</h1>
         <Sort

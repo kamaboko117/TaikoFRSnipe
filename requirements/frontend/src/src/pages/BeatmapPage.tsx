@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Beatmap, Snipe } from "../types/api";
+import { Beatmap, Snipe, Score } from "../types/api";
 import BeatmapItemFull from "../components/Beatmaps/BeatmapItemFull";
-import Navbar from "../components/Navbar/Navbar";
-import { Score } from "../types/api";
 import ScoreDetail from "../components/Scores/ScoreDetail";
 import SnipeHistory from "../components/Snipes/SnipeHistory";
+
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function BeatmapPage() {
@@ -15,6 +14,7 @@ export default function BeatmapPage() {
   const [snipes, setSnipes] = useState([] as Snipe[]);
   const [refreshed, setRefreshed] = useState(false);
   const navigate = useNavigate();
+
   const updateBeatmap = () => {
     if (id) {
       fetch(`${REACT_APP_API_URL}/beatmaps`, {
@@ -54,6 +54,7 @@ export default function BeatmapPage() {
             }
           });
       });
+
     fetch(`${REACT_APP_API_URL}/snipes/beatmapID/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -73,19 +74,12 @@ export default function BeatmapPage() {
   }
 
   return (
-    <div>
-      <Navbar />
-      <div className="wrapper">
-        <BeatmapItemFull beatmap={beatmap} />
-        <ScoreDetail
-          score={score}
-          beatmap={beatmap}
-          clickPlayer={clickPlayer}
-        />
-        <h1>Snipe History</h1>
-        <SnipeHistory snipes={snipes} />
-        <button onClick={updateBeatmap}>refresh</button>
-      </div>
+    <div className="wrapper">
+      <BeatmapItemFull beatmap={beatmap} />
+      <ScoreDetail score={score} beatmap={beatmap} clickPlayer={clickPlayer} />
+      <h1>Snipe History</h1>
+      <SnipeHistory snipes={snipes} />
+      <button onClick={updateBeatmap}>refresh</button>
     </div>
   );
 }
