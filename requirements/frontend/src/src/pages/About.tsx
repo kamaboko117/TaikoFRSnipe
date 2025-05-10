@@ -103,7 +103,7 @@ export default function About() {
           shouldn't be too hard. Don't be afraid to ask for help.
         </span>
         <div className="center">
-          <img src={donchan} />
+          <img alt="Don-Chan" src={donchan} />
         </div>
       </div>
     </div>

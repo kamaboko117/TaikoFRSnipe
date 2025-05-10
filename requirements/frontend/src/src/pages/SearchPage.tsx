@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Mapset, Player } from "../types/api";
 import Navbar from "../components/Navbar/Navbar";
 import PlayerCard from "../components/Players/PlayerCard";
@@ -13,8 +13,6 @@ export default function SearchPage() {
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const { query } = useParams();
-  const navigate = useNavigate();
-
   useEffect(() => {
     fetch(`${REACT_APP_API_URL}/search/${query}`)
       .then((res) => res.json())
