@@ -39,7 +39,22 @@ Key | Value
 `SECRET=` | This is your osu api secret
 `ID=` | This is your osu api client id
 
+you can run 
+```
+cd requirement/backend/src
+npm run load-dump
+```
+to hydrate your local database
+
 The app should start running on http://localhost:3000
+
+⚠️ ATTENTION WINDOWS USERS ⚠️
+===============================
+Make sure you configure git with 
+```
+git config --global core.autocrlf false
+``` 
+if it isn't already done, else the dockerfile scripts cannot work correctly. We recommend using WSL to avoid such issues !
 
 Contact
 ===============================
