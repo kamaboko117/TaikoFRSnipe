@@ -41,7 +41,7 @@ Key | Value
 
 you can run 
 ```
-cd requirement/backend/src
+cd requirements/backend/src
 npm run load-dump
 ```
 to hydrate your local database
