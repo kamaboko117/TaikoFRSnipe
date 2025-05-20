@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar/Navbar";
 import PlayersNav from "../components/Navbar/PlayersNav";
 import { Score, hof } from "../types/api";
 import PlayerHallOfFame from "../components/Players/PlayerHallOfFame";
@@ -34,19 +33,15 @@ export default function HallOfFame() {
 
   if (!hof) {
     return (
-      <div>
-        <Navbar />
-        <div className="wrapper">
-          <PlayersNav />
-          <div>Loading...</div>
-        </div>
+      <div className="wrapper">
+        <PlayersNav />
+        <div>Loading...</div>
       </div>
     );
   }
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <PlayersNav />
         <div className="hof-container">
@@ -55,7 +50,7 @@ export default function HallOfFame() {
             description={`Needs therapy after getting ${countModPlays(
               hof.FLModLover.scores,
               "FL"
-            )} top FRs with FL`}
+            )} top FR with FL`}
           >
             FL LOVER
           </PlayerHallOfFame>

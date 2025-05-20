@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Player } from "../types/api";
-import Navbar from "../components/Navbar/Navbar";
 import PlayerList from "../components/Players/PlayerList";
 import IndexSelector from "../components/IndexSelector/IndexSelector";
 import Sort from "../components/IndexSelector/Sort";
@@ -18,6 +17,7 @@ export default function Players() {
     string: "",
   };
   const sorts = [sort];
+
   useEffect(() => {
     fetch(
       `${REACT_APP_API_URL}/players/top?offset=${
@@ -34,7 +34,6 @@ export default function Players() {
 
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <PlayersNav />
         <Sort order={order} setOrder={setOrder} sort={sort} sorts={sorts} />
