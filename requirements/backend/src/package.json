@@ -22,7 +22,7 @@
     "load-dump": "ts-node scripts/load_dump.ts --env ../../../.env"
   },
   "dependencies": {
-    "@nestjs/common": "^9.0.0",
+    "@nestjs/common": "^10.4.16",
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^10.3.8",
