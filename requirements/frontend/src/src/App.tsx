@@ -1,4 +1,3 @@
-// App.tsx
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout"; // Le layout avec la navbar
 import MainPage from "./pages/MainPage";
