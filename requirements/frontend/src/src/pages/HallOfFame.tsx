@@ -50,7 +50,7 @@ export default function HallOfFame() {
             description={`Needs therapy after getting ${countModPlays(
               hof.FLModLover.scores,
               "FL"
-            )} Number of top FR score with FL`}
+            )} Number of top FR scores with FL`}
           >
             FL LOVER
           </PlayerHallOfFame>

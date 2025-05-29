@@ -82,7 +82,7 @@ export default function PlayerPage() {
             <h2>Top FR Count: {player?.topFRCount}</h2>
           </div>
         </div>
-        <h1>Top FR</h1>
+        <h1>Top FR scores</h1>
         <Sort
           order={order}
           setOrder={setOrder}

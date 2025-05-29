@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Layout from "./Layout"; // Le layout avec la navbar
+import Layout from "./Layout";
 import MainPage from "./pages/MainPage";
 import Scores from "./pages/Scores";
 import BeatmapPage from "./pages/BeatmapPage";
