@@ -35,4 +35,4 @@ function App() {
   );
 }
 
-export default App; // Assurez-vous d'exporter App comme export par défaut
+export default App;
