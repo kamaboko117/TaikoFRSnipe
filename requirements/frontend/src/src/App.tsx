@@ -1,6 +1,5 @@
-import React from "react";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
 import MainPage from "./pages/MainPage";
 import Scores from "./pages/Scores";
 import BeatmapPage from "./pages/BeatmapPage";
@@ -18,16 +17,18 @@ function App() {
     <div>
       {isDecember() && <Snow />}
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/Scores" element={<Scores />} />
-        <Route path="/Beatmap/:id" element={<BeatmapPage />} />
-        <Route path="/Player/:id" element={<PlayerPage />} />
-        <Route path="/Search/:query" element={<SearchPage />} />
-        <Route path="/Players" element={<Players />} />
-        <Route path="/Players/Top" element={<Players />} />
-        <Route path="/Players/HallOfFame" element={<HallOfFame />} />
-        <Route path="/Snipes" element={<Snipes />} />
-        <Route path="/About" element={<About />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path="Scores" element={<Scores />} />
+          <Route path="Beatmap/:id" element={<BeatmapPage />} />
+          <Route path="Player/:id" element={<PlayerPage />} />
+          <Route path="Search/:query" element={<SearchPage />} />
+          <Route path="Players" element={<Players />} />
+          <Route path="Players/Top" element={<Players />} />
+          <Route path="Players/HallOfFame" element={<HallOfFame />} />
+          <Route path="Snipes" element={<Snipes />} />
+          <Route path="About" element={<About />} />
+        </Route>
       </Routes>
     </div>
   );

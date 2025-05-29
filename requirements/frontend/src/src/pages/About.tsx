@@ -1,11 +1,9 @@
 import React from "react";
-import Navbar from "../components/Navbar/Navbar";
 import donchan from "../assets/donchan.png";
 
 export default function About() {
   return (
     <div>
-      <Navbar />
       <div className="wrapper">
         <h1>About</h1>
         <span>
@@ -103,7 +101,7 @@ export default function About() {
           shouldn't be too hard. Don't be afraid to ask for help.
         </span>
         <div className="center">
-          <img src={donchan} />
+          <img alt="Don-Chan" src={donchan} />
         </div>
       </div>
     </div>
