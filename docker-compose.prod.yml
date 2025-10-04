@@ -4,10 +4,10 @@ services:
     build:
       context: ./requirements/frontend
       dockerfile: Dockerfile.prod
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL}
     ports:
       - "80:80"
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
     restart: always
     depends_on:
       - backend
