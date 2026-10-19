@@ -24,7 +24,7 @@
   "dependencies": {
     "@nestjs/common": "^10.4.16",
     "@nestjs/config": "^2.3.2",
-    "@nestjs/core": "^9.0.0",
+    "@nestjs/core": "^11.1.18",
     "@nestjs/platform-express": "^10.3.8",
     "@nestjs/typeorm": "^9.0.1",
     "class-transformer": "^0.5.1",
@@ -35,8 +35,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "tough-cookie": "^4.1.2",
-    "typeorm": "^0.3.16",
-    "webpack": "^5.94.0"
+    "typeorm": "^0.3.26",
+    "webpack": "^5.104.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
