@@ -6,6 +6,11 @@ services:
       dockerfile: Dockerfile.prod
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     ports:
       - "8080:80"
     restart: always
@@ -24,6 +29,11 @@ services:
       COOKIE: ${COOKIE}
       SECRET: ${SECRET}
       ID: ${ID}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     ports:
       - "4000:4000"
     restart: always
@@ -36,6 +46,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - db:/var/lib/postgresql/data
     restart: always
