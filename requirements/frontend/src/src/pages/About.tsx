@@ -1,4 +1,3 @@
-import React from "react";
 import donchan from "../assets/donchan.png";
 
 export default function About() {
@@ -34,6 +33,11 @@ export default function About() {
         <span>
           Thanks to <a href="https://github.com/nzbasic">nzbasic</a> for the
           code of the original snipe.nz website.
+        </span>
+        <br />
+        <span>
+          Thanks to <a href="https://osu.ppy.sh/users/10419120">Delwenya</a> for
+          providing the osu!supporter needed for the app to run.
         </span>
         <br />
         <span>

@@ -4,19 +4,19 @@ import { Beatmap } from 'src/typeorm/beatmap.entity';
 import { BeatmapData, MapsetData, RootObject } from 'src/types/mapset';
 import { Repository } from 'typeorm';
 // import { got } from 'got';
-import { CookieJar } from 'tough-cookie';
 import { JSDOM } from 'jsdom';
-import { ApiScore } from 'src/types/score';
-import { ScoresService } from 'src/scores/scores.service';
+import { IDsService } from 'src/IDs/IDs.service';
+import { MapsetsService } from 'src/mapsets/mapsets.service';
 import { PlayersService } from 'src/players/players.service';
+import { ScoresService } from 'src/scores/scores.service';
+import { SnipesService } from 'src/snipes/snipes.service';
+import { Player } from 'src/typeorm/player.entity';
 import { ScoreEntity } from 'src/typeorm/score.entity';
 import { Snipe } from 'src/typeorm/snipe.entity';
-import { SnipesService } from 'src/snipes/snipes.service';
-import { getCookieJar } from 'src/utils/jar';
-import { Player } from 'src/typeorm/player.entity';
-import { MapsetsService } from 'src/mapsets/mapsets.service';
+import { ApiScore } from 'src/types/score';
 import { UtilService } from 'src/util/util.service';
-import { IDsService } from 'src/IDs/IDs.service';
+import { getCookieJar } from 'src/utils/jar';
+import { CookieJar } from 'tough-cookie';
 
 const isUnranked = (mapsetData: MapsetData) =>
   mapsetData.status !== 'ranked' && mapsetData.status !== 'approved';
@@ -652,6 +652,7 @@ export class BeatmapsService implements OnModuleInit {
         console.log(`Error updating beatmap ${beatmapID}`);
         console.log(e);
         if (e.message !== 'Rate limit exceeded') {
+          await sleep(2000);
           continue;
         }
         //sleep 10 min before trying again
